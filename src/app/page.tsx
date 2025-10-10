@@ -25,9 +25,8 @@ export default function HomePage() {
           <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
             <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-foreground/10 lg:-m-4 lg:rounded-2xl lg:p-4">
               <img
-                src="https://picsum.photos/seed/wordpress-expert/2432/1442"
-                data-ai-hint="abstract technology"
-                alt="App screenshot"
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9YpLcwtYwG-cyJpzcZFHHpNTcN3qaws-aPRXcsmtcBgP41wnzHq-QFX_MLUDDu7JY7v5YN3ELyaX1g_T4SKLCXnQXPnAp80G2OAJJ_zVg4FQTd_Kjlss8ZUdgrLxX5qLUl67W0eGMTAY1YHRgfgncKtkDf2T2-5pTCSQzgr7M3Y6wR4UpE_NNrXga8SCX/s16000-rw/EXPERTO_WP.png"
+                alt="Experto WordPress"
                 width={2432}
                 height={1442}
                 className="w-[76rem] rounded-md shadow-2xl ring-1 ring-foreground/10"
