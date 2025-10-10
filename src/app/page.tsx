@@ -15,7 +15,7 @@ export default function HomePage() {
           priority
         />
         <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center">
-          <h1 className="text-5xl font-bold font-headline text-white mb-4">Bienvenido a BloggerNext</h1>
+          <h1 className="text-5xl font-bold font-headline text-white mb-4">Bienvenido a WEBGAE</h1>
           <p className="text-xl text-white/90">Explora nuestro contenido, servicios y más.</p>
         </div>
       </div>

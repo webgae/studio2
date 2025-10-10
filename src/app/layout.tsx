@@ -6,8 +6,8 @@ import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: {
-    default: 'BloggerNext',
-    template: '%s | BloggerNext',
+    default: 'WEBGAE',
+    template: '%s | WEBGAE',
   },
   description: 'A modern blog built with Next.js and the Blogger API.',
 };
