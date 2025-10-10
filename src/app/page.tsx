@@ -34,15 +34,15 @@ async function PostsList({ searchParams }: HomePageProps) {
     }
 
     if (!postsData || !postsData.items || postsData.items.length === 0) {
-      return <p className="text-center text-muted-foreground mt-8">No posts found.</p>;
+      return <p className="text-center text-muted-foreground mt-8">No se encontraron publicaciones.</p>;
     }
   } catch (error) {
     return (
       <Alert variant="destructive">
         <Terminal className="h-4 w-4" />
-        <AlertTitle>Error Fetching Posts</AlertTitle>
+        <AlertTitle>Error al obtener las publicaciones</AlertTitle>
         <AlertDescription>
-          Could not connect to the Blogger API. Please ensure your `NEXT_PUBLIC_BLOG_ID` and `NEXT_PUBLIC_BLOGGER_API_KEY` are correct in `.env.local`.
+          No se pudo conectar a la API de Blogger. Asegúrate de que `NEXT_PUBLIC_BLOG_ID` y `NEXT_PUBLIC_BLOGGER_API_KEY` sean correctos en `.env.local`.
         </AlertDescription>
       </Alert>
     );
@@ -107,11 +107,11 @@ async function PostsList({ searchParams }: HomePageProps) {
 export default function HomePage({ searchParams }: HomePageProps) {
   const query = searchParams?.q as string;
   const label = searchParams?.label as string;
-  let title = "Latest Posts";
+  let title = "Últimas Publicaciones";
   if (query) {
-    title = `Search results for "${query}"`;
+    title = `Resultados de búsqueda para "${query}"`;
   } else if (label) {
-    title = `Posts tagged with "${label}"`;
+    title = `Publicaciones con la etiqueta "${label}"`;
   }
 
   return (
