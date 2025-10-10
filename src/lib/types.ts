@@ -35,5 +35,6 @@ export interface Post {
 export interface PostsList {
   kind: string;
   nextPageToken?: string;
+  prevPageToken?: string; // This is manually added, not from API
   items: Post[];
 }

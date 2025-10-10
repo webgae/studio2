@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { type Post } from '@/lib/types';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface HomePageProps {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -14,21 +17,23 @@ interface HomePageProps {
 async function PostsList({ searchParams }: HomePageProps) {
   const query = searchParams?.q as string;
   const label = searchParams?.label as string;
+  const pageToken = searchParams?.pageToken as string;
+  const prevPageTokens = (searchParams?.prevPageTokens as string)?.split(',') || [];
 
   let postsData;
   let allLabels = new Set<string>();
 
   try {
     if (query) {
-      postsData = await searchPosts(query);
+      postsData = await searchPosts(query, pageToken);
       const allPosts = await getAllPosts(100);
       allPosts.items.forEach(post => post.labels?.forEach(l => allLabels.add(l)));
     } else if (label) {
-      postsData = await getPostsByLabel(label);
+      postsData = await getPostsByLabel(label, pageToken);
       const allPosts = await getAllPosts(100); // Fetch more to get all labels
       allPosts.items.forEach(post => post.labels?.forEach(l => allLabels.add(l)));
     } else {
-      postsData = await getAllPosts(10);
+      postsData = await getAllPosts(10, pageToken);
       postsData.items.forEach(post => post.labels?.forEach(l => allLabels.add(l)));
     }
 
@@ -47,7 +52,28 @@ async function PostsList({ searchParams }: HomePageProps) {
     );
   }
 
-  const { items: posts } = postsData;
+  const { items: posts, nextPageToken } = postsData;
+
+  const newPrevPageTokens = pageToken ? [...prevPageTokens, pageToken] : [];
+  const prevPageToken = newPrevPageTokens.length > 1 ? newPrevPageTokens[newPrevPageTokens.length - 2] : undefined;
+
+  const buildPageLink = (token: string | undefined, direction: 'next' | 'prev') => {
+    const params = new URLSearchParams();
+    if (query) params.set('q', query);
+    if (label) params.set('label', label);
+    if (token) params.set('pageToken', token);
+
+    if (direction === 'next' && pageToken) {
+      params.set('prevPageTokens', [...prevPageTokens, pageToken].join(','));
+    }
+    if (direction === 'prev' && prevPageTokens.length > 1) {
+       params.set('prevPageTokens', prevPageTokens.slice(0, prevPageTokens.length -1).join(','));
+    }
+    
+    const queryString = params.toString();
+    return `/?${queryString}`;
+  };
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
@@ -65,6 +91,20 @@ async function PostsList({ searchParams }: HomePageProps) {
             />
           ))}
         </div>
+        <div className="flex justify-between items-center mt-8">
+            <Button asChild variant="outline" disabled={!pageToken}>
+              <Link href={buildPageLink(prevPageToken, 'prev')}>
+                <ChevronLeft className="mr-2 h-4 w-4" />
+                Anterior
+              </Link>
+            </Button>
+            <Button asChild variant="outline" disabled={!nextPageToken}>
+              <Link href={buildPageLink(nextPageToken, 'next')}>
+                Siguiente
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
       </div>
       {allLabels.size > 0 && (
         <aside className="md:col-span-3">

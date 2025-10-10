@@ -45,12 +45,20 @@ export async function getPostById(postId: string): Promise<Post> {
   return fetchBloggerApi<Post>(`/posts/${postId}?fetchImages=true`);
 }
 
-export async function searchPosts(query: string): Promise<PostsList> {
-  return fetchBloggerApi<PostsList>(`/posts/search?q=${encodeURIComponent(query)}&fetchImages=true`);
+export async function searchPosts(query: string, pageToken?: string): Promise<PostsList> {
+  let path = `/posts/search?q=${encodeURIComponent(query)}&fetchImages=true`;
+  if (pageToken) {
+    path += `&pageToken=${pageToken}`;
+  }
+  return fetchBloggerApi<PostsList>(path);
 }
 
-export async function getPostsByLabel(label: string): Promise<PostsList> {
-  return fetchBloggerApi<PostsList>(`/posts?labels=${encodeURIComponent(label)}&fetchImages=true`);
+export async function getPostsByLabel(label: string, pageToken?: string): Promise<PostsList> {
+  let path = `/posts?labels=${encodeURIComponent(label)}&fetchImages=true`;
+  if (pageToken) {
+    path += `&pageToken=${pageToken}`;
+  }
+  return fetchBloggerApi<PostsList>(path);
 }
 
 export function extractImageUrl(post: Post): string | null {
