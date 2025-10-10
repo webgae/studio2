@@ -1,6 +1,11 @@
+"use client";
+
 import Link from 'next/link';
-import { BookMarked } from 'lucide-react';
+import { BookMarked, Menu } from 'lucide-react';
 import { Button } from './ui/button';
+import { usePathname } from 'next/navigation';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { useState } from 'react';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -10,8 +15,30 @@ const navLinks = [
 ];
 
 export default function Header() {
+  const pathname = usePathname();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const NavLink = ({ href, label, isMobile = false }: { href: string; label: string; isMobile?: boolean }) => {
+    const isActive = pathname === href;
+    const linkClasses = `text-sm font-medium ${isActive ? 'text-primary' : ''} ${isMobile ? 'block w-full py-2' : ''}`;
+
+    const handleClick = () => {
+      if (isMobile) {
+        setIsSheetOpen(false);
+      }
+    };
+
+    return (
+      <Button asChild variant="ghost" key={href}>
+        <Link href={href} className={linkClasses} onClick={handleClick}>
+          {label}
+        </Link>
+      </Button>
+    );
+  };
+
   return (
-    <header className="bg-card/80 backdrop-blur-sm border-b sticky top-0 z-10">
+    <header className="bg-card/80 backdrop-blur-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4 gap-4">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
@@ -20,15 +47,32 @@ export default function Header() {
               WEBGAE
             </h1>
           </Link>
-          <nav className="flex items-center gap-2">
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-2">
             {navLinks.map((link) => (
-              <Button asChild variant="ghost" key={link.href}>
-                <Link href={link.href} className="text-sm font-medium">
-                  {link.label}
-                </Link>
-              </Button>
+              <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
           </nav>
+
+          {/* Mobile Navigation */}
+          <div className="md:hidden">
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Abrir menú</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right">
+                <nav className="flex flex-col gap-4 pt-8">
+                  {navLinks.map((link) => (
+                    <NavLink key={link.href} href={link.href} label={link.label} isMobile />
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>
