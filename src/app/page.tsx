@@ -29,7 +29,7 @@ export default function HomePage() {
                 alt="Experto WordPress"
                 width={2432}
                 height={1442}
-                className="w-[76rem] rounded-md shadow-2xl ring-1 ring-foreground/10"
+                className="w-full rounded-md shadow-2xl ring-1 ring-foreground/10"
               />
             </div>
           </div>
