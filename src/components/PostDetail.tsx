@@ -1,12 +1,22 @@
 import { type Post } from '@/lib/types';
 import { format } from 'date-fns';
 import { Badge } from './ui/badge';
-import { Calendar, User, Tag } from 'lucide-react';
+import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from './ui/button';
 
 export default function PostDetail({ post }: { post: Post }) {
   return (
     <article className="max-w-4xl mx-auto bg-card p-4 sm:p-8 rounded-lg shadow-lg border">
+      <div className="mb-6">
+        <Button asChild variant="ghost">
+          <Link href="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary">
+            <ArrowLeft className="w-4 h-4" />
+            Volver al blog
+          </Link>
+        </Button>
+      </div>
+
       <h1 className="text-3xl md:text-5xl font-bold font-headline mb-4 text-center">{post.title}</h1>
       
       <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-muted-foreground mb-8 text-sm">
