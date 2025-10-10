@@ -5,7 +5,7 @@ const BLOG_ID = process.env.NEXT_PUBLIC_BLOG_ID;
 const API_URL = `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}`;
 
 async function fetchBloggerApi<T>(path: string, options: RequestInit = {}): Promise<T> {
-  if (!API_KEY || !BLOG_ID) {
+  if (!API_KEY || !BLOG_ID || API_KEY === 'TU_API_KEY_DE_BLOGGER' || BLOG_ID === 'TU_BLOG_ID') {
     throw new Error('Blogger API Key or Blog ID is not configured. Please check your .env.local file.');
   }
 
@@ -18,9 +18,9 @@ async function fetchBloggerApi<T>(path: string, options: RequestInit = {}): Prom
     });
     
     if (!res.ok) {
-      const errorData = await res.json();
-      console.error('Blogger API Error:', errorData);
-      throw new Error(`Failed to fetch from Blogger API: ${res.statusText}`);
+       const errorText = await res.text();
+      console.error('Blogger API Error:', errorText);
+      throw new Error(`Failed to fetch from Blogger API: ${res.statusText}. Response: ${errorText}`);
     }
 
     return res.json() as Promise<T>;
