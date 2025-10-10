@@ -2,14 +2,14 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Code, Rocket, ShieldCheck, Star, Zap } from 'lucide-react';
+import { Code, Rocket, ShieldCheck, Star, Wrench } from 'lucide-react';
 import Image from 'next/image';
 
 const featuredServices = [
   {
     icon: <Code className="w-8 h-8 text-primary" />,
-    title: 'Desarrollo a Medida',
-    description: 'Temas y plugins personalizados que se adaptan perfectamente a tus necesidades.',
+    title: 'Creación de Sitios Web',
+    description: 'Creo tu sitio web desde cero con un diseño profesional y funcionalidades a medida.',
     href: '/services'
   },
   {
@@ -22,6 +22,12 @@ const featuredServices = [
     icon: <ShieldCheck className="w-8 h-8 text-primary" />,
     title: 'Mantenimiento y Seguridad',
     description: 'Mantengo tu sitio seguro, actualizado y funcionando sin interrupciones.',
+    href: '/services'
+  },
+  {
+    icon: <Wrench className="w-8 h-8 text-primary" />,
+    title: 'Reparación de Errores',
+    description: 'Soluciono problemas, arreglo bugs y recupero sitios que no funcionan correctamente.',
     href: '/services'
   },
 ];
@@ -93,7 +99,7 @@ export default function HomePage() {
                   alt="Experto WordPress"
                   width={800}
                   height={800}
-                  className="w-[48rem] max-w-none rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
+                  className="w-auto max-w-none rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
                 />
               </div>
             </div>
@@ -123,7 +129,7 @@ export default function HomePage() {
               Desde la creación de un sitio nuevo hasta la optimización de uno existente.
             </p>
           </div>
-          <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {featuredServices.map((service) => (
               <Card key={service.title} className="text-center hover:border-primary transition-colors hover:shadow-lg">
                 <CardHeader>
