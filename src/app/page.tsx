@@ -96,16 +96,14 @@ export default function HomePage() {
             </div>
           </div>
           <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mt-0 lg:mr-0 lg:max-w-none lg:flex-none xl:ml-32">
-            <div className="w-full flex-none">
-              <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-foreground/10 lg:-m-4 lg:rounded-2xl lg:p-4">
+            <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-foreground/10 lg:-m-4 lg:rounded-2xl lg:p-4">
                  <Image
-                  src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9YpLcwtYwG-cyJpzcZFHHpNTcN3qaws-aPRXcsmtcBgP41wnzHq-QFX_MLUDDu7JY7v5yn3ELyaX1g_T4SKLCXnQXPnAp80G2OAJJ_zVg4FQTd_Kjlss8ZUdgrLxX5qLUl67W0eGMTAY1YHRgfgncKtkDf2T2-5pTCSQzgr7M3Y6wR4UpE_NNrXga8SCX/s16000-rw/EXPERTO_WP.png"
+                  src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9YpLcwtYwG-cyJpzcZFHHpNTcN3qaws-aPRXcsmtcBgP41wnzHq-QFX_MLUDDu7JY7v5YN3ELyaX1g_T4SKLCXnQXPnAp80G2OAJJ_zVg4FQTd_Kjlss8ZUdgrLxX5qLUl67W0eGMTAY1YHRgfgncKtkDf2T2-5pTCSQzgr7M3Y6wR4UpE_NNrXga8SCX/s16000-rw/EXPERTO_WP.png"
                   alt="Experto WordPress"
                   width={800}
                   height={800}
-                  className="w-full h-auto rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
+                  className="w-full h-auto max-w-lg rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
                 />
-              </div>
             </div>
           </div>
         </div>
