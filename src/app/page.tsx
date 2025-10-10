@@ -26,15 +26,11 @@ async function PostsList({ searchParams }: HomePageProps) {
   try {
     if (query) {
       postsData = await searchPosts(query, pageToken);
-      const allPosts = await getAllPosts(100);
-      allPosts.items.forEach(post => post.labels?.forEach(l => allLabels.add(l)));
+      // We don't need to fetch all posts for labels anymore since the sidebar is gone.
     } else if (label) {
       postsData = await getPostsByLabel(label, pageToken);
-      const allPosts = await getAllPosts(100); // Fetch more to get all labels
-      allPosts.items.forEach(post => post.labels?.forEach(l => allLabels.add(l)));
     } else {
       postsData = await getAllPosts(10, pageToken);
-      postsData.items.forEach(post => post.labels?.forEach(l => allLabels.add(l)));
     }
 
     if (!postsData || !postsData.items || postsData.items.length === 0) {
@@ -76,62 +72,34 @@ async function PostsList({ searchParams }: HomePageProps) {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-      <div className="md:col-span-9">
-        <div className="space-y-8">
-          {posts.map((post: Post) => (
-            <PostCard
-              key={post.id}
-              id={post.id}
-              title={post.title}
-              excerpt={createExcerpt(post.content)}
-              date={post.published}
-              imageUrl={extractImageUrl(post)}
-              labels={post.labels}
-            />
-          ))}
-        </div>
-        <div className="flex justify-between items-center mt-8">
-            <Button asChild variant="outline" disabled={!pageToken}>
-              <Link href={buildPageLink(prevPageToken, 'prev')}>
-                <ChevronLeft className="mr-2 h-4 w-4" />
-                Anterior
-              </Link>
-            </Button>
-            <Button asChild variant="outline" disabled={!nextPageToken}>
-              <Link href={buildPageLink(nextPageToken, 'next')}>
-                Siguiente
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post: Post) => (
+          <PostCard
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            excerpt={createExcerpt(post.content)}
+            date={post.published}
+            imageUrl={extractImageUrl(post)}
+            labels={post.labels}
+          />
+        ))}
       </div>
-      {allLabels.size > 0 && (
-        <aside className="md:col-span-3">
-          <div className="sticky top-24">
-            <h2 className="text-xl font-bold font-headline mb-4">Labels</h2>
-            <div className="flex flex-wrap gap-2">
-              {Array.from(allLabels).map(l => (
-                <Link href={`/?label=${encodeURIComponent(l)}`} key={l}>
-                  <Badge
-                    variant={label === l ? 'default' : 'secondary'}
-                    className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
-                  >
-                    {l}
-                  </Badge>
-                </Link>
-              ))}
-              {label && (
-                <Link href="/">
-                  <Badge variant="outline" className="cursor-pointer">
-                    Clear filter
-                  </Badge>
-                </Link>
-              )}
-            </div>
-          </div>
-        </aside>
-      )}
+      <div className="flex justify-between items-center mt-8">
+          <Button asChild variant="outline" disabled={!pageToken}>
+            <Link href={buildPageLink(prevPageToken, 'prev')}>
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Anterior
+            </Link>
+          </Button>
+          <Button asChild variant="outline" disabled={!nextPageToken}>
+            <Link href={buildPageLink(nextPageToken, 'next')}>
+              Siguiente
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
     </div>
   );
 }
@@ -158,34 +126,21 @@ export default function HomePage({ searchParams }: HomePageProps) {
 
 function Loading() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-      <div className="md:col-span-9 space-y-8">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="flex flex-col sm:flex-row gap-6 bg-card p-6 rounded-lg border">
-            <Skeleton className="w-full sm:w-1/3 h-48 rounded-lg" />
-            <div className="flex-1 space-y-4">
-              <Skeleton className="h-8 w-3/4" />
-              <Skeleton className="h-4 w-1/4" />
-              <Skeleton className="h-20 w-full" />
-              <div className="flex gap-2">
-                <Skeleton className="h-6 w-16" />
-                <Skeleton className="h-6 w-20" />
-              </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {[...Array(3)].map((_, i) => (
+        <div key={i} className="flex flex-col gap-6 bg-card p-6 rounded-lg border">
+          <Skeleton className="w-full h-48 rounded-lg" />
+          <div className="flex-1 space-y-4">
+            <Skeleton className="h-8 w-3/4" />
+            <Skeleton className="h-4 w-1/4" />
+            <Skeleton className="h-20 w-full" />
+            <div className="flex gap-2">
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-6 w-20" />
             </div>
           </div>
-        ))}
-      </div>
-      <aside className="md:col-span-3">
-        <div className="sticky top-24">
-          <Skeleton className="h-8 w-24 mb-4" />
-          <div className="flex flex-wrap gap-2">
-            <Skeleton className="h-6 w-16" />
-            <Skeleton className="h-6 w-20" />
-            <Skeleton className="h-6 w-12" />
-            <Skeleton className="h-6 w-24" />
-          </div>
         </div>
-      </aside>
+      ))}
     </div>
   );
 }
