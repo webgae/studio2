@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { Badge } from './ui/badge';
 import { Calendar } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { createPostSlug } from '@/lib/utils';
 
 interface PostCardProps {
   id: string;
@@ -18,9 +19,10 @@ const placeholder = PlaceHolderImages.find(p => p.id === 'blog-post-placeholder'
 
 export default function PostCard({ id, title, excerpt, date, imageUrl, labels }: PostCardProps) {
   const effectiveImageUrl = imageUrl?.startsWith('//') ? `https:${imageUrl}`: imageUrl;
+  const postSlug = createPostSlug(title, id);
   
   return (
-    <Link href={`/posts/${id}`} className="block group">
+    <Link href={`/posts/${postSlug}`} className="block group">
       <article className="bg-card p-6 rounded-lg border shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
         <div className="aspect-video relative overflow-hidden rounded-md mb-4">
             <Image

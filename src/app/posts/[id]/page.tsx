@@ -2,6 +2,8 @@ import { getPostById, getAllPosts, extractImageUrl, createExcerpt } from '@/lib/
 import { notFound } from 'next/navigation';
 import PostDetail from '@/components/PostDetail';
 import type { Metadata, ResolvingMetadata } from 'next';
+import { getIdFromSlug, createPostSlug } from '@/lib/utils';
+
 
 type Props = {
   params: { id: string };
@@ -12,7 +14,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   try {
-    const post = await getPostById(params.id);
+    const postId = getIdFromSlug(params.id);
+    const post = await getPostById(postId);
     const previousImages = (await parent).openGraph?.images || [];
     const imageUrl = extractImageUrl(post);
 
@@ -41,7 +44,7 @@ export async function generateStaticParams() {
     const { items } = await getAllPosts(20); 
     if (!items) return [];
     return items.map((post) => ({
-      id: post.id,
+      id: createPostSlug(post.title, post.id),
     }));
   } catch (error) {
     console.error("Could not generate static params for posts:", error);
@@ -51,7 +54,8 @@ export async function generateStaticParams() {
 
 export default async function PostPage({ params }: Props) {
   try {
-    const post = await getPostById(params.id);
+    const postId = getIdFromSlug(params.id);
+    const post = await getPostById(postId);
     return <PostDetail post={post} />;
   } catch (error) {
     console.error(`Error fetching post ${params.id}:`, error);
