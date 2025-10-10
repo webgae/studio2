@@ -28,8 +28,8 @@ export default function ContactPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <a href="mailto:info@example.com" className="text-lg hover:underline">
-                  info@example.com
+                <a href="mailto:ximosa@gmail.com" className="text-lg hover:underline">
+                  ximosa@gmail.com
                 </a>
               </CardContent>
             </Card>
@@ -41,9 +41,7 @@ export default function ContactPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <a href="tel:+123456789" className="text-lg hover:underline">
-                  +1 (234) 567-89
-                </a>
+                <p className="text-lg">Ponte en contacto para programar una visita</p>
               </CardContent>
             </Card>
             <Card>
@@ -54,7 +52,7 @@ export default function ContactPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-lg">123 Calle Falsa, Ciudad</p>
+                <p className="text-lg">24 horas online</p>
               </CardContent>
             </Card>
         </div>

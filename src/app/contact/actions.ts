@@ -26,7 +26,7 @@ export async function sendEmail(data: ContactData) : Promise<{success: boolean, 
   try {
     const { data, error } = await resend.emails.send({
       from: 'WEBGAE <onboarding@resend.dev>', // Should be a verified domain
-      to: ['delivered@resend.dev'], // Your actual email address
+      to: ['ximosa@gmail.com'], // Your actual email address
       subject: `Nuevo mensaje de contacto de ${name}`,
       reply_to: email,
       react: ContactEmail({ name, email, message }),
