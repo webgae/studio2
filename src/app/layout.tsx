@@ -6,10 +6,10 @@ import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: {
-    default: 'WEBGAE',
+    default: 'Experto en WordPress | WEBGAE',
     template: '%s | WEBGAE',
   },
-  description: 'Experto en Desarrollo WordPress para construir, optimizar y mantener sitios web de alto rendimiento.',
+  description: 'Experto en WordPress dedicado a crear, mejorar y arreglar sitios web. Ofrezco soluciones de desarrollo, optimización y mantenimiento para potenciar tu presencia online.',
 };
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
+    <html lang="es" className="dark" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
