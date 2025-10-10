@@ -51,7 +51,7 @@ export default function PostDetail({ post }: { post: Post }) {
           </div>
           <div className="flex flex-wrap gap-2">
             {post.labels.map(label => (
-              <Link href={`/?label=${encodeURIComponent(label)}`} key={label}>
+              <Link href={`/blog?label=${encodeURIComponent(label)}`} key={label}>
                 <Badge variant="secondary" className="hover:bg-accent">{label}</Badge>
               </Link>
             ))}

@@ -19,9 +19,9 @@ export default function SearchBar() {
     e.preventDefault();
     const trimmedQuery = query.trim();
     if (trimmedQuery) {
-      router.push(`/?q=${encodeURIComponent(trimmedQuery)}`);
+      router.push(`/blog?q=${encodeURIComponent(trimmedQuery)}`);
     } else {
-      router.push('/');
+      router.push('/blog');
     }
   };
 
@@ -31,13 +31,13 @@ export default function SearchBar() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Search posts..."
+          placeholder="Buscar publicaciones..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="pl-10"
         />
       </div>
-      <Button type="submit">Search</Button>
+      <Button type="submit">Buscar</Button>
     </form>
   );
 }

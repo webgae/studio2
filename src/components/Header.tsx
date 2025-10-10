@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import { BookMarked } from 'lucide-react';
-import SearchBar from './SearchBar';
+import { Button } from './ui/button';
+
+const navLinks = [
+  { href: '/', label: 'Inicio' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/services', label: 'Servicios' },
+  { href: '/contact', label: 'Contacto' },
+];
 
 export default function Header() {
   return (
@@ -13,9 +20,15 @@ export default function Header() {
               BloggerNext
             </h1>
           </Link>
-          <div className="w-full max-w-sm ml-auto">
-            <SearchBar />
-          </div>
+          <nav className="flex items-center gap-2">
+            {navLinks.map((link) => (
+              <Button asChild variant="ghost" key={link.href}>
+                <Link href={link.href} className="text-sm font-medium">
+                  {link.label}
+                </Link>
+              </Button>
+            ))}
+          </nav>
         </div>
       </div>
     </header>
