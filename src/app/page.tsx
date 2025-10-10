@@ -64,6 +64,10 @@ const faqs = [
     answer: "Mi plan de mantenimiento incluye actualizaciones de WordPress, temas y plugins, copias de seguridad regulares, monitorización de seguridad 24/7 y soporte técnico para resolver cualquier problema que surja."
   },
   {
+    question: "¿Puedes arreglar un sitio web que otro desarrollador hizo mal o dejó incompleto?",
+    answer: "Sí, absolutamente. Una gran parte de mi trabajo consiste en solucionar problemas heredados, optimizar código de baja calidad y completar proyectos inacabados. Puedo auditar tu sitio, identificar los puntos débiles y aplicar las soluciones necesarias para que funcione como debería."
+  },
+  {
     question: "¿Puedes arreglar un sitio web de WordPress que ha sido hackeado?",
     answer: "¡Por supuesto! Ofrezco servicios de limpieza de malware y fortalecimiento de la seguridad para restaurar tu sitio y protegerlo contra futuros ataques."
   }
@@ -99,7 +103,7 @@ export default function HomePage() {
                   alt="Experto WordPress"
                   width={800}
                   height={800}
-                  className="w-auto max-w-none rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
+                  className="w-[55rem] max-w-none rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
                 />
               </div>
             </div>
