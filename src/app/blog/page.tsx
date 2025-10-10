@@ -18,7 +18,8 @@ async function PostsList({ searchParams }: BlogPageProps) {
   const query = searchParams?.q as string;
   const label = searchParams?.label as string;
   const pageToken = searchParams?.pageToken as string;
-  const prevPageTokens = (searchParams?.prevPageTokens as string)?.split(',') || [];
+  const prevPageToken = searchParams?.prevPageToken as string;
+
 
   let postsData;
   let allLabels = new Set<string>();
@@ -50,20 +51,17 @@ async function PostsList({ searchParams }: BlogPageProps) {
 
   const { items: posts, nextPageToken } = postsData;
 
-  const newPrevPageTokens = pageToken ? [...prevPageTokens, pageToken] : [];
-  const prevPageToken = newPrevPageTokens.length > 1 ? newPrevPageTokens[newPrevPageTokens.length - 2] : undefined;
-
   const buildPageLink = (token: string | undefined, direction: 'next' | 'prev') => {
     const params = new URLSearchParams();
     if (query) params.set('q', query);
     if (label) params.set('label', label);
-    if (token) params.set('pageToken', token);
-
-    if (direction === 'next' && pageToken) {
-      params.set('prevPageTokens', [...prevPageTokens, pageToken].join(','));
-    }
-    if (direction === 'prev' && prevPageTokens.length > 1) {
-       params.set('prevPageTokens', prevPageTokens.slice(0, prevPageTokens.length -1).join(','));
+    if (token) {
+      if(direction === 'next') {
+        params.set('pageToken', token);
+        if (pageToken) params.set('prevPageToken', pageToken);
+      } else {
+        params.set('pageToken', token);
+      }
     }
     
     const queryString = params.toString();
@@ -87,7 +85,7 @@ async function PostsList({ searchParams }: BlogPageProps) {
         ))}
       </div>
       <div className="flex justify-between items-center mt-8">
-          <Button asChild variant="outline" disabled={!pageToken}>
+          <Button asChild variant="outline" disabled={!prevPageToken}>
             <Link href={buildPageLink(prevPageToken, 'prev')}>
               <ChevronLeft className="mr-2 h-4 w-4" />
               Anterior
