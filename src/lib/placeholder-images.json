@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "blog-post-placeholder",
+      "description": "A placeholder image for a blog post when no image is available from the API.",
+      "imageUrl": "https://picsum.photos/seed/blogpost/400/225",
+      "imageHint": "writing technology"
+    }
+  ]
 }
