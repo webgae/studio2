@@ -1,15 +1,10 @@
 import { type Post } from '@/lib/types';
 import { format } from 'date-fns';
-import Image from 'next/image';
 import { Badge } from './ui/badge';
 import { Calendar, User, Tag } from 'lucide-react';
 import Link from 'next/link';
-import { extractImageUrl } from '@/lib/blogger';
 
 export default function PostDetail({ post }: { post: Post }) {
-  const imageUrl = extractImageUrl(post);
-  const effectiveImageUrl = imageUrl?.startsWith('//') ? `https:${imageUrl}`: imageUrl;
-
   return (
     <article className="max-w-4xl mx-auto bg-card p-4 sm:p-8 rounded-lg shadow-lg border">
       <h1 className="text-3xl md:text-5xl font-bold font-headline mb-4 text-center">{post.title}</h1>
@@ -24,19 +19,6 @@ export default function PostDetail({ post }: { post: Post }) {
           <time dateTime={post.published}>{format(new Date(post.published), 'MMMM d, yyyy')}</time>
         </div>
       </div>
-      
-      {effectiveImageUrl && (
-        <div className="relative w-full aspect-video mb-8 rounded-lg overflow-hidden">
-          <Image
-            src={effectiveImageUrl}
-            alt={post.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 66vw"
-          />
-        </div>
-      )}
 
       <div
         className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:underline prose-img:rounded-lg"
