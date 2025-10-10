@@ -9,8 +9,8 @@ export default function PostDetail({ post }: { post: Post }) {
   return (
     <article className="max-w-4xl mx-auto bg-card p-4 sm:p-8 rounded-lg shadow-lg border">
       <div className="mb-6">
-        <Button asChild variant="ghost">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary">
+        <Button asChild variant="ghost" className="text-muted-foreground hover:text-primary hover:bg-transparent px-0">
+          <Link href="/blog" className="inline-flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" />
             Volver al blog
           </Link>
