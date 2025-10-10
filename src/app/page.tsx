@@ -1,37 +1,53 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function HomePage() {
   return (
-    <section className="text-center">
-      <div className="relative h-96 w-full max-w-4xl mx-auto mb-8 rounded-lg overflow-hidden shadow-lg">
-        <Image 
-          src="https://picsum.photos/seed/homepage/1200/400" 
-          alt="Welcome" 
-          fill
-          style={{ objectFit: 'cover' }}
-          data-ai-hint="technology abstract"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center">
-          <h1 className="text-5xl font-bold font-headline text-white mb-4">Bienvenido a WEBGAE</h1>
-          <p className="text-xl text-white/90">Explora nuestro contenido, servicios y más.</p>
+    <div className="relative isolate overflow-hidden bg-background">
+      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
+        <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
+          <h1 className="mt-10 text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+            Experto en Desarrollo WordPress
+          </h1>
+          <p className="mt-6 text-lg leading-8 text-muted-foreground">
+            Construyo, optimizo y mantengo sitios web de alto rendimiento con WordPress para llevar tu presencia online al siguiente nivel.
+          </p>
+          <div className="mt-10 flex items-center gap-x-6">
+            <Button asChild size="lg">
+              <Link href="/services">Ver Servicios</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/contact">Contacto</Link>
+            </Button>
+          </div>
+        </div>
+        <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mt-0 lg:mr-0 lg:max-w-none lg:flex-none xl:ml-32">
+          <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
+            <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-foreground/10 lg:-m-4 lg:rounded-2xl lg:p-4">
+              <img
+                src="https://picsum.photos/seed/wordpress-expert/2432/1442"
+                data-ai-hint="abstract technology"
+                alt="App screenshot"
+                width={2432}
+                height={1442}
+                className="w-[76rem] rounded-md shadow-2xl ring-1 ring-foreground/10"
+              />
+            </div>
+          </div>
         </div>
       </div>
-      
-      <p className="max-w-2xl mx-auto text-lg text-muted-foreground mb-8">
-        Este es el lugar perfecto para comenzar. Navega a nuestro blog para leer las últimas publicaciones, descubre los servicios que ofrecemos o ponte en contacto con nosotros.
-      </p>
-      
-      <div className="flex justify-center gap-4">
-        <Button asChild size="lg">
-          <Link href="/blog">Ir al Blog</Link>
-        </Button>
-        <Button asChild variant="outline" size="lg">
-          <Link href="/contact">Contáctanos</Link>
-        </Button>
+       <div
+        className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+        aria-hidden="true"
+      >
+        <div
+          className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-primary to-accent opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+          style={{
+            clipPath:
+              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+          }}
+        />
       </div>
-    </section>
+    </div>
   );
 }

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: 'WEBGAE',
     template: '%s | WEBGAE',
   },
-  description: 'A modern blog built with Next.js and the Blogger API.',
+  description: 'Experto en Desarrollo WordPress para construir, optimizar y mantener sitios web de alto rendimiento.',
 };
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
