@@ -3,22 +3,14 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Playfair_Display, PT_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/ThemeProvider';
 
-const ptSans = PT_Sans({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-pt-sans',
+  variable: '--font-inter',
 });
-
-const playfairDisplay = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-playfair-display',
-});
-
 
 export const metadata: Metadata = {
   title: {
@@ -27,7 +19,7 @@ export const metadata: Metadata = {
   },
   description: 'Desarrollador web experto en crear, mejorar y optimizar sitios web con tecnologías modernas. Ofrezco soluciones de desarrollo a medida, optimización y mantenimiento para potenciar tu presencia online.',
   icons: {
-    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="15" fill="%235c24e3" /><text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="50" font-family="sans-serif" fill="white" font-weight="600">WG</text></svg>',
+    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="15" fill="%235c24e3" /><text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="50" font-family="sans-serif" fill="white" font-weight="600">W</text></svg>',
   },
 };
 
@@ -38,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={cn("font-body antialiased min-h-screen flex flex-col", ptSans.variable, playfairDisplay.variable)}>
+      <body className={cn("font-sans antialiased min-h-screen flex flex-col", inter.variable)}>
         <ThemeProvider
             attribute="class"
             defaultTheme="dark"

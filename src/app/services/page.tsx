@@ -148,7 +148,7 @@ export default function ServicesPage() {
   return (
     <section>
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold font-headline mb-4">Servicios de Desarrollo Web</h1>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-4">Servicios de Desarrollo Web</h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           Ofrezco un abanico completo de soluciones profesionales para crear, mejorar y mantener tu presencia online. Desde el desarrollo inicial hasta la optimización y el soporte continuo.
         </p>
@@ -169,7 +169,7 @@ export default function ServicesPage() {
           <section key={service.id} id={service.id} className="scroll-mt-24">
             <div className="text-center mb-12">
               {service.icon}
-              <h2 className="text-3xl md:text-4xl font-bold font-headline mb-4">{service.title}</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{service.title}</h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                 {service.shortDescription}
               </p>
@@ -179,7 +179,7 @@ export default function ServicesPage() {
               {service.features.map(feature => (
                 <div key={feature.title} className="flex flex-col items-center p-6 bg-card/50 rounded-lg">
                   {feature.icon}
-                  <h3 className="text-xl font-headline mb-2">{feature.title}</h3>
+                  <h3 className="text-xl mb-2">{feature.title}</h3>
                   <p className="text-muted-foreground">{feature.description}</p>
                 </div>
               ))}
@@ -195,18 +195,18 @@ export default function ServicesPage() {
       </div>
 
       <div className="max-w-4xl mx-auto mt-24 text-left">
-        <h2 className="text-3xl font-bold font-headline mb-6 text-center">Tu Aliado Tecnológico de Confianza</h2>
-        <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:underline">
+        <h2 className="text-3xl font-bold text-center mb-6">Tu Aliado Tecnológico de Confianza</h2>
+        <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-semibold prose-a:text-primary hover:prose-a:underline">
           <p>
             Mi objetivo va más allá de entregar un sitio web funcional. Me dedico a construir <strong>soluciones digitales robustas, seguras y de alto rendimiento</strong> que sirvan como una base sólida para el crecimiento de tu negocio. Entiendo que cada proyecto es único y requiere una atención al detalle que marca la diferencia.
           </p>
 
-          <h3 className="text-2xl font-headline">Calidad y Rendimiento como Prioridad</h3>
+          <h3>Calidad y Rendimiento como Prioridad</h3>
           <p>
             Un sitio web lento o poco fiable puede costar clientes y dañar tu reputación. Por eso, aplico las mejores prácticas de desarrollo y optimización (WPO) desde el primer día. Esto incluye un código limpio y eficiente, la optimización de assets, el uso de caché inteligente y una configuración de servidor adecuada para que tu web vuele. Mi trabajo se centra en superar los estándares de los <strong>Core Web Vitals de Google</strong>, un factor clave para el SEO.
           </p>
 
-          <h3 className="text-2xl font-headline">Seguridad y Mantenimiento Proactivo</h3>
+          <h3>Seguridad y Mantenimiento Proactivo</h3>
           <p>
             La seguridad no es una opción, es una necesidad. Implemento múltiples capas de protección para blindar tu sitio contra amenazas y ataques. Además, con mis planes de mantenimiento, puedes despreocuparte de las tareas técnicas: me encargo de las actualizaciones, copias de seguridad y monitorización constante para garantizar que tu web esté siempre online y funcionando a la perfección.
           </p>

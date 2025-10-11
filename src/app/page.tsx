@@ -2,33 +2,32 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Code, Rocket, ShieldCheck, Star, Wrench } from 'lucide-react';
-import Image from 'next/image';
+import { Code, Rocket, ShieldCheck, Star, Zap, Layers, Handshake } from 'lucide-react';
 import { type FAQPage, type WithContext } from 'schema-dts';
 
 const featuredServices = [
   {
     icon: <Code className="w-8 h-8 text-primary" />,
     title: 'Desarrollo Web a Medida',
-    description: 'Creo tu sitio web desde cero con un diseño profesional y funcionalidades a medida.',
+    description: 'Soluciones web rápidas, funcionales y con un diseño excepcional desde cero.',
     href: '/services#desarrollo-web'
   },
   {
     icon: <Rocket className="w-8 h-8 text-primary" />,
     title: 'Optimización de Rendimiento',
-    description: 'Mejoro el rendimiento de tu web para una carga más rápida y una mejor experiencia.',
+    description: 'Mejora radical de la velocidad de carga y la experiencia de usuario de tu sitio actual.',
     href: '/services#optimizacion-wpo'
   },
   {
     icon: <ShieldCheck className="w-8 h-8 text-primary" />,
     title: 'Mantenimiento y Seguridad',
-    description: 'Mantengo tu sitio seguro, actualizado y funcionando sin interrupciones.',
+    description: 'Monitorización, actualizaciones y copias de seguridad para que tu web funcione sin interrupciones.',
     href: '/services#mantenimiento-wordpress'
   },
   {
-    icon: <Wrench className="w-8 h-8 text-primary" />,
-    title: 'Soporte y Evolución',
-    description: 'Soluciono problemas y hago evolucionar tus proyectos para que cumplan nuevos objetivos.',
+    icon: <Zap className="w-8 h-8 text-primary" />,
+    title: 'Reparación y Soporte',
+    description: 'Solución de errores críticos, limpieza de malware y soporte técnico especializado.',
     href: '/services#reparacion-errores'
   },
 ];
@@ -96,117 +95,80 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       {/* Hero Section */}
-      <section className="relative isolate overflow-hidden bg-background pt-10 pb-24 sm:pb-32 lg:py-40">
-        <div className="mx-auto max-w-7xl px-6 lg:flex lg:px-8">
-          <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
-            <h1 className="mt-10 text-4xl font-bold font-headline tracking-tight text-foreground sm:text-6xl">
-              Desarrollo Web a Medida
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Construyo, optimizo y mantengo soluciones digitales de alto rendimiento con las últimas tecnologías para llevar tu proyecto al siguiente nivel.
-            </p>
-            <div className="mt-10 flex items-center gap-x-6">
-              <Button asChild size="lg">
-                <Link href="/services">Ver Servicios</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/contact">Contacto</Link>
-              </Button>
-            </div>
-          </div>
-          <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mt-0 lg:mr-0 lg:max-w-none lg:flex-none xl:ml-32">
-            <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-foreground/10 lg:-m-4 lg:rounded-2xl lg:p-4">
-                 <Image
-                  src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjo7KPRp_aP1IEf7xGDxapy3cQMh46THb9HG-5PYkwnomKrXlerQE9JozfiTJRUOiP7Fp5XIeKwTKSXPEvyoXftgcRjak59f_s_EATeBQTRKWg5l_DzUrx8nP_RLlR7PTrwRsziNrdROjBrbMwnB6L3yh4eK0NUpSF4sYiybIn7q5u8sBUcaNrJe3Z3XPw/s650-rw/E-meeting%20with%20team@1x_resized.png"
-                  alt="Experto en desarrollo web"
-                  width={800}
-                  height={800}
-                  className="w-full h-auto max-w-lg rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
-                />
-            </div>
-          </div>
-        </div>
-         <div
-          className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-          aria-hidden="true"
+      <section className="text-center py-20 sm:py-32">
+        <div 
+          className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
         >
-          <div
-            className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-primary to-accent opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-          />
+          <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary/20 blur-[100px]"></div>
+        </div>
+        <h1 className="text-5xl sm:text-7xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
+          Desarrollo web para la era moderna
+        </h1>
+        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-muted-foreground mb-10">
+          Construyo soluciones digitales de alto rendimiento que son rápidas, funcionales y visualmente impactantes. Tu visión, hecha realidad con tecnología de vanguardia.
+        </p>
+        <div className="flex justify-center items-center gap-4">
+          <Button asChild size="lg">
+            <Link href="/services">Ver Servicios</Link>
+          </Button>
+          <Button asChild variant="outline" size="lg">
+            <Link href="/contact">Hablemos</Link>
+          </Button>
         </div>
       </section>
 
       {/* Featured Services Section */}
       <section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-base font-semibold leading-7 text-primary">Servicios</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl font-headline">Soluciones para cada necesidad</p>
-            <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Desde la creación de un nuevo proyecto hasta la optimización y el mantenimiento de uno existente.
-            </p>
-          </div>
-          <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Soluciones para cada necesidad</h2>
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+            Desde la creación de un nuevo proyecto hasta la optimización y el mantenimiento de uno existente.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {featuredServices.map((service) => (
-              <Card key={service.title} className="text-center hover:border-primary transition-colors hover:shadow-lg">
+              <Card key={service.title} className="bg-card/50 border-border/50 hover:border-primary/50 transition-colors hover:shadow-2xl hover:shadow-primary/10">
                 <CardHeader>
-                  <div className="flex justify-center mb-4">{service.icon}</div>
-                  <CardTitle>{service.title}</CardTitle>
+                  <div className="mb-4">{service.icon}</div>
+                  <CardTitle className="text-xl">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">{service.description}</p>
                 </CardContent>
-                <CardFooter>
-                    <Button asChild variant="outline" className="w-full">
-                        <Link href={service.href}>Saber más</Link>
-                    </Button>
-                </CardFooter>
               </Card>
             ))}
           </div>
-        </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="bg-card py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center">
-             <h2 className="text-3xl font-bold font-headline tracking-tight text-foreground sm:text-4xl">Lo que dicen mis clientes</h2>
-             <p className="mt-4 text-lg text-muted-foreground">Resultados que generan confianza.</p>
-          </div>
-          <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <Card key={testimonial.name} className="flex flex-col justify-between">
-                <CardHeader>
-                  <div className="flex gap-0.5 text-yellow-400">
-                    {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="italic text-foreground">"{testimonial.quote}"</p>
-                </CardContent>
-                <CardFooter className="flex-col items-start">
-                  <p className="font-semibold text-foreground">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.company}</p>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+      <section className="py-16 sm:py-24">
+        <div className="text-center mb-12">
+           <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Lo que dicen mis clientes</h2>
+           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">Resultados que generan confianza.</p>
+        </div>
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {testimonials.map((testimonial) => (
+            <Card key={testimonial.name} className="bg-card/50 border-border/50 flex flex-col justify-between p-6">
+               <CardContent className="p-0 pb-6">
+                <p className="text-foreground">"{testimonial.quote}"</p>
+              </CardContent>
+              <CardFooter className="p-0 flex-col items-start">
+                <p className="font-semibold text-foreground">{testimonial.name}</p>
+                <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       </section>
 
        {/* FAQ Section */}
       <section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-3xl px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold font-headline tracking-tight text-foreground sm:text-4xl">Preguntas Frecuentes</h2>
-            <p className="mt-4 text-lg text-muted-foreground">¿Tienes dudas? Aquí tienes las respuestas a las más comunes.</p>
+        <div className="mx-auto max-w-3xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Preguntas Frecuentes</h2>
+            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">¿Tienes dudas? Aquí tienes las respuestas a las más comunes.</p>
           </div>
-          <Accordion type="single" collapsible className="w-full mt-12">
+          <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
                 <AccordionTrigger className="text-left text-lg font-semibold hover:no-underline">{faq.question}</AccordionTrigger>

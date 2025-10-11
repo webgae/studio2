@@ -35,9 +35,9 @@ export default function SobreMiPage() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             {/* Hero Section */}
-            <div className="grid md:grid-cols-5 gap-8 md:gap-16 items-center mb-16">
+            <div className="grid md:grid-cols-5 gap-8 md:gap-16 items-center mb-16 pt-12">
                 <div className="md:col-span-3">
-                    <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4">Más que un desarrollador: tu aliado estratégico en tecnología web</h1>
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Más que un desarrollador: tu aliado estratégico en tecnología web</h1>
                     <p className="text-lg text-muted-foreground">
                         Hola, soy el profesional detrás de WEBGAE. No solo construyo sitios web; creo soluciones digitales robustas y a medida que impulsan negocios. Mi pasión es transformar tus ideas en una realidad funcional, segura y de alto rendimiento.
                     </p>
@@ -56,22 +56,22 @@ export default function SobreMiPage() {
             </div>
 
             {/* Filosofía Section */}
-            <div className="bg-card p-8 rounded-lg border mb-16">
-                <h2 className="text-3xl font-bold font-headline text-center mb-8">Mi Filosofía de Trabajo</h2>
+            <div className="bg-card/50 p-8 rounded-lg border mb-16">
+                <h2 className="text-3xl font-bold text-center mb-8">Mi Filosofía de Trabajo</h2>
                 <div className="grid md:grid-cols-3 gap-8 text-center">
                     <div className="flex flex-col items-center">
                         <Award className="w-10 h-10 text-primary mb-3" />
-                        <h3 className="text-xl font-headline mb-2">Calidad Sobre Cantidad</h3>
+                        <h3 className="text-xl font-semibold mb-2">Calidad Sobre Cantidad</h3>
                         <p className="text-muted-foreground">Prefiero hacer menos proyectos pero hacerlos excepcionalmente bien. Cada línea de código y cada detalle de diseño están pensados para la excelencia y la durabilidad.</p>
                     </div>
                     <div className="flex flex-col items-center">
                         <Users className="w-10 h-10 text-primary mb-3" />
-                        <h3 className="text-xl font-headline mb-2">Colaboración y Transparencia</h3>
+                        <h3 className="text-xl font-semibold mb-2">Colaboración y Transparencia</h3>
                         <p className="text-muted-foreground">Tú eres el experto en tu negocio, y yo en la tecnología. Trabajo contigo, no solo para ti. La comunicación es constante y clara en cada fase del proyecto.</p>
                     </div>
                     <div className="flex flex-col items-center">
                         <Heart className="w-10 h-10 text-primary mb-3" />
-                        <h3 className="text-xl font-headline mb-2">Pasión por Resolver Problemas</h3>
+                        <h3 className="text-xl font-semibold mb-2">Pasión por Resolver Problemas</h3>
                         <p className="text-muted-foreground">Disfruto de los desafíos. Ya sea un error complejo, una web lenta o una funcionalidad que parece imposible, encuentro una enorme satisfacción en dar con la solución perfecta.</p>
                     </div>
                 </div>
@@ -80,7 +80,7 @@ export default function SobreMiPage() {
             {/* Mi Historia y Skills */}
             <div className="grid md:grid-cols-2 gap-16 mb-16">
                  <div>
-                    <h2 className="text-3xl font-bold font-headline mb-4">Mi Trayectoria</h2>
+                    <h2 className="text-3xl font-bold mb-4">Mi Trayectoria</h2>
                     <div className="prose prose-lg dark:prose-invert max-w-none">
                         <p>
                             Mi viaje en el mundo del desarrollo web comenzó hace más de una década, impulsado por la curiosidad de entender cómo funcionaba internet. He trabajado con una amplia gama de tecnologías, desde el desarrollo back-end con PHP y Node.js hasta la creación de interfaces interactivas con React y Next.js.
@@ -94,7 +94,7 @@ export default function SobreMiPage() {
                     </div>
                 </div>
                 <div>
-                    <h2 className="text-3xl font-bold font-headline mb-4">Mis Herramientas</h2>
+                    <h2 className="text-3xl font-bold mb-4">Mis Herramientas</h2>
                     <p className="text-muted-foreground mb-6">Estas son algunas de las tecnologías y herramientas con las que trabajo a diario para crear soluciones modernas y eficientes.</p>
                     <div className="flex flex-wrap gap-3">
                         {skills.map(skill => (
@@ -107,8 +107,8 @@ export default function SobreMiPage() {
             </div>
 
             {/* CTA Section */}
-            <div className="text-center bg-card p-10 rounded-lg border border-primary/20">
-                <h2 className="text-3xl font-bold font-headline mb-4">¿Crees que podemos trabajar juntos?</h2>
+            <div className="text-center bg-card/50 p-10 rounded-lg border border-primary/20">
+                <h2 className="text-3xl font-bold mb-4">¿Crees que podemos trabajar juntos?</h2>
                 <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
                     Si compartes esta visión de calidad y buscas un profesional comprometido con tu proyecto, me encantaría conocer tu idea.
                 </p>
