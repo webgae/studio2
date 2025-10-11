@@ -36,9 +36,9 @@ export default async function Footer() {
   return (
     <footer className="border-t border-border/50">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
             {/* Columna de la marca */}
-            <div className="md:col-span-1">
+            <div className="md:col-span-2">
                 <Link href="/" className="flex items-center gap-2 mb-4">
                     <BookMarked className="w-8 h-8 text-primary" />
                     <h1 className="text-xl font-bold font-headline">
@@ -64,13 +64,10 @@ export default async function Footer() {
                     ))}
                     </ul>
                 </div>
-                <div>
-                    <h3 className="font-semibold text-foreground mb-4">Servicios</h3>
+                 <div>
+                    <h3 className="font-semibold text-foreground mb-4">Herramientas</h3>
                      <ul className="space-y-3">
-                        <li><Link href="/services#desarrollo-web" className="text-sm text-muted-foreground hover:text-primary transition-colors">Desarrollo Web</Link></li>
-                        <li><Link href="/services#optimizacion-wpo" className="text-sm text-muted-foreground hover:text-primary transition-colors">Optimización</Link></li>
-                        <li><Link href="/services#mantenimiento-wordpress" className="text-sm text-muted-foreground hover:text-primary transition-colors">Mantenimiento</Link></li>
-                        <li><Link href="/services#consultoria-seo" className="text-sm text-muted-foreground hover:text-primary transition-colors">Consultoría SEO</Link></li>
+                        <li><Link href="/blog-ideas" className="text-sm text-muted-foreground hover:text-primary transition-colors">Asistente de Contenidos</Link></li>
                     </ul>
                 </div>
                 {bloggerPages.length > 0 && (

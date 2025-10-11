@@ -53,10 +53,6 @@ export default function Header() {
             {navLinks.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
-             <Link href="/blog-ideas" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
-                <Wand2 className="w-4 h-4" />
-                <span>Asistente IA</span>
-            </Link>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -76,12 +72,6 @@ export default function Header() {
                     {navLinks.map((link) => (
                       <NavLink key={link.href} href={link.href} label={link.label} isMobile />
                     ))}
-                    <Button asChild variant="ghost" onClick={() => setIsSheetOpen(false)}>
-                      <Link href="/blog-ideas" className="text-lg flex items-center justify-center">
-                          <Wand2 className="mr-2 h-5 w-5"/>
-                          Ideas para Blog
-                      </Link>
-                    </Button>
                   </nav>
                 </SheetContent>
               </Sheet>
