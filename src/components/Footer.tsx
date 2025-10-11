@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getAllPages } from "@/lib/blogger";
 import { type Page } from "@/lib/types";
-import { BookMarked } from "lucide-react";
 
 const mainNavLinks = [
   { href: "/blog", label: "Blog" },
@@ -9,6 +8,26 @@ const mainNavLinks = [
   { href: "/proyectos", label: "Proyectos" },
   { href: "/sobre-mi", label: "Sobre Mí" },
 ];
+
+const Logo = () => (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="text-primary"
+    >
+        <path
+            d="M5.33331 28L10.6666 5.33331L16 18.6666L21.3333 5.33331L26.6666 28"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
 
 // Función para acortar y normalizar los títulos de las páginas
 const formatPageTitle = (title: string): string => {
@@ -46,7 +65,7 @@ export default async function Footer() {
             {/* Columna de la marca */}
             <div className="md:col-span-2">
                 <Link href="/" className="flex items-center gap-2 mb-4">
-                    <BookMarked className="w-8 h-8 text-primary" />
+                    <Logo />
                     <h1 className="text-xl font-bold font-headline">
                     WEBGAE
                     </h1>

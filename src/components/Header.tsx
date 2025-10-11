@@ -1,13 +1,12 @@
 "use client";
 
 import Link from 'next/link';
-import { Menu, Wand2 } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Button } from './ui/button';
 import { usePathname } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
-import { BookMarked } from 'lucide-react';
 
 const navLinks = [
   { href: '/blog', label: 'Blog' },
@@ -15,6 +14,26 @@ const navLinks = [
   { href: '/proyectos', label: 'Proyectos' },
   { href: '/sobre-mi', label: 'Sobre Mí' },
 ];
+
+const Logo = () => (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="text-primary"
+    >
+        <path
+            d="M5.33331 28L10.6666 5.33331L16 18.6666L21.3333 5.33331L26.6666 28"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
 
 export default function Header() {
   const pathname = usePathname();
@@ -42,7 +61,7 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-3 gap-4">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <BookMarked className="w-8 h-8 text-primary" />
+            <Logo />
             <h1 className="text-2xl font-bold font-headline text-foreground hidden sm:block">
               WEBGAE
             </h1>
