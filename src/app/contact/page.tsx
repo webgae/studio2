@@ -1,10 +1,26 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import ContactForm from './ContactForm';
+import { type ContactPoint, type WithContext } from 'schema-dts';
 
 export default function ContactPage() {
+
+  const jsonLd: WithContext<ContactPoint> = {
+    "@context": "https://schema.org",
+    "@type": "ContactPoint",
+    "telephone": "+1-000-000-0000", // Replace with a real number if available
+    "contactType": "customer service",
+    "email": "ximosa@gmail.com",
+    "areaServed": "ES",
+    "availableLanguage": ["Spanish"]
+  };
+
   return (
     <section>
+       <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold font-headline mb-4">Contacto</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

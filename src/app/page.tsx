@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/componen
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Code, Rocket, ShieldCheck, Star, Wrench } from 'lucide-react';
 import Image from 'next/image';
+import { type FAQPage, type WithContext } from 'schema-dts';
 
 const featuredServices = [
   {
@@ -74,8 +75,26 @@ const faqs = [
 ];
 
 export default function HomePage() {
+
+  const faqSchema: WithContext<FAQPage> = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       {/* Hero Section */}
       <section className="relative isolate overflow-hidden bg-background pt-10 pb-24 sm:pb-32 lg:py-40">
         <div className="mx-auto max-w-7xl px-6 lg:flex lg:px-8">

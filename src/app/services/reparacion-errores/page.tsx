@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Wrench, ShieldAlert, HeartPulse, Bug, Search } from 'lucide-react';
+import { type Service, type WithContext } from 'schema-dts';
 
 export const metadata: Metadata = {
     title: 'Reparación y Arreglo de Errores en WordPress',
@@ -32,8 +33,28 @@ const processSteps = [
 ];
 
 export default function ReparacionErroresPage() {
+    const jsonLd: WithContext<Service> = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Reparación y Arreglo de Errores en WordPress",
+        "description": "Soluciono problemas, bugs, errores críticos y recupero sitios hackeados o caídos para que tu web vuelva a funcionar.",
+        "serviceType": "Reparación de Errores WordPress",
+        "provider": {
+            "@type": "Organization",
+            "name": "WEBGAE"
+        },
+         "areaServed": {
+            "@type": "Country",
+            "name": "ES"
+        }
+    };
+
     return (
         <section>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Hero Section */}
             <div className="text-center mb-16">
                 <Wrench className="w-16 h-16 mx-auto text-primary mb-4" />

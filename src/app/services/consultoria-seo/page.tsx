@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Sprout, Search, FileText, Link2, LineChart } from 'lucide-react';
+import { type Service, type WithContext } from 'schema-dts';
 
 export const metadata: Metadata = {
     title: 'Consultoría SEO para WordPress',
@@ -32,8 +33,28 @@ const processSteps = [
 ];
 
 export default function ConsultoriaSEOPage() {
+    const jsonLd: WithContext<Service> = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Consultoría SEO para WordPress",
+        "description": "Te ayudo a mejorar tu visibilidad en Google a través de auditorías técnicas, optimización de contenido y estrategia de palabras clave.",
+        "serviceType": "Consultoría SEO",
+        "provider": {
+            "@type": "Organization",
+            "name": "WEBGAE"
+        },
+         "areaServed": {
+            "@type": "Country",
+            "name": "ES"
+        }
+    };
+
     return (
         <section>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Hero Section */}
             <div className="text-center mb-16">
                 <Sprout className="w-16 h-16 mx-auto text-primary mb-4" />

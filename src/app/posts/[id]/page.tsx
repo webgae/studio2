@@ -6,6 +6,7 @@ import { getIdFromSlug, createPostSlug } from '@/lib/utils';
 import RelatedPosts from '@/components/RelatedPosts';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { type BlogPosting, type WithContext } from 'schema-dts';
 
 
 type Props = {
@@ -76,8 +77,41 @@ export default async function PostPage({ params }: Props) {
   try {
     const postId = getIdFromSlug(params.id);
     const post = await getPostById(postId);
+    
+    const jsonLd: WithContext<BlogPosting> = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "name": post.title,
+      "description": createExcerpt(post.content, 200),
+      "image": extractImageUrl(post) || undefined,
+      "datePublished": post.published,
+      "dateModified": post.updated,
+      "author": {
+        "@type": "Person",
+        "name": post.author.displayName,
+        "url": post.author.url
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WEBGAE",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.expertowordpress.org/favicon.ico"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": post.url
+      }
+    };
+
     return (
         <div>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <PostDetail post={post} />
             <div className="max-w-4xl mx-auto p-4 sm:p-8">
                  <Suspense fallback={<RelatedPostsLoading />}>

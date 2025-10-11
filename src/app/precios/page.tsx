@@ -1,9 +1,9 @@
-
 import type { Metadata } from 'next';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Clock, FileSignature, CheckCircle } from 'lucide-react';
+import { type Offer, type WithContext } from 'schema-dts';
 
 export const metadata: Metadata = {
     title: 'Precios y Tarifas',
@@ -11,8 +11,39 @@ export const metadata: Metadata = {
 };
 
 export default function PreciosPage() {
+
+    const hourlyRateSchema: WithContext<Offer> = {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "name": "Tarifa por Horas",
+        "description": "Ideal para proyectos de alcance variable, consultoría, o soporte continuo.",
+        "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "0", // Price is available on request
+            "priceCurrency": "EUR",
+            "unitText": "hour"
+        }
+    };
+
+    const projectQuoteSchema: WithContext<Offer> = {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "name": "Presupuesto a Medida",
+        "description": "Perfecto para proyectos con un alcance y objetivos claramente definidos.",
+        "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "0", // Price is available on request
+            "priceCurrency": "EUR"
+        }
+    };
+
+
     return (
         <section>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify([hourlyRateSchema, projectQuoteSchema]) }}
+            />
             <div className="text-center mb-12">
                 <h1 className="text-4xl font-bold font-headline mb-4">Precios y Tarifas</h1>
                 <p className="text-lg text-muted-foreground max-w-3xl mx-auto">

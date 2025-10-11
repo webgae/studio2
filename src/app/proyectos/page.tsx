@@ -3,6 +3,7 @@ import { Target, Lightbulb, TrendingUp, CheckCircle, ShieldOff, Palette } from '
 import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { type WebSite, type WithContext } from 'schema-dts';
 
 export const metadata: Metadata = {
     title: 'Proyectos y Casos de Éxito',
@@ -128,8 +129,25 @@ const projects = [
 ];
 
 export default function ProjectsPage() {
+
+    const jsonLd: WithContext<WebSite> = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://www.expertowordpress.org/proyectos",
+        "name": "Proyectos y Casos de Éxito de Desarrollo WordPress",
+        "description": "Explora una selección de proyectos de desarrollo y optimización en WordPress, mostrando los desafíos, soluciones y resultados obtenidos para mis clientes.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "WEBGAE"
+        }
+    };
+
     return (
         <section>
+             <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <div className="text-center mb-12">
                 <h1 className="text-4xl font-bold font-headline mb-4">Proyectos y Casos de Éxito</h1>
                 <p className="text-lg text-muted-foreground max-w-3xl mx-auto">

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Rocket, Zap, BarChart, FileCheck, ClipboardList } from 'lucide-react';
+import { type Service, type WithContext } from 'schema-dts';
 
 export const metadata: Metadata = {
     title: 'Optimización de Velocidad y Rendimiento WordPress (WPO)',
@@ -32,8 +33,28 @@ const processSteps = [
 ];
 
 export default function OptimizacionWPOPage() {
+    const jsonLd: WithContext<Service> = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Optimización de Velocidad y Rendimiento WordPress (WPO)",
+        "description": "Mejora la velocidad de carga de tu web, supera los Core Web Vitals y ofrece la mejor experiencia de usuario.",
+        "serviceType": "Optimización WPO",
+        "provider": {
+            "@type": "Organization",
+            "name": "WEBGAE"
+        },
+         "areaServed": {
+            "@type": "Country",
+            "name": "ES"
+        }
+    };
+
     return (
         <section>
+             <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Hero Section */}
             <div className="text-center mb-16">
                 <Rocket className="w-16 h-16 mx-auto text-primary mb-4" />

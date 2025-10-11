@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CheckCircle, Code, Layers, Smartphone, Search, PenTool, Rocket } from 'lucide-react';
+import { type Service, type WithContext } from 'schema-dts';
 
 export const metadata: Metadata = {
     title: 'Creación y Desarrollo Web con WordPress',
@@ -32,8 +33,29 @@ const processSteps = [
 ];
 
 export default function DesarrolloWebPage() {
+
+    const jsonLd: WithContext<Service> = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Creación y Desarrollo Web con WordPress",
+        "description": "Servicio de creación y desarrollo de sitios web a medida con WordPress. Diseño profesional, responsivo y optimizado para SEO desde cero para potenciar tu negocio.",
+        "serviceType": "Desarrollo Web",
+        "provider": {
+            "@type": "Organization",
+            "name": "WEBGAE"
+        },
+        "areaServed": {
+            "@type": "Country",
+            "name": "ES"
+        }
+    };
+
     return (
         <section>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Hero Section */}
             <div className="text-center mb-16">
                 <Code className="w-16 h-16 mx-auto text-primary mb-4" />

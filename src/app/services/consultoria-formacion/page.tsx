@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Handshake, GraduationCap, Lightbulb, UserCheck, Settings } from 'lucide-react';
+import { type Service, type WithContext } from 'schema-dts';
+
 
 export const metadata: Metadata = {
     title: 'Consultoría y Formación en WordPress',
@@ -32,8 +34,29 @@ const processSteps = [
 ];
 
 export default function ConsultoriaFormacionPage() {
+
+    const jsonLd: WithContext<Service> = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Consultoría y Formación en WordPress",
+        "description": "Servicios de consultoría estratégica y formación personalizada en WordPress para ayudarte a tomar las mejores decisiones y gestionar tu web de forma autónoma.",
+        "serviceType": "Consultoría y Formación WordPress",
+        "provider": {
+            "@type": "Organization",
+            "name": "WEBGAE"
+        },
+         "areaServed": {
+            "@type": "Country",
+            "name": "ES"
+        }
+    };
+
     return (
         <section>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Hero Section */}
             <div className="text-center mb-16">
                 <Handshake className="w-16 h-16 mx-auto text-primary mb-4" />
@@ -51,7 +74,7 @@ export default function ConsultoriaFormacionPage() {
                 <div className="flex flex-col items-center p-6 bg-card/50 rounded-lg">
                     <Lightbulb className="w-10 h-10 text-primary mb-3" />
                     <h3 className="text-xl font-headline mb-2">Asesoramiento Experto</h3>
-                    <p className="text-muted-foreground">Ahorra tiempo y dinero. Te guío para que tomes las decisiones tecnológicas correctas para tu proyecto desde el principio.</p>
+                    <p className="text-muted-foreground">Ahorra tiempo y dinero. Te guío para que tomes las decisions tecnológicas correctas para tu proyecto desde el principio.</p>
                 </div>
                 <div className="flex flex-col items-center p-6 bg-card/50 rounded-lg">
                     <GraduationCap className="w-10 h-10 text-primary mb-3" />

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ShieldCheck, CloudCog, Activity, DatabaseBackup, Headphones } from 'lucide-react';
+import { type Service, type WithContext } from 'schema-dts';
 
 export const metadata: Metadata = {
     title: 'Mantenimiento y Soporte WordPress',
@@ -32,8 +33,28 @@ const processSteps = [
 ];
 
 export default function MantenimientoWordPressPage() {
+    const jsonLd: WithContext<Service> = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Mantenimiento y Soporte WordPress",
+        "description": "Mantén tu sitio seguro, actualizado y funcionando sin problemas con mis planes de mantenimiento proactivo.",
+        "serviceType": "Mantenimiento WordPress",
+        "provider": {
+            "@type": "Organization",
+            "name": "WEBGAE"
+        },
+         "areaServed": {
+            "@type": "Country",
+            "name": "ES"
+        }
+    };
+
     return (
         <section>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Hero Section */}
             <div className="text-center mb-16">
                 <ShieldCheck className="w-16 h-16 mx-auto text-primary mb-4" />
