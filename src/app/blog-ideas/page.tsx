@@ -4,13 +4,14 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { generateBlogIdeas, type BlogIdeasOutput } from '@/ai/flows/idea-generator-flow';
+import { generateBlogIdeas, type BlogIdeasOutput, type Idea } from '@/ai/flows/idea-generator-flow';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Loader2, Wand2 } from 'lucide-react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Loader2, Wand2, Copy } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   topic: z.string().min(3, { message: 'El tema debe tener al menos 3 caracteres.' }),
@@ -19,9 +20,10 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function BlogIdeaGeneratorPage() {
-  const [ideas, setIdeas] = useState<BlogIdeasOutput | null>(null);
+  const [ideas, setIdeas] = useState<Idea[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -33,11 +35,11 @@ export default function BlogIdeaGeneratorPage() {
   async function onSubmit(values: FormData) {
     setIsLoading(true);
     setError(null);
-    setIdeas(null);
+    setIdeas([]);
 
     try {
       const result = await generateBlogIdeas(values);
-      setIdeas(result);
+      setIdeas(result.ideas);
     } catch (e) {
       console.error(e);
       setError('Hubo un error al generar las ideas. Por favor, inténtalo de nuevo.');
@@ -45,29 +47,45 @@ export default function BlogIdeaGeneratorPage() {
       setIsLoading(false);
     }
   }
+  
+  const handleIdeaChange = (index: number, field: 'title' | 'summary', value: string) => {
+    const newIdeas = [...ideas];
+    newIdeas[index] = { ...newIdeas[index], [field]: value };
+    setIdeas(newIdeas);
+  };
+
+  const copyToClipboard = () => {
+    const markdownContent = ideas.map(idea => `## ${idea.title}\n\n${idea.summary}`).join('\n\n---\n\n');
+    navigator.clipboard.writeText(markdownContent);
+    toast({
+      title: '¡Copiado!',
+      description: 'El borrador de tu blog ha sido copiado al portapapeles en formato Markdown.',
+    });
+  };
+
 
   return (
-    <section className="max-w-3xl mx-auto">
+    <section className="max-w-4xl mx-auto">
       <div className="text-center mb-12">
         <Wand2 className="w-12 h-12 mx-auto text-primary mb-4" />
-        <h1 className="text-4xl font-bold font-headline mb-4">Generador de Ideas para Blog con IA</h1>
+        <h1 className="text-4xl font-bold font-headline mb-4">Asistente de Contenidos con IA</h1>
         <p className="text-lg text-muted-foreground">
-          ¿Atascado sin ideas? Introduce un tema y deja que la inteligencia artificial te sugiera títulos y resúmenes para tu próximo artículo.
+          ¿Atascado? Introduce un tema, genera ideas, edítalas a tu gusto y copia el borrador para empezar a escribir.
         </p>
       </div>
 
-      <Card className="mb-8">
+      <Card className="mb-8 sticky top-20 z-10 backdrop-blur-sm bg-card/80">
         <CardHeader>
           <CardTitle>Comienza aquí</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-end gap-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col sm:flex-row items-end gap-4">
               <FormField
                 control={form.control}
                 name="topic"
                 render={({ field }) => (
-                  <FormItem className="flex-grow">
+                  <FormItem className="flex-grow w-full">
                     <FormLabel>Tema Principal</FormLabel>
                     <FormControl>
                       <Input placeholder="Ej: Optimización de WordPress, SEO para principiantes..." {...field} />
@@ -76,7 +94,7 @@ export default function BlogIdeaGeneratorPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isLoading} size="lg">
+              <Button type="submit" disabled={isLoading} size="lg" className="w-full sm:w-auto">
                 {isLoading ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
@@ -95,19 +113,37 @@ export default function BlogIdeaGeneratorPage() {
         </div>
       )}
 
-      {ideas && ideas.ideas.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-bold font-headline mb-6 text-center">Aquí tienes algunas ideas:</h2>
-          <Accordion type="single" collapsible className="w-full">
-            {ideas.ideas.map((idea, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left text-lg font-semibold hover:no-underline">{idea.title}</AccordionTrigger>
-                <AccordionContent className="text-base text-muted-foreground pt-2 prose dark:prose-invert max-w-none">
-                  {idea.summary}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+      {ideas.length > 0 && (
+        <div className="space-y-8">
+            <div className="flex justify-between items-center">
+                 <h2 className="text-2xl font-bold font-headline">Aquí tienes un borrador inicial:</h2>
+                 <Button onClick={copyToClipboard} variant="outline">
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copiar Borrador (Markdown)
+                </Button>
+            </div>
+          
+            <div className="space-y-6">
+                {ideas.map((idea, index) => (
+                <Card key={index} className="overflow-hidden">
+                    <CardHeader className="bg-muted/30 p-4">
+                        <Input
+                            value={idea.title}
+                            onChange={(e) => handleIdeaChange(index, 'title', e.target.value)}
+                            className="text-lg font-semibold border-0 focus-visible:ring-1 focus-visible:ring-ring !bg-transparent p-0 h-auto"
+                        />
+                    </CardHeader>
+                    <CardContent className="p-4">
+                        <Textarea
+                            value={idea.summary}
+                            onChange={(e) => handleIdeaChange(index, 'summary', e.target.value)}
+                            className="text-base text-muted-foreground w-full min-h-[120px] border-0 focus-visible:ring-1 focus-visible:ring-ring !bg-transparent p-0"
+                            rows={5}
+                        />
+                    </CardContent>
+                </Card>
+                ))}
+            </div>
         </div>
       )}
     </section>
