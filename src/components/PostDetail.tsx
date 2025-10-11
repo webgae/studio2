@@ -4,6 +4,32 @@ import { Badge } from './ui/badge';
 import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
+import parse, { domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
+import Image from 'next/image';
+
+const options: HTMLReactParserOptions = {
+  replace: (domNode) => {
+    if (domNode instanceof Element && domNode.name === 'img') {
+      const { src, alt, width, height } = domNode.attribs;
+      
+      const widthNum = width ? parseInt(width) : 700;
+      const heightNum = height ? parseInt(height) : 400;
+
+      return (
+        <div className="relative my-6" style={{ aspectRatio: `${widthNum}/${heightNum}` }}>
+          <Image
+            src={src}
+            alt={alt || 'Imagen del post'}
+            fill
+            className="rounded-lg object-contain"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 700px, 700px"
+          />
+        </div>
+      );
+    }
+  },
+};
+
 
 export default function PostDetail({ post }: { post: Post }) {
   return (
@@ -32,8 +58,9 @@ export default function PostDetail({ post }: { post: Post }) {
 
       <div
         className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:underline prose-img:rounded-lg"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+      >
+        {parse(post.content, options)}
+      </div>
       
       {post.labels && post.labels.length > 0 && (
         <div className="mt-12 border-t pt-6">
