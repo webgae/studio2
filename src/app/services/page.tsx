@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { CheckCircle, Code, Rocket, ShieldCheck, Wrench, Sprout, Handshake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -7,36 +7,42 @@ const services = [
    {
     icon: <Code className="w-8 h-8 text-primary mb-4" />,
     title: 'Creación y Desarrollo Web',
+    slug: 'desarrollo-web',
     description: 'Creo tu sitio web desde cero o desarrollo funcionalidades a medida para cumplir tus objetivos, con un diseño profesional y enfocado en la usabilidad.',
     features: ['Diseño único y responsivo', 'Funcionalidades personalizadas', 'Código limpio y optimizado para SEO'],
   },
   {
     icon: <Rocket className="w-8 h-8 text-primary mb-4" />,
     title: 'Optimización y Rendimiento (WPO)',
+    slug: 'optimizacion-wpo',
     description: 'Mejoro la velocidad de carga y el rendimiento general de tu sitio WordPress para ofrecer una mejor experiencia de usuario y mejorar tu posicionamiento.',
     features: ['Optimización de imágenes y caché', 'Minificación de código', 'Análisis de rendimiento (Core Web Vitals)'],
   },
    {
     icon: <Wrench className="w-8 h-8 text-primary mb-4" />,
     title: 'Reparación y Arreglo de Errores',
+    slug: 'reparacion-errores',
     description: 'Soluciono desde pequeños fallos hasta problemas críticos en tu web. Arreglo lo que otros hicieron mal y recupero sitios que no funcionan.',
     features: ['Diagnóstico y solución de bugs', 'Limpieza de malware y seguridad', 'Recuperación de sitios caídos'],
   },
   {
     icon: <ShieldCheck className="w-8 h-8 text-primary mb-4" />,
     title: 'Mantenimiento y Soporte',
+    slug: 'mantenimiento-wordpress',
     description: 'Ofrezco planes de mantenimiento para mantener tu sitio WordPress seguro, actualizado y funcionando sin problemas, con soporte técnico continuo.',
     features: ['Actualizaciones de core y plugins', 'Copias de seguridad automáticas', 'Monitorización de seguridad 24/7'],
   },
   {
     icon: <Sprout className="w-8 h-8 text-primary mb-4" />,
     title: 'Consultoría SEO para WordPress',
+    slug: 'consultoria-seo',
     description: 'Te ayudo a mejorar tu visibilidad en Google con una estrategia SEO técnica y de contenidos adaptada a tu plataforma WordPress.',
     features: ['Auditoría SEO técnica completa', 'Optimización de contenido', 'Estrategia de palabras clave'],
   },
    {
     icon: <Handshake className="w-8 h-8 text-primary mb-4" />,
     title: 'Consultoría y Formación',
+    slug: 'consultoria-formacion',
     description: 'Te asesoro para que saques el máximo partido a tu web y ofrezco formación personalizada para que puedas gestionar tu contenido de forma autónoma.',
     features: ['Asesoramiento estratégico', 'Formación en gestión de WordPress', 'Soporte para resolver dudas'],
   },
@@ -53,7 +59,7 @@ export default function ServicesPage() {
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service) => (
-          <Card key={service.title} className="flex flex-col text-center border-transparent hover:border-primary hover:shadow-lg transition-all duration-300">
+          <Card key={service.title} className="flex flex-col text-center border bg-card/50 hover:border-primary hover:shadow-lg transition-all duration-300">
             <CardHeader className="items-center">
               {service.icon}
               <CardTitle className="text-2xl font-headline">{service.title}</CardTitle>
@@ -69,6 +75,13 @@ export default function ServicesPage() {
                 ))}
               </ul>
             </CardContent>
+             <CardFooter>
+              <Button asChild className="w-full">
+                <Link href={`/services/${service.slug}`}>
+                  Ver detalles
+                </Link>
+              </Button>
+            </CardFooter>
           </Card>
         ))}
       </div>
