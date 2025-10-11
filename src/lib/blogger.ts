@@ -1,14 +1,20 @@
 import { type Post, type PostsList, type PagesList } from './types';
 
-const API_KEY = process.env.NEXT_PUBLIC_BLOGGER_API_KEY;
-const BLOG_ID = process.env.NEXT_PUBLIC_BLOG_ID;
-const API_URL = `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}`;
+// Leer las variables de entorno dentro de la función para asegurar que estén disponibles en Vercel
+function getBloggerConfig() {
+  const API_KEY = process.env.NEXT_PUBLIC_BLOGGER_API_KEY;
+  const BLOG_ID = process.env.NEXT_PUBLIC_BLOG_ID;
 
-async function fetchBloggerApi<T>(path: string, options: RequestInit = {}): Promise<T> {
   if (!API_KEY || !BLOG_ID || API_KEY === 'TU_API_KEY_DE_BLOGGER' || BLOG_ID === 'TU_BLOG_ID') {
-    throw new Error('Blogger API Key or Blog ID is not configured. Please check your .env.local file.');
+    throw new Error('Blogger API Key or Blog ID is not configured. Please check your environment variables.');
   }
 
+  return { API_KEY, BLOG_ID };
+}
+
+async function fetchBloggerApi<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const { API_KEY, BLOG_ID } = getBloggerConfig();
+  const API_URL = `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}`;
   const url = `${API_URL}${path}${path.includes('?') ? '&' : '?'}key=${API_KEY}`;
   
   try {
