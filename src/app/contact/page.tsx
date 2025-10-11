@@ -41,7 +41,7 @@ export default function ContactPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-lg">Ponte en contacto para programar una visita</p>
+                <p className="text-lg">Llámame y hablemos de tu proyecto</p>
               </CardContent>
             </Card>
             <Card>
