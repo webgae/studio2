@@ -6,7 +6,9 @@ function getBloggerConfig() {
   const BLOG_ID = process.env.NEXT_PUBLIC_BLOG_ID;
 
   if (!API_KEY || !BLOG_ID || API_KEY === 'TU_API_KEY_DE_BLOGGER' || BLOG_ID === 'TU_BLOG_ID') {
-    throw new Error('Blogger API Key or Blog ID is not configured. Please check your environment variables.');
+    // No lanzar error aquí, la función fetch se encargará.
+    // Esto previene fallos durante el build si las variables no están inyectadas a tiempo.
+    return { API_KEY: null, BLOG_ID: null };
   }
 
   return { API_KEY, BLOG_ID };
@@ -14,6 +16,11 @@ function getBloggerConfig() {
 
 async function fetchBloggerApi<T>(path: string, options: RequestInit = {}): Promise<T> {
   const { API_KEY, BLOG_ID } = getBloggerConfig();
+
+  if (!API_KEY || !BLOG_ID) {
+    throw new Error('Blogger API Key or Blog ID are not available in the Vercel environment. Please check your project settings in Vercel.');
+  }
+
   const API_URL = `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}`;
   const url = `${API_URL}${path}${path.includes('?') ? '&' : '?'}key=${API_KEY}`;
   
