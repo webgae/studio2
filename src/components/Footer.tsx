@@ -1,10 +1,11 @@
-import { BookMarked, Github, Twitter, Linkedin } from "lucide-react";
+import { BookMarked, Github, Twitter, Linkedin, Wand2 } from "lucide-react";
 import Link from "next/link";
 
 const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/blog", label: "Blog" },
   { href: "/services", label: "Servicios" },
+  { href: "/blog-ideas", label: "Ideas para Blog" },
   { href: "/contact", label: "Contacto" },
 ];
 

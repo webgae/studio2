@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { BookMarked, Menu } from 'lucide-react';
+import { BookMarked, Menu, Wand2 } from 'lucide-react';
 import { Button } from './ui/button';
 import { usePathname } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
@@ -11,6 +11,7 @@ const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/blog', label: 'Blog' },
   { href: '/services', label: 'Servicios' },
+  { href: '/blog-ideas', label: 'Ideas para Blog', icon: <Wand2 /> },
   { href: '/contact', label: 'Contacto' },
 ];
 
@@ -18,9 +19,9 @@ export default function Header() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  const NavLink = ({ href, label, isMobile = false }: { href: string; label: string; isMobile?: boolean }) => {
+  const NavLink = ({ href, label, icon, isMobile = false }: { href: string; label: string; icon?: React.ReactNode, isMobile?: boolean }) => {
     const isActive = pathname === href;
-    const linkClasses = `text-sm font-medium ${isActive ? 'text-primary' : ''} ${isMobile ? 'block w-full py-2' : ''}`;
+    const linkClasses = `text-sm font-medium ${isActive ? 'text-primary' : ''} ${isMobile ? 'block w-full py-2 text-lg' : ''}`;
 
     const handleClick = () => {
       if (isMobile) {
@@ -31,6 +32,7 @@ export default function Header() {
     return (
       <Button asChild variant="ghost" key={href}>
         <Link href={href} className={linkClasses} onClick={handleClick}>
+          {icon}
           {label}
         </Link>
       </Button>
@@ -49,9 +51,9 @@ export default function Header() {
           </Link>
           
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-2">
+          <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <NavLink key={link.href} href={link.href} label={link.label} />
+              <NavLink key={link.href} href={link.href} label={link.label} icon={link.icon} />
             ))}
           </nav>
 
@@ -64,10 +66,10 @@ export default function Header() {
                   <span className="sr-only">Abrir menú</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right">
+              <SheetContent side="right" className="w-[80vw] sm:w-[300px]">
                 <nav className="flex flex-col gap-4 pt-8">
                   {navLinks.map((link) => (
-                    <NavLink key={link.href} href={link.href} label={link.label} isMobile />
+                    <NavLink key={link.href} href={link.href} label={link.label} icon={link.icon} isMobile />
                   ))}
                 </nav>
               </SheetContent>
