@@ -5,7 +5,6 @@ const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/blog", label: "Blog" },
   { href: "/services", label: "Servicios" },
-  { href: "/blog-ideas", label: "Ideas para Blog" },
   { href: "/contact", label: "Contacto" },
 ];
 
@@ -37,6 +36,9 @@ export default function Footer() {
             <div className="flex items-center justify-center md:justify-start gap-2">
               <BookMarked className="w-8 h-8 text-primary" />
               <span className="text-2xl font-bold font-headline text-foreground">WEBGAE</span>
+               <Link href="/blog-ideas" aria-label="Generador de Ideas para Blog" title="Generador de Ideas para Blog">
+                 <Wand2 className="w-6 h-6 text-primary hover:text-primary/80 transition-colors" />
+               </Link>
             </div>
             <p className="text-center md:text-left text-sm text-muted-foreground mt-2 max-w-sm">
                 Potenciando tu presencia online con soluciones WordPress a medida.

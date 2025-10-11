@@ -11,7 +11,6 @@ const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/blog', label: 'Blog' },
   { href: '/services', label: 'Servicios' },
-  { href: '/blog-ideas', label: 'Ideas para Blog', icon: <Wand2 /> },
   { href: '/contact', label: 'Contacto' },
 ];
 
@@ -71,6 +70,12 @@ export default function Header() {
                   {navLinks.map((link) => (
                     <NavLink key={link.href} href={link.href} label={link.label} icon={link.icon} isMobile />
                   ))}
+                  <Button asChild variant="ghost" onClick={() => setIsSheetOpen(false)}>
+                    <Link href="/blog-ideas" className="text-lg flex items-center justify-center">
+                        <Wand2 className="mr-2 h-5 w-5"/>
+                        Ideas para Blog
+                    </Link>
+                  </Button>
                 </nav>
               </SheetContent>
             </Sheet>
