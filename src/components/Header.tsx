@@ -38,7 +38,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-card/80 backdrop-blur-sm border-b sticky top-0 z-50">
+    <header className="bg-background/80 backdrop-blur-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-3 gap-4">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
@@ -53,6 +53,10 @@ export default function Header() {
             {navLinks.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
+             <Link href="/blog-ideas" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
+                <Wand2 className="w-4 h-4" />
+                <span>Asistente IA</span>
+            </Link>
           </nav>
 
           <div className="flex items-center gap-2">
