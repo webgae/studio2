@@ -19,7 +19,7 @@ export default function SobreMiPage() {
         "@type": "Person",
         "name": "WEBGAE", // Replace with your actual name
         "url": "https://www.expertowordpress.org/sobre-mi",
-        "image": "https://www.expertowordpress.org/placeholder-profile.jpg", // Replace with your actual profile image URL
+        "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjf4pr1qIX655FWH5HyeZZ-fmf2YH_yHjkFkX_4ED-Ml8vBvVH1evKThEH1q5sjpvkVncJ650FjnEBV7_z9XAwJK1JpSEnvQI-8CyZ16cuZkl08KlUZ0Sqj3xUHlU2qj2IWmwQn5vFWteR4/s2000/4261577.jpg", // Replace with your actual profile image URL
         "jobTitle": "Experto en Desarrollo WordPress",
         "worksFor": {
             "@type": "Organization",
@@ -45,12 +45,11 @@ export default function SobreMiPage() {
                 <div className="md:col-span-2 flex justify-center">
                     <div className="relative w-64 h-64">
                          <Image
-                            src="https://picsum.photos/seed/profile/400/400"
+                            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjf4pr1qIX655FWH5HyeZZ-fmf2YH_yHjkFkX_4ED-Ml8vBvVH1evKThEH1q5sjpvkVncJ650FjnEBV7_z9XAwJK1JpSEnvQI-8CyZ16cuZkl08KlUZ0Sqj3xUHlU2qj2IWmwQn5vFWteR4/s2000/4261577.jpg"
                             alt="Foto de perfil de WEBGAE"
                             width={400}
                             height={400}
                             className="rounded-full object-cover shadow-lg border-4 border-primary/20"
-                            data-ai-hint="professional headshot"
                         />
                     </div>
                 </div>
