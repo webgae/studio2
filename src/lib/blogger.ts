@@ -1,4 +1,4 @@
-import { type Post, type PostsList } from './types';
+import { type Post, type PostsList, type PagesList } from './types';
 
 const API_KEY = process.env.NEXT_PUBLIC_BLOGGER_API_KEY;
 const BLOG_ID = process.env.NEXT_PUBLIC_BLOG_ID;
@@ -31,6 +31,10 @@ async function fetchBloggerApi<T>(path: string, options: RequestInit = {}): Prom
     }
     throw new Error('Could not connect to the Blogger API.');
   }
+}
+
+export async function getAllPages(): Promise<PagesList> {
+  return fetchBloggerApi<PagesList>('/pages');
 }
 
 export async function getAllPosts(maxResults: number = 10, pageToken?: string): Promise<PostsList> {

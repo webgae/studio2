@@ -11,6 +11,17 @@ export interface PostAuthor {
   };
 }
 
+export interface Page {
+  id: string;
+  title: string;
+  url: string;
+}
+
+export interface PagesList {
+  kind: string;
+  items: Page[];
+}
+
 export interface Post {
   kind: string;
   id: string;
