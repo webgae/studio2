@@ -57,7 +57,7 @@ async function PostsList({ searchParams }: BlogPageProps) {
         <Terminal className="h-4 w-4" />
         <AlertTitle>Error al obtener las publicaciones</AlertTitle>
         <AlertDescription>
-          No se pudo conectar a la API de Blogger. Asegúrate de que `NEXT_PUBLIC_BLOG_ID` y `NEXT_PUBLIC_BLOGGER_API_KEY` sean correctos en `.env.local`.
+          No se pudo conectar a la API de Blogger. Asegúrate de que `BLOG_ID` y `BLOGGER_API_KEY` estén configurados correctamente en las variables de entorno de tu proveedor de hosting.
         </AlertDescription>
       </Alert>
     );

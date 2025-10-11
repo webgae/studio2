@@ -2,10 +2,6 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  env: {
-    NEXT_PUBLIC_BLOGGER_API_KEY: process.env.NEXT_PUBLIC_BLOGGER_API_KEY,
-    NEXT_PUBLIC_BLOG_ID: process.env.NEXT_PUBLIC_BLOG_ID,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },

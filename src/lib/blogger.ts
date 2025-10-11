@@ -2,12 +2,10 @@ import { type Post, type PostsList, type PagesList } from './types';
 
 // Leer las variables de entorno dentro de la función para asegurar que estén disponibles en Vercel
 function getBloggerConfig() {
-  const API_KEY = process.env.NEXT_PUBLIC_BLOGGER_API_KEY;
-  const BLOG_ID = process.env.NEXT_PUBLIC_BLOG_ID;
+  const API_KEY = process.env.BLOGGER_API_KEY;
+  const BLOG_ID = process.env.BLOG_ID;
 
-  if (!API_KEY || !BLOG_ID || API_KEY === 'TU_API_KEY_DE_BLOGGER' || BLOG_ID === 'TU_BLOG_ID') {
-    // No lanzar error aquí, la función fetch se encargará.
-    // Esto previene fallos durante el build si las variables no están inyectadas a tiempo.
+  if (!API_KEY || !BLOG_ID) {
     return { API_KEY: null, BLOG_ID: null };
   }
 
