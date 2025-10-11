@@ -1,37 +1,58 @@
 import { type Post } from '@/lib/types';
 import { format } from 'date-fns';
 import { Badge } from './ui/badge';
-import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
+import { Calendar, User, Tag, ArrowLeft, List } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import parse, { domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
 import Image from 'next/image';
+import { slugify } from '@/lib/utils';
 
-const options: HTMLReactParserOptions = {
-  replace: (domNode) => {
-    if (domNode instanceof Element && domNode.name === 'img') {
-      const { src, alt, width, height } = domNode.attribs;
-      
-      const widthNum = width ? parseInt(width) : 700;
-      const heightNum = height ? parseInt(height) : 400;
+// Función para extraer encabezados y generar la TOC
+const generateTableOfContents = (htmlContent: string): { tocItems: { text: string; slug: string }[]; modifiedContent: string | JSX.Element | JSX.Element[] } => {
+  const tocItems: { text: string; slug: string }[] = [];
+  let contentWithIds = htmlContent;
 
-      return (
-        <div className="relative my-6" style={{ aspectRatio: `${widthNum}/${heightNum}` }}>
-          <Image
-            src={src}
-            alt={alt || 'Imagen del post'}
-            fill
-            className="rounded-lg object-contain"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 700px, 700px"
-          />
-        </div>
-      );
-    }
-  },
+  const options: HTMLReactParserOptions = {
+    replace: (domNode) => {
+      if (domNode instanceof Element) {
+        if (domNode.name === 'h2') {
+          const text = domToReact(domNode.children) as string;
+          const slug = slugify(text);
+          tocItems.push({ text, slug });
+          return <h2 id={slug}>{domToReact(domNode.children, options)}</h2>;
+        }
+        if (domNode.name === 'img') {
+          const { src, alt, width, height } = domNode.attribs;
+          
+          const widthNum = width ? parseInt(width) : 700;
+          const heightNum = height ? parseInt(height) : 400;
+
+          return (
+            <div className="relative my-6" style={{ aspectRatio: `${widthNum}/${heightNum}` }}>
+              <Image
+                src={src}
+                alt={alt || 'Imagen del post'}
+                fill
+                className="rounded-lg object-contain"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 700px, 700px"
+              />
+            </div>
+          );
+        }
+      }
+    },
+  };
+
+  const modifiedContent = parse(contentWithIds, options);
+  
+  return { tocItems, modifiedContent };
 };
 
 
 export default function PostDetail({ post }: { post: Post }) {
+  const { tocItems, modifiedContent } = generateTableOfContents(post.content);
+
   return (
     <article className="max-w-4xl mx-auto bg-card p-4 sm:p-8 rounded-lg shadow-lg border">
       <div className="mb-6">
@@ -56,10 +77,29 @@ export default function PostDetail({ post }: { post: Post }) {
         </div>
       </div>
 
+      {tocItems.length >= 2 && (
+        <div className="mb-10 border-t border-b py-6 bg-secondary/30 rounded-lg px-6">
+          <h2 className="text-xl font-bold font-headline flex items-center gap-2 mb-4">
+            <List className="w-5 h-5" />
+            Tabla de Contenidos
+          </h2>
+          <ul className="space-y-2 list-inside">
+            {tocItems.map((item) => (
+              <li key={item.slug}>
+                <a href={`#${item.slug}`} className="text-primary hover:underline underline-offset-4">
+                  {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+
       <div
-        className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:underline prose-img:rounded-lg"
+        className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:underline prose-img:rounded-lg prose-h2:scroll-mt-24"
       >
-        {parse(post.content, options)}
+        {modifiedContent}
       </div>
       
       {post.labels && post.labels.length > 0 && (
