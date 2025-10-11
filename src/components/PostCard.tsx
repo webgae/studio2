@@ -53,7 +53,7 @@ export default function PostCard({ id, title, excerpt, date, imageUrl, labels }:
             </div>
           )}
           <span className="text-primary font-semibold mt-auto">
-            Read More &rarr;
+            Leer más &rarr;
           </span>
         </div>
       </article>

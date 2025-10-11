@@ -39,7 +39,7 @@ export default function PostDetail({ post }: { post: Post }) {
         <div className="mt-12 border-t pt-6">
           <div className="flex items-center gap-3 mb-4">
             <Tag className="w-5 h-5 text-muted-foreground" />
-            <h3 className="text-lg font-semibold">Labels</h3>
+            <h3 className="text-lg font-semibold">Etiquetas</h3>
           </div>
           <div className="flex flex-wrap gap-2">
             {post.labels.map(label => (
@@ -51,9 +51,15 @@ export default function PostDetail({ post }: { post: Post }) {
         </div>
       )}
 
-      <div className="mt-8 text-center">
+      <div className="mt-12 border-t pt-6 flex flex-col items-center gap-4">
+        <Button asChild variant="ghost" className="text-muted-foreground hover:text-primary hover:bg-transparent px-0">
+          <Link href="/blog" className="inline-flex items-center gap-2">
+            <ArrowLeft className="w-4 h-4" />
+            Volver al blog
+          </Link>
+        </Button>
         <Link href={post.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary">
-          View original on Blogger
+          Ver original en Blogger
         </Link>
       </div>
     </article>
