@@ -22,6 +22,9 @@ const formatPageTitle = (title: string): string => {
 };
 
 export default async function Footer() {
+  // Hack to ensure Next.js treats this as a dynamic component
+  // and makes environment variables available at runtime on Vercel.
+  process.env.BLOG_ID;
 
   let bloggerPages: Page[] = [];
   try {
