@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { usePathname } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { useState } from 'react';
+import { ThemeToggle } from './ThemeToggle';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -56,29 +57,38 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Mobile Navigation */}
-          <div className="md:hidden">
-            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Abrir menú</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[80vw] sm:w-[300px]">
-                <nav className="flex flex-col gap-4 pt-8">
-                  {navLinks.map((link) => (
-                    <NavLink key={link.href} href={link.href} label={link.label} icon={link.icon} isMobile />
-                  ))}
-                  <Button asChild variant="ghost" onClick={() => setIsSheetOpen(false)}>
-                    <Link href="/blog-ideas" className="text-lg flex items-center justify-center">
-                        <Wand2 className="mr-2 h-5 w-5"/>
-                        Ideas para Blog
-                    </Link>
+          <div className="flex items-center gap-2">
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
+
+            {/* Mobile Navigation */}
+            <div className="md:hidden">
+              <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Abrir menú</span>
                   </Button>
-                </nav>
-              </SheetContent>
-            </Sheet>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[80vw] sm:w-[300px]">
+                  <nav className="flex flex-col gap-4 pt-8">
+                    {navLinks.map((link) => (
+                      <NavLink key={link.href} href={link.href} label={link.label} icon={link.icon} isMobile />
+                    ))}
+                    <Button asChild variant="ghost" onClick={() => setIsSheetOpen(false)}>
+                      <Link href="/blog-ideas" className="text-lg flex items-center justify-center">
+                          <Wand2 className="mr-2 h-5 w-5"/>
+                          Ideas para Blog
+                      </Link>
+                    </Button>
+                    <div className="pt-4">
+                      <ThemeToggle />
+                    </div>
+                  </nav>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </div>
