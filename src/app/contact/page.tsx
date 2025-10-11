@@ -2,6 +2,15 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import ContactForm from './ContactForm';
 import { type ContactPoint, type WithContext } from 'schema-dts';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Contacto',
+  description: 'Ponte en contacto para solicitar un presupuesto, consultar tarifas o hablar sobre tu proyecto web. Rellena el formulario y te responderé lo antes posible.',
+  alternates: {
+    canonical: '/contact',
+  },
+};
 
 export default function ContactPage() {
 

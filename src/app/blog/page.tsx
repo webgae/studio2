@@ -11,6 +11,15 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import SearchBar from '@/components/SearchBar';
 import { Badge } from '@/components/ui/badge';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Blog de Desarrollo Web',
+  description: 'Explora artículos, guías y consejos sobre desarrollo web, optimización de rendimiento, SEO y tecnologías modernas como Next.js y React.',
+  alternates: {
+    canonical: '/blog',
+  },
+};
 
 interface BlogPageProps {
   searchParams: { [key: string]: string | string[] | undefined };

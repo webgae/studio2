@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/blogger';
 import { createPostSlug } from '@/lib/utils';
 
-const URL = 'https://www.webgae.com/'; // Reemplaza con tu dominio final
+const URL = 'https://www.webgae.com'; // Reemplaza con tu dominio final
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 1. Añadir las rutas estáticas
@@ -14,43 +14,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${URL}blog`,
+      url: `${URL}/blog`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${URL}services`,
+      url: `${URL}/services`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.9,
     },
     {
-      url: `${URL}precios`,
+      url: `${URL}/precios`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
-      url: `${URL}proyectos`,
+      url: `${URL}/proyectos`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
-      url: `${URL}sobre-mi`,
+      url: `${URL}/sobre-mi`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
-      url: `${URL}contact`,
+      url: `${URL}/contact`,
       lastModified: new Date(),
       changeFrequency: 'yearly' as const,
       priority: 0.5,
     },
      {
-      url: `${URL}blog-ideas`,
+      url: `${URL}/blog-ideas`,
       lastModified: new Date(),
       changeFrequency: 'yearly' as const,
       priority: 0.4,
@@ -72,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   const postRoutes = allBlogPosts.map((post) => ({
-    url: `${URL}posts/${createPostSlug(post.title, post.id)}`,
+    url: `${URL}/posts/${createPostSlug(post.title, post.id)}`,
     lastModified: new Date(post.updated),
     changeFrequency: 'weekly' as const,
     priority: 0.7,

@@ -8,6 +8,9 @@ import { type WebSite, type WithContext } from 'schema-dts';
 export const metadata: Metadata = {
     title: 'Proyectos y Casos de Éxito',
     description: 'Explora una selección de proyectos de desarrollo y optimización en WordPress, mostrando los desafíos, soluciones y resultados obtenidos para mis clientes.',
+    alternates: {
+        canonical: '/proyectos',
+    },
 };
 
 const projects = [

@@ -8,6 +8,9 @@ import { type Person, type WithContext } from 'schema-dts';
 export const metadata: Metadata = {
     title: 'Sobre Mí',
     description: 'Conoce la historia, la filosofía y la experiencia de WEBGAE como desarrollador web. Un aliado estratégico para tu proyecto online.',
+    alternates: {
+        canonical: '/sobre-mi',
+    },
 };
 
 const skills = ['React', 'Next.js', 'Node.js', 'TypeScript', 'PHP', 'WordPress', 'Bases de Datos', 'SEO Técnico'];

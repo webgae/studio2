@@ -12,6 +12,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Loader2, Wand2, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import type { Metadata } from 'next';
+
+// This is a Client Component, so we can't export metadata directly.
+// But we can set the title dynamically if needed.
+// This component doesn't need specific metadata as it's a tool page.
 
 const formSchema = z.object({
   topic: z.string().min(3, { message: 'El tema debe tener al menos 3 caracteres.' }),

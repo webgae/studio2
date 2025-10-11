@@ -23,10 +23,14 @@ export async function generateMetadata(
     const post = await getPostById(postId);
     const previousImages = (await parent).openGraph?.images || [];
     const imageUrl = extractImageUrl(post);
+    const postSlug = createPostSlug(post.title, post.id);
 
     return {
       title: post.title,
       description: createExcerpt(post.content, 160),
+      alternates: {
+        canonical: `/posts/${postSlug}`,
+      },
       openGraph: {
         title: post.title,
         description: createExcerpt(post.content, 160),
@@ -103,7 +107,7 @@ export default async function PostPage({ params }: Props) {
       },
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": post.url
+        "@id": `https://www.webgae.com/posts/${createPostSlug(post.title, post.id)}`
       }
     };
 

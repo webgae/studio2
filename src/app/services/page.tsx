@@ -2,6 +2,16 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { CheckCircle, Code, Rocket, ShieldCheck, Wrench, Sprout, Handshake, Layers, PenTool, Zap, FileCheck, BarChart, ClipboardList, ShieldAlert, HeartPulse, Bug, Search as SearchIcon, CloudCog, Activity, DatabaseBackup, Headphones, GraduationCap, UserCheck, Lightbulb as LightbulbIcon, Link2, FileText, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Servicios de Desarrollo Web',
+  description: 'Soluciones profesionales para crear, mejorar y mantener tu presencia online. Desde desarrollo a medida con Next.js y React hasta optimización de rendimiento (WPO) y mantenimiento.',
+  alternates: {
+    canonical: '/services',
+  },
+};
+
 
 const services = [
   {

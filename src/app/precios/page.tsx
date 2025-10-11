@@ -8,6 +8,9 @@ import { type Offer, type WithContext } from 'schema-dts';
 export const metadata: Metadata = {
     title: 'Precios y Tarifas',
     description: 'Descubre mis tarifas por hora para proyectos complejos y cómo solicitar un presupuesto a medida para trabajos con un alcance definido. Soluciones flexibles para tus necesidades en WordPress.',
+    alternates: {
+        canonical: '/precios',
+    },
 };
 
 export default function PreciosPage() {
