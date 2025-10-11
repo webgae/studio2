@@ -37,13 +37,13 @@ const generateTableOfContents = (htmlContent: string): { tocItems: { text: strin
           const heightNum = height ? parseInt(height) : 400;
 
           return (
-            <div className="relative my-6" style={{ aspectRatio: `${widthNum}/${heightNum}` }}>
+            <div className="relative my-6 mx-auto w-full max-w-[650px]" style={{ aspectRatio: `${widthNum}/${heightNum}` }}>
               <Image
                 src={src}
                 alt={alt || 'Imagen del post'}
                 fill
                 className="rounded-lg object-contain"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 700px, 700px"
+                sizes="(max-width: 650px) 100vw, 650px"
               />
             </div>
           );
