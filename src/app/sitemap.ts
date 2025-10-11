@@ -51,22 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
   
-  // 2. Añadir las rutas de los servicios
-  const servicesRoutes = [
-    'desarrollo-web',
-    'optimizacion-wpo',
-    'reparacion-errores',
-    'mantenimiento-wordpress',
-    'consultoria-seo',
-    'consultoria-formacion'
-  ].map((service) => ({
-    url: `${URL}services/${service}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.9,
-  }));
-
-  // 3. Añadir las rutas dinámicas de los posts del blog
+  // 2. Añadir las rutas dinámicas de los posts del blog
   let allBlogPosts = [];
   try {
     // Fetch a large number of posts to include as many as possible.
@@ -88,5 +73,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // 4. Combinar todas las rutas
-  return [...staticRoutes, ...servicesRoutes, ...postRoutes];
+  return [...staticRoutes, ...postRoutes];
 }

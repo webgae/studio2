@@ -11,25 +11,25 @@ const featuredServices = [
     icon: <Code className="w-8 h-8 text-primary" />,
     title: 'Creación de Sitios Web',
     description: 'Creo tu sitio web desde cero con un diseño profesional y funcionalidades a medida.',
-    href: '/services/desarrollo-web'
+    href: '/services#desarrollo-web'
   },
   {
     icon: <Rocket className="w-8 h-8 text-primary" />,
     title: 'Optimización de Velocidad',
     description: 'Mejoro el rendimiento de tu web para una carga más rápida y una mejor experiencia.',
-    href: '/services/optimizacion-wpo'
+    href: '/services#optimizacion-wpo'
   },
   {
     icon: <ShieldCheck className="w-8 h-8 text-primary" />,
     title: 'Mantenimiento y Seguridad',
     description: 'Mantengo tu sitio seguro, actualizado y funcionando sin interrupciones.',
-    href: '/services/mantenimiento-wordpress'
+    href: '/services#mantenimiento-wordpress'
   },
   {
     icon: <Wrench className="w-8 h-8 text-primary" />,
     title: 'Reparación de Errores',
     description: 'Soluciono problemas, arreglo bugs y recupero sitios que no funcionan correctamente.',
-    href: '/services/reparacion-errores'
+    href: '/services#reparacion-errores'
   },
 ];
 
