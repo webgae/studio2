@@ -41,7 +41,7 @@ export default function ContactPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-lg">Llámame y hablemos de tu proyecto</p>
+                <p className="text-lg">¿Prefieres hablarlo? Escríbeme primero y concertamos una llamada para analizar tu proyecto sin compromiso.</p>
               </CardContent>
             </Card>
             <Card>
