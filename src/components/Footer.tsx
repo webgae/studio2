@@ -1,7 +1,7 @@
-import { Wand2, Heart } from "lucide-react";
 import Link from "next/link";
 import { getAllPages } from "@/lib/blogger";
 import { type Page } from "@/lib/types";
+import { BookMarked } from "lucide-react";
 
 const mainNavLinks = [
   { href: "/blog", label: "Blog" },
@@ -9,6 +9,17 @@ const mainNavLinks = [
   { href: "/proyectos", label: "Proyectos" },
   { href: "/sobre-mi", label: "Sobre Mí" },
 ];
+
+// Función para acortar y normalizar los títulos de las páginas
+const formatPageTitle = (title: string): string => {
+    const lowerCaseTitle = title.toLowerCase();
+    if (lowerCaseTitle.includes('cookie')) return 'Cookies';
+    if (lowerCaseTitle.includes('privacidad')) return 'Privacidad';
+    if (lowerCaseTitle.includes('aviso legal')) return 'Aviso Legal';
+    
+    // Si no es un título conocido, lo devuelve acortado si es muy largo
+    return title.length > 15 ? title.split(' ')[0] : title;
+};
 
 export default async function Footer() {
 
@@ -20,32 +31,63 @@ export default async function Footer() {
     }
   } catch (error) {
     console.error("Failed to fetch Blogger pages for footer:", error);
-    // Continue without blogger pages if the fetch fails
   }
 
   return (
-    <footer className="bg-transparent mt-16">
-      <div className="container mx-auto px-6 py-8">
-        <div className="flex flex-col items-center justify-between border-t border-border pt-8 gap-6 md:flex-row">
-            <p className="text-sm text-muted-foreground text-center md:text-left">
-                &copy; {new Date().getFullYear()} WEBGAE. Diseñado con <Heart className="inline w-4 h-4" /> y código.
-            </p>
-            <nav className="flex flex-wrap justify-center md:justify-end items-center gap-x-6 gap-y-2">
-                {mainNavLinks.map((link) => (
-                    <Link key={link.href} href={link.href} className="text-sm text-muted-foreground hover:text-primary">
-                        {link.label}
-                    </Link>
-                ))}
-                {bloggerPages.map((page) => (
-                    <a key={page.id} href={page.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary">
-                        {page.title}
-                    </a>
-                ))}
-                 <Link href="/blog-ideas" aria-label="Generador de Ideas para Blog" title="Generador de Ideas para Blog" className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1">
-                   <Wand2 className="w-4 h-4" />
-                   <span>IA</span>
-                 </Link>
-            </nav>
+    <footer className="border-t border-border/50">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Columna de la marca */}
+            <div className="md:col-span-1">
+                <Link href="/" className="flex items-center gap-2 mb-4">
+                    <BookMarked className="w-8 h-8 text-primary" />
+                    <h1 className="text-xl font-bold font-headline">
+                    WEBGAE
+                    </h1>
+                </Link>
+                <p className="text-sm text-muted-foreground">
+                    &copy; {new Date().getFullYear()} WEBGAE. <br />
+                    Soluciones web a medida.
+                </p>
+            </div>
+            {/* Menús de navegación */}
+            <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-8">
+                <div>
+                    <h3 className="font-semibold text-foreground mb-4">Navegación</h3>
+                    <ul className="space-y-3">
+                    {mainNavLinks.map((link) => (
+                        <li key={link.href}>
+                        <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                            {link.label}
+                        </Link>
+                        </li>
+                    ))}
+                    </ul>
+                </div>
+                <div>
+                    <h3 className="font-semibold text-foreground mb-4">Servicios</h3>
+                     <ul className="space-y-3">
+                        <li><Link href="/services#desarrollo-web" className="text-sm text-muted-foreground hover:text-primary transition-colors">Desarrollo Web</Link></li>
+                        <li><Link href="/services#optimizacion-wpo" className="text-sm text-muted-foreground hover:text-primary transition-colors">Optimización</Link></li>
+                        <li><Link href="/services#mantenimiento-wordpress" className="text-sm text-muted-foreground hover:text-primary transition-colors">Mantenimiento</Link></li>
+                        <li><Link href="/services#consultoria-seo" className="text-sm text-muted-foreground hover:text-primary transition-colors">Consultoría SEO</Link></li>
+                    </ul>
+                </div>
+                {bloggerPages.length > 0 && (
+                 <div>
+                    <h3 className="font-semibold text-foreground mb-4">Legal</h3>
+                    <ul className="space-y-3">
+                    {bloggerPages.map((page) => (
+                        <li key={page.id}>
+                            <a href={page.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                {formatPageTitle(page.title)}
+                            </a>
+                        </li>
+                    ))}
+                    </ul>
+                </div>
+                )}
+            </div>
         </div>
       </div>
     </footer>
