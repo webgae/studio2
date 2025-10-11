@@ -7,13 +7,13 @@ import { usePathname } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
+import { BookMarked } from 'lucide-react';
 
 const navLinks = [
   { href: '/blog', label: 'Blog' },
   { href: '/services', label: 'Servicios' },
   { href: '/proyectos', label: 'Proyectos' },
   { href: '/sobre-mi', label: 'Sobre Mí' },
-  { href: '/contact', label: 'Contacto' },
 ];
 
 export default function Header() {
@@ -38,18 +38,14 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-background/80 backdrop-blur-sm border-b sticky top-0 z-50">
+    <header className="bg-card/80 backdrop-blur-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-3 gap-4">
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0 text-foreground font-bold text-lg">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M2 7L12 12" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M12 22V12" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M22 7L12 12" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M17 4.5L7 9.5" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            WEBGAE
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+            <BookMarked className="w-8 h-8 text-primary" />
+            <h1 className="text-2xl font-bold font-headline text-foreground hidden sm:block">
+              WEBGAE
+            </h1>
           </Link>
           
           {/* Desktop Navigation */}
