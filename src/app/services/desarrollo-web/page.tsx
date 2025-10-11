@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CheckCircle, Code, Layers, Smartphone, Search, PenTool, Rocket } from 'lucide-react';
 import { type Service, type WithContext } from 'schema-dts';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const metadata: Metadata = {
     title: 'Creación y Desarrollo Web con WordPress',
@@ -52,6 +53,14 @@ export default function DesarrolloWebPage() {
 
     return (
         <section>
+             <Breadcrumbs
+                items={[
+                { label: 'Inicio', href: '/' },
+                { label: 'Servicios', href: '/services' },
+                { label: 'Desarrollo Web', href: '/services/desarrollo-web' },
+                ]}
+                className="mb-8"
+            />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

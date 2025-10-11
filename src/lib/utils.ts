@@ -26,3 +26,10 @@ export function getIdFromSlug(slug: string): string {
     const parts = slug.split('-');
     return parts[parts.length - 1];
 }
+
+export function truncateText(text: string, maxLength: number): string {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return text.substring(0, maxLength) + '...';
+}

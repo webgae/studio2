@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Sprout, Search, FileText, Link2, LineChart } from 'lucide-react';
 import { type Service, type WithContext } from 'schema-dts';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const metadata: Metadata = {
     title: 'Consultoría SEO para WordPress',
@@ -51,6 +52,14 @@ export default function ConsultoriaSEOPage() {
 
     return (
         <section>
+             <Breadcrumbs
+                items={[
+                { label: 'Inicio', href: '/' },
+                { label: 'Servicios', href: '/services' },
+                { label: 'Consultoría SEO', href: '/services/consultoria-seo' },
+                ]}
+                className="mb-8"
+            />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Wrench, ShieldAlert, HeartPulse, Bug, Search } from 'lucide-react';
 import { type Service, type WithContext } from 'schema-dts';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const metadata: Metadata = {
     title: 'Reparación y Arreglo de Errores en WordPress',
@@ -51,6 +52,14 @@ export default function ReparacionErroresPage() {
 
     return (
         <section>
+            <Breadcrumbs
+                items={[
+                { label: 'Inicio', href: '/' },
+                { label: 'Servicios', href: '/services' },
+                { label: 'Reparación de Errores', href: '/services/reparacion-errores' },
+                ]}
+                className="mb-8"
+            />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

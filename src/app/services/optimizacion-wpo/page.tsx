@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Rocket, Zap, BarChart, FileCheck, ClipboardList } from 'lucide-react';
 import { type Service, type WithContext } from 'schema-dts';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const metadata: Metadata = {
     title: 'Optimización de Velocidad y Rendimiento WordPress (WPO)',
@@ -51,6 +52,14 @@ export default function OptimizacionWPOPage() {
 
     return (
         <section>
+            <Breadcrumbs
+                items={[
+                { label: 'Inicio', href: '/' },
+                { label: 'Servicios', href: '/services' },
+                { label: 'Optimización WPO', href: '/services/optimizacion-wpo' },
+                ]}
+                className="mb-8"
+            />
              <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
