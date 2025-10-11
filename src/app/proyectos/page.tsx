@@ -133,7 +133,7 @@ export default function ProjectsPage() {
     const jsonLd: WithContext<WebSite> = {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "url": "https://www.expertowordpress.org/proyectos",
+        "url": "https://www.webgae.com/proyectos",
         "name": "Proyectos y Casos de Éxito de Desarrollo WordPress",
         "description": "Explora una selección de proyectos de desarrollo y optimización en WordPress, mostrando los desafíos, soluciones y resultados obtenidos para mis clientes.",
         "publisher": {

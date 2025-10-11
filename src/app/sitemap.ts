@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/blogger';
 import { createPostSlug } from '@/lib/utils';
 
-const URL = 'https://www.expertowordpress.org/'; // Reemplaza con tu dominio final
+const URL = 'https://www.webgae.com/'; // Reemplaza con tu dominio final
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 1. Añadir las rutas estáticas

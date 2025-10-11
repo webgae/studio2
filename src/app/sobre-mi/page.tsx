@@ -18,7 +18,7 @@ export default function SobreMiPage() {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "WEBGAE", // Replace with your actual name
-        "url": "https://www.expertowordpress.org/sobre-mi",
+        "url": "https://www.webgae.com/sobre-mi",
         "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjf4pr1qIX655FWH5HyeZZ-fmf2YH_yHjkFkX_4ED-Ml8vBvVH1evKThEH1q5sjpvkVncJ650FjnEBV7_z9XAwJK1JpSEnvQI-8CyZ16cuZkl08KlUZ0Sqj3xUHlU2qj2IWmwQn5vFWteR4/s2000/4261577.jpg", // Replace with your actual profile image URL
         "jobTitle": "Desarrollador Web Full-Stack",
         "worksFor": {

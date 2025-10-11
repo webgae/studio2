@@ -98,7 +98,7 @@ export default async function PostPage({ params }: Props) {
         "name": "WEBGAE",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.expertowordpress.org/favicon.ico"
+          "url": "https://www.webgae.com/favicon.ico"
         }
       },
       "mainEntityOfPage": {
