@@ -7,7 +7,7 @@ const services = [
   {
     id: 'desarrollo-web',
     icon: <Code className="w-16 h-16 mx-auto text-primary mb-4" />,
-    title: 'Creación y Desarrollo Web con WordPress',
+    title: 'Creación y Desarrollo Web a Medida',
     shortDescription: 'Transformo tu idea en un sitio web profesional, funcional y a medida. Construyo soluciones web que no solo se ven bien, sino que también generan resultados.',
     features: [
       {
@@ -18,12 +18,12 @@ const services = [
       {
         icon: <Layers className="w-10 h-10 text-primary mb-3" />,
         title: 'Desarrollo Robusto y Escalable',
-        description: 'Construimos el sitio utilizando las mejores prácticas de código para que sea rápido, seguro y fácil de hacer crecer en el futuro.'
+        description: 'Construimos el sitio utilizando las mejores tecnologías (React, Next.js, etc.) para que sea rápido, seguro y fácil de hacer crecer en el futuro.'
       },
       {
         icon: <CheckCircle className="w-10 h-10 text-primary mb-3" />,
         title: 'Totalmente Autogestionable',
-        description: 'Te entregaré un panel de administración intuitivo para que puedas actualizar tu contenido sin depender de nadie.'
+        description: 'Te entregaré un panel de administración (CMS) intuitivo para que puedas actualizar tu contenido sin depender de nadie.'
       }
     ],
   },
@@ -31,7 +31,7 @@ const services = [
     id: 'optimizacion-wpo',
     icon: <Rocket className="w-16 h-16 mx-auto text-primary mb-4" />,
     title: 'Optimización y Rendimiento (WPO)',
-    shortDescription: 'Una web lenta pierde clientes y posicionamiento. Acelero tu WordPress para que vuele, mejore tu SEO y ofrezca una experiencia de usuario impecable.',
+    shortDescription: 'Una web lenta pierde clientes y posicionamiento. Acelero tu sitio para que vuele, mejore tu SEO y ofrezca una experiencia de usuario impecable.',
     features: [
       {
         icon: <Zap className="w-10 h-10 text-primary mb-3" />,
@@ -53,13 +53,13 @@ const services = [
   {
     id: 'reparacion-errores',
     icon: <Wrench className="w-16 h-16 mx-auto text-primary mb-4" />,
-    title: 'Reparación y Arreglo de Errores',
-    shortDescription: '¿Pantalla blanca de la muerte? ¿Errores 500? ¿Sitio hackeado? Mantén la calma. Soluciono cualquier problema para que tu web vuelva a estar online y funcionando.',
+    title: 'Soporte y Reparación de Errores',
+    shortDescription: '¿Errores 500? ¿Funcionalidades rotas? ¿Sitio hackeado? Mantén la calma. Diagnostico y soluciono cualquier problema para que tu web vuelva a estar online y funcionando.',
     features: [
       {
         icon: <Bug className="w-10 h-10 text-primary mb-3" />,
         title: 'Solución de Bugs y Errores',
-        description: 'Arreglo desde pequeños fallos visuales hasta errores críticos que impiden el funcionamiento de tu web.'
+        description: 'Arreglo desde pequeños fallos visuales hasta errores críticos que impiden el funcionamiento de tu aplicación web.'
       },
       {
         icon: <ShieldAlert className="w-10 h-10 text-primary mb-3" />,
@@ -69,20 +69,20 @@ const services = [
       {
         icon: <HeartPulse className="w-10 h-10 text-primary mb-3" />,
         title: 'Recuperación de Sitios Caídos',
-        description: 'Recupero sitios, restauro bases de datos corruptas y pongo tu proyecto en marcha de nuevo.'
+        description: 'Diagnostico el problema, recupero sitios, restauro bases de datos y pongo tu proyecto en marcha de nuevo.'
       }
     ],
   },
   {
     id: 'mantenimiento-wordpress',
     icon: <ShieldCheck className="w-16 h-16 mx-auto text-primary mb-4" />,
-    title: 'Mantenimiento y Soporte WordPress',
-    shortDescription: 'Duerme tranquilo sabiendo que tu web está en buenas manos. Me encargo de la salud técnica de tu WordPress para que tú te centres en tu negocio.',
+    title: 'Mantenimiento y Soporte Web',
+    shortDescription: 'Duerme tranquilo sabiendo que tu proyecto está en buenas manos. Me encargo de la salud técnica de tu web para que tú te centres en tu negocio.',
     features: [
       {
         icon: <CloudCog className="w-10 h-10 text-primary mb-3" />,
         title: 'Actualizaciones Seguras',
-        description: 'Me encargo de todas las actualizaciones técnicas (core, plugins, temas) de forma segura para evitar conflictos.'
+        description: 'Me encargo de todas las actualizaciones técnicas (framework, librerías, CMS) de forma segura para evitar conflictos.'
       },
       {
         icon: <DatabaseBackup className="w-10 h-10 text-primary mb-3" />,
@@ -99,18 +99,18 @@ const services = [
   {
     id: 'consultoria-seo',
     icon: <Sprout className="w-16 h-16 mx-auto text-primary mb-4" />,
-    title: 'Consultoría SEO para WordPress',
-    shortDescription: 'Atrae más clientes desde Google. Te ayudo a optimizar tu WordPress para que aparezca en las primeras posiciones y consigas más tráfico orgánico de calidad.',
+    title: 'Consultoría SEO Técnica',
+    shortDescription: 'Atrae más clientes desde Google. Te ayudo a optimizar la base técnica de tu sitio para que aparezca en las primeras posiciones y consigas más tráfico orgánico.',
     features: [
       {
         icon: <SearchIcon className="w-10 h-10 text-primary mb-3" />,
-        title: 'Auditoría SEO Técnica',
+        title: 'Auditoría SEO Completa',
         description: 'Detecto y soluciono los problemas técnicos (indexación, velocidad, datos estructurados) que frenan tu posicionamiento.'
       },
       {
         icon: <FileText className="w-10 h-10 text-primary mb-3" />,
         title: 'Estrategia de Contenidos',
-        description: 'Te ayudo a crear contenido que atraiga a tu público y posicione para las palabras clave correctas.'
+        description: 'Te ayudo a estructurar tu contenido para que atraiga a tu público y posicione para las palabras clave correctas.'
       },
       {
         icon: <LineChart className="w-10 h-10 text-primary mb-3" />,
@@ -122,13 +122,13 @@ const services = [
   {
     id: 'consultoria-formacion',
     icon: <Handshake className="w-16 h-16 mx-auto text-primary mb-4" />,
-    title: 'Consultoría y Formación WordPress',
-    shortDescription: 'Te doy el conocimiento y la estrategia que necesitas. Resuelvo tus dudas y te enseño a sacar el máximo partido a tu web WordPress sin depender de nadie.',
+    title: 'Consultoría y Formación Tecnológica',
+    shortDescription: 'Te doy el conocimiento y la estrategia que necesitas. Resuelvo tus dudas y te ayudo a tomar las mejores decisiones tecnológicas para tu proyecto.',
     features: [
       {
         icon: <LightbulbIcon className="w-10 h-10 text-primary mb-3" />,
         title: 'Asesoramiento Experto',
-        description: 'Ahorra tiempo y dinero. Te guío para que tomes las decisions tecnológicas correctas para tu proyecto desde el principio.'
+        description: 'Ahorra tiempo y dinero. Te guío para que elijas la tecnología y arquitectura correctas para tu proyecto desde el principio.'
       },
       {
         icon: <GraduationCap className="w-10 h-10 text-primary mb-3" />,
@@ -138,7 +138,7 @@ const services = [
       {
         icon: <UserCheck className="w-10 h-10 text-primary mb-3" />,
         title: 'Gana Autonomía',
-        description: 'Mi objetivo es darte las herramientas para que puedas gestionar tu web con confianza y seguridad por ti mismo.'
+        description: 'Mi objetivo es darte las herramientas para que puedas gestionar los aspectos clave de tu web con confianza y seguridad.'
       }
     ],
   }
@@ -148,9 +148,9 @@ export default function ServicesPage() {
   return (
     <section>
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold font-headline mb-4">Servicios WordPress</h1>
+        <h1 className="text-4xl font-bold font-headline mb-4">Servicios de Desarrollo Web</h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          Ofrezco un abanico completo de soluciones profesionales para crear, mejorar y mantener tu presencia online con WordPress. Desde el desarrollo inicial hasta la optimización y el soporte continuo.
+          Ofrezco un abanico completo de soluciones profesionales para crear, mejorar y mantener tu presencia online. Desde el desarrollo inicial hasta la optimización y el soporte continuo.
         </p>
       </div>
 
@@ -195,15 +195,15 @@ export default function ServicesPage() {
       </div>
 
       <div className="max-w-4xl mx-auto mt-24 text-left">
-        <h2 className="text-3xl font-bold font-headline mb-6 text-center">Tu Experto WordPress de Confianza</h2>
+        <h2 className="text-3xl font-bold font-headline mb-6 text-center">Tu Aliado Tecnológico de Confianza</h2>
         <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:underline">
           <p>
-            Mi objetivo va más allá de entregar un sitio web funcional. Me dedico a construir <strong>soluciones WordPress robustas, seguras y de alto rendimiento</strong> que sirvan como una base sólida para el crecimiento de tu negocio. Como experto en WordPress, entiendo que cada proyecto es único y requiere una atención al detalle que marca la diferencia.
+            Mi objetivo va más allá de entregar un sitio web funcional. Me dedico a construir <strong>soluciones digitales robustas, seguras y de alto rendimiento</strong> que sirvan como una base sólida para el crecimiento de tu negocio. Entiendo que cada proyecto es único y requiere una atención al detalle que marca la diferencia.
           </p>
 
           <h3 className="text-2xl font-headline">Calidad y Rendimiento como Prioridad</h3>
           <p>
-            Un sitio web lento o poco fiable puede costar clientes y dañar tu reputación. Por eso, aplico las mejores prácticas de desarrollo y optimización (WPO) desde el primer día. Esto incluye un código limpio y eficiente, la optimización de imágenes, el uso de caché inteligente y una configuración de servidor adecuada para que tu web vuele. Mi trabajo se centra en superar los estándares de los <strong>Core Web Vitals de Google</strong>, un factor clave para el SEO.
+            Un sitio web lento o poco fiable puede costar clientes y dañar tu reputación. Por eso, aplico las mejores prácticas de desarrollo y optimización (WPO) desde el primer día. Esto incluye un código limpio y eficiente, la optimización de assets, el uso de caché inteligente y una configuración de servidor adecuada para que tu web vuele. Mi trabajo se centra en superar los estándares de los <strong>Core Web Vitals de Google</strong>, un factor clave para el SEO.
           </p>
 
           <h3 className="text-2xl font-headline">Seguridad y Mantenimiento Proactivo</h3>
@@ -211,7 +211,7 @@ export default function ServicesPage() {
             La seguridad no es una opción, es una necesidad. Implemento múltiples capas de protección para blindar tu sitio contra amenazas y ataques. Además, con mis planes de mantenimiento, puedes despreocuparte de las tareas técnicas: me encargo de las actualizaciones, copias de seguridad y monitorización constante para garantizar que tu web esté siempre online y funcionando a la perfección.
           </p>
             <p>
-              Tanto si necesitas un sitio nuevo, reparar uno existente o simplemente asegurarte de que tu web está en buenas manos, estoy aquí para ayudarte.
+              Tanto si necesitas un sitio nuevo, reparar uno existente o simplemente asegurarte de que tu proyecto está en buenas manos, estoy aquí para ayudarte.
           </p>
         </div>
           <div className="text-center mt-12">

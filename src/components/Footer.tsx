@@ -44,7 +44,7 @@ export default function Footer() {
                </Link>
             </div>
             <p className="text-center md:text-left text-sm text-muted-foreground mt-2 max-w-sm">
-                Potenciando tu presencia online con soluciones WordPress a medida.
+                Potenciando tu presencia online con soluciones web a medida.
             </p>
           </div>
         </div>

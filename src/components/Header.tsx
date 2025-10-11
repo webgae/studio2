@@ -47,7 +47,7 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <BookMarked className="w-8 h-8 text-primary" />
             <h1 className="text-2xl font-bold font-headline text-foreground hidden sm:block">
-              WEBGAE
+              Desarrollo Web
             </h1>
           </Link>
           

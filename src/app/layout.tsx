@@ -22,10 +22,10 @@ const playfairDisplay = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Experto en WordPress | WEBGAE',
+    default: 'Desarrollo Web a Medida | WEBGAE',
     template: '%s | WEBGAE',
   },
-  description: 'Experto en WordPress dedicado a crear, mejorar y arreglar sitios web. Ofrezco soluciones de desarrollo, optimización y mantenimiento para potenciar tu presencia online.',
+  description: 'Desarrollador web experto en crear, mejorar y optimizar sitios web con tecnologías modernas. Ofrezco soluciones de desarrollo a medida, optimización y mantenimiento para potenciar tu presencia online.',
   icons: {
     icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="15" fill="%235c24e3" /><text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="50" font-family="sans-serif" fill="white" font-weight="600">WG</text></svg>',
   },

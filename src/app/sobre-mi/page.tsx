@@ -7,10 +7,10 @@ import { type Person, type WithContext } from 'schema-dts';
 
 export const metadata: Metadata = {
     title: 'Sobre Mí',
-    description: 'Conoce la historia, la filosofía y la experiencia de WEBGAE como desarrollador experto en WordPress. Un aliado estratégico para tu proyecto online.',
+    description: 'Conoce la historia, la filosofía y la experiencia de WEBGAE como desarrollador web. Un aliado estratégico para tu proyecto online.',
 };
 
-const skills = ['WordPress', 'React', 'Next.js', 'JavaScript/TypeScript', 'PHP', 'Node.js', 'WooCommerce', 'SEO Técnico'];
+const skills = ['React', 'Next.js', 'Node.js', 'TypeScript', 'PHP', 'WordPress', 'Bases de Datos', 'SEO Técnico'];
 
 export default function SobreMiPage() {
 
@@ -20,12 +20,12 @@ export default function SobreMiPage() {
         "name": "WEBGAE", // Replace with your actual name
         "url": "https://www.expertowordpress.org/sobre-mi",
         "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjf4pr1qIX655FWH5HyeZZ-fmf2YH_yHjkFkX_4ED-Ml8vBvVH1evKThEH1q5sjpvkVncJ650FjnEBV7_z9XAwJK1JpSEnvQI-8CyZ16cuZkl08KlUZ0Sqj3xUHlU2qj2IWmwQn5vFWteR4/s2000/4261577.jpg", // Replace with your actual profile image URL
-        "jobTitle": "Experto en Desarrollo WordPress",
+        "jobTitle": "Desarrollador Web Full-Stack",
         "worksFor": {
             "@type": "Organization",
             "name": "WEBGAE"
         },
-        "description": "Experto en WordPress dedicado a construir, optimizar y mantener sitios web de alto rendimiento. Mi objetivo es ser un aliado tecnológico para mis clientes."
+        "description": "Desarrollador web dedicado a construir, optimizar y mantener soluciones digitales de alto rendimiento. Mi objetivo es ser un aliado tecnológico para mis clientes."
     };
 
     return (
@@ -37,7 +37,7 @@ export default function SobreMiPage() {
             {/* Hero Section */}
             <div className="grid md:grid-cols-5 gap-8 md:gap-16 items-center mb-16">
                 <div className="md:col-span-3">
-                    <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4">Más que un desarrollador: tu aliado estratégico en WordPress</h1>
+                    <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4">Más que un desarrollador: tu aliado estratégico en tecnología web</h1>
                     <p className="text-lg text-muted-foreground">
                         Hola, soy el profesional detrás de WEBGAE. No solo construyo sitios web; creo soluciones digitales robustas y a medida que impulsan negocios. Mi pasión es transformar tus ideas en una realidad funcional, segura y de alto rendimiento.
                     </p>
@@ -83,13 +83,13 @@ export default function SobreMiPage() {
                     <h2 className="text-3xl font-bold font-headline mb-4">Mi Trayectoria</h2>
                     <div className="prose prose-lg dark:prose-invert max-w-none">
                         <p>
-                            Mi viaje en el mundo del desarrollo web comenzó hace más de una década, impulsado por la curiosidad de entender cómo funcionaba internet. Pronto descubrí WordPress y quedé fascinado por su poder y flexibilidad.
+                            Mi viaje en el mundo del desarrollo web comenzó hace más de una década, impulsado por la curiosidad de entender cómo funcionaba internet. He trabajado con una amplia gama de tecnologías, desde el desarrollo back-end con PHP y Node.js hasta la creación de interfaces interactivas con React y Next.js.
                         </p>
                         <p>
-                            Lo que empezó como un hobby se convirtió en una profesión. He trabajado en todo tipo de proyectos: desde blogs personales hasta complejas tiendas online y plataformas a medida. Esta experiencia me ha enseñado no solo a programar, sino a entender los objetivos de negocio que hay detrás de cada sitio web.
+                            Lo que empezó como un hobby se convirtió en una profesión. He trabajado en todo tipo de proyectos: desde blogs personales hasta complejas tiendas online y plataformas a medida. Esta experiencia me ha enseñado no solo a programar, sino a entender los objetivos de negocio que hay detrás de cada proyecto digital.
                         </p>
                          <p>
-                            Hoy, mi objetivo es simple: utilizar mi conocimiento técnico para ayudar a otros a tener éxito online, construyendo webs de las que puedan sentirse orgullosos.
+                            Hoy, mi objetivo es simple: utilizar mi conocimiento técnico para ayudar a otros a tener éxito online, construyendo soluciones de las que puedan sentirse orgullosos.
                         </p>
                     </div>
                 </div>

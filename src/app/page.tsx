@@ -9,13 +9,13 @@ import { type FAQPage, type WithContext } from 'schema-dts';
 const featuredServices = [
   {
     icon: <Code className="w-8 h-8 text-primary" />,
-    title: 'Creación de Sitios Web',
+    title: 'Desarrollo Web a Medida',
     description: 'Creo tu sitio web desde cero con un diseño profesional y funcionalidades a medida.',
     href: '/services#desarrollo-web'
   },
   {
     icon: <Rocket className="w-8 h-8 text-primary" />,
-    title: 'Optimización de Velocidad',
+    title: 'Optimización de Rendimiento',
     description: 'Mejoro el rendimiento de tu web para una carga más rápida y una mejor experiencia.',
     href: '/services#optimizacion-wpo'
   },
@@ -27,8 +27,8 @@ const featuredServices = [
   },
   {
     icon: <Wrench className="w-8 h-8 text-primary" />,
-    title: 'Reparación de Errores',
-    description: 'Soluciono problemas, arreglo bugs y recupero sitios que no funcionan correctamente.',
+    title: 'Soporte y Evolución',
+    description: 'Soluciono problemas y hago evolucionar tus proyectos para que cumplan nuevos objetivos.',
     href: '/services#reparacion-errores'
   },
 ];
@@ -40,7 +40,7 @@ const testimonials = [
     company: "CEO de TechForward"
   },
   {
-    quote: "El plugin personalizado que desarrolló para nosotros funciona a la perfección. Entendió nuestros requisitos y entregó un producto de alta calidad a tiempo.",
+    quote: "La funcionalidad a medida que desarrolló para nosotros funciona a la perfección. Entendió nuestros requisitos y entregó un producto de alta calidad a tiempo.",
     name: "Carlos Rodríguez",
     company: "Director de Marketing en Innovate Co."
   },
@@ -62,14 +62,14 @@ const faqs = [
   },
   {
     question: "¿Qué incluye el servicio de mantenimiento?",
-    answer: "Mi plan de mantenimiento incluye actualizaciones de WordPress, temas y plugins, copias de seguridad regulares, monitorización de seguridad 24/7 y soporte técnico para resolver cualquier problema que surja."
+    answer: "Mi plan de mantenimiento incluye actualizaciones del sistema y sus dependencias, copias de seguridad regulares, monitorización de seguridad 24/7 y soporte técnico para resolver cualquier problema que surja."
   },
   {
     question: "¿Puedes arreglar un sitio web que otro desarrollador hizo mal o dejó incompleto?",
     answer: "Sí, absolutamente. Una gran parte de mi trabajo consiste en solucionar problemas heredados, optimizar código de baja calidad y completar proyectos inacabados. Puedo auditar tu sitio, identificar los puntos débiles y aplicar las soluciones necesarias para que funcione como debería."
   },
   {
-    question: "¿Puedes arreglar un sitio web de WordPress que ha sido hackeado?",
+    question: "¿Puedes arreglar un sitio web que ha sido hackeado?",
     answer: "¡Por supuesto! Ofrezco servicios de limpieza de malware y fortalecimiento de la seguridad para restaurar tu sitio y protegerlo contra futuros ataques."
   }
 ];
@@ -100,10 +100,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:flex lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
             <h1 className="mt-10 text-4xl font-bold font-headline tracking-tight text-foreground sm:text-6xl">
-              Experto en Desarrollo WordPress
+              Desarrollo Web a Medida
             </h1>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Construyo, optimizo y mantengo sitios web de alto rendimiento con WordPress para llevar tu presencia online al siguiente nivel.
+              Construyo, optimizo y mantengo soluciones digitales de alto rendimiento con las últimas tecnologías para llevar tu proyecto al siguiente nivel.
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <Button asChild size="lg">
@@ -118,7 +118,7 @@ export default function HomePage() {
             <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-foreground/10 lg:-m-4 lg:rounded-2xl lg:p-4">
                  <Image
                   src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjo7KPRp_aP1IEf7xGDxapy3cQMh46THb9HG-5PYkwnomKrXlerQE9JozfiTJRUOiP7Fp5XIeKwTKSXPEvyoXftgcRjak59f_s_EATeBQTRKWg5l_DzUrx8nP_RLlR7PTrwRsziNrdROjBrbMwnB6L3yh4eK0NUpSF4sYiybIn7q5u8sBUcaNrJe3Z3XPw/s650-rw/E-meeting%20with%20team@1x_resized.png"
-                  alt="Experto WordPress"
+                  alt="Experto en desarrollo web"
                   width={800}
                   height={800}
                   className="w-full h-auto max-w-lg rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
@@ -147,7 +147,7 @@ export default function HomePage() {
             <h2 className="text-base font-semibold leading-7 text-primary">Servicios</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl font-headline">Soluciones para cada necesidad</p>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Desde la creación de un sitio nuevo hasta la optimización de uno existente.
+              Desde la creación de un nuevo proyecto hasta la optimización y el mantenimiento de uno existente.
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
