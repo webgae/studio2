@@ -1,12 +1,16 @@
+'use client';
+
 import { type Post } from '@/lib/types';
 import { format } from 'date-fns';
 import { Badge } from './ui/badge';
-import { Calendar, User, Tag, ArrowLeft, List } from 'lucide-react';
+import { Calendar, User, Tag, ArrowLeft, List, ArrowUp } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import parse, { domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
 import Image from 'next/image';
 import { slugify } from '@/lib/utils';
+import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 // Función para extraer encabezados y generar la TOC
 const generateTableOfContents = (htmlContent: string): { tocItems: { text: string; slug: string }[]; modifiedContent: string | JSX.Element | JSX.Element[] } => {
@@ -17,10 +21,14 @@ const generateTableOfContents = (htmlContent: string): { tocItems: { text: strin
     replace: (domNode) => {
       if (domNode instanceof Element) {
         if (domNode.name === 'h2') {
-          const text = domToReact(domNode.children) as string;
-          const slug = slugify(text);
-          tocItems.push({ text, slug });
-          return <h2 id={slug}>{domToReact(domNode.children, options)}</h2>;
+          const children = domNode.children;
+          if (children && children.length > 0) {
+            const text = domToReact(children) as string | string[];
+            const textContent = Array.isArray(text) ? text.join('') : text;
+            const slug = slugify(textContent);
+            tocItems.push({ text: textContent, slug });
+            return <h2 id={slug}>{domToReact(domNode.children, options)}</h2>;
+          }
         }
         if (domNode.name === 'img') {
           const { src, alt, width, height } = domNode.attribs;
@@ -52,9 +60,31 @@ const generateTableOfContents = (htmlContent: string): { tocItems: { text: strin
 
 export default function PostDetail({ post }: { post: Post }) {
   const { tocItems, modifiedContent } = generateTableOfContents(post.content);
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToToc = () => {
+    const tocElement = document.getElementById('toc');
+    if (tocElement) {
+      tocElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
 
   return (
-    <article className="max-w-4xl mx-auto bg-card p-4 sm:p-8 rounded-lg shadow-lg border">
+    <article className="max-w-4xl mx-auto bg-card p-4 sm:p-8 rounded-lg shadow-lg border relative">
       <div className="mb-6">
         <Button asChild variant="ghost" className="text-muted-foreground hover:text-primary hover:bg-transparent px-0">
           <Link href="/blog" className="inline-flex items-center gap-2">
@@ -78,7 +108,7 @@ export default function PostDetail({ post }: { post: Post }) {
       </div>
 
       {tocItems.length >= 2 && (
-        <div className="mb-10 border-t border-b py-6 bg-secondary/30 rounded-lg px-6">
+        <div id="toc" className="mb-10 border-t border-b py-6 bg-secondary/30 rounded-lg px-6 scroll-mt-24">
           <h2 className="text-xl font-bold font-headline flex items-center gap-2 mb-4">
             <List className="w-5 h-5" />
             Tabla de Contenidos
@@ -129,6 +159,22 @@ export default function PostDetail({ post }: { post: Post }) {
           Ver original en Blogger
         </Link>
       </div>
+      
+      {/* Botón de volver a la TOC */}
+      {tocItems.length >= 2 && (
+        <Button
+          onClick={scrollToToc}
+          className={cn(
+            'fixed bottom-8 right-8 z-50 rounded-full h-12 w-12 shadow-lg transition-opacity duration-300',
+            showScrollButton ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          )}
+          size="icon"
+          aria-label="Volver a la tabla de contenidos"
+        >
+          <ArrowUp className="h-6 w-6" />
+        </Button>
+      )}
+
     </article>
   );
 }
