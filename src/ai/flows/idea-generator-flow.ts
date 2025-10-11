@@ -15,7 +15,7 @@ const BlogIdeasInputSchema = z.object({
 });
 export type BlogIdeasInput = z.infer<typeof BlogIdeasInputSchema>;
 
-export const IdeaSchema = z.object({
+const IdeaSchema = z.object({
     title: z.string().describe('Un título atractivo y optimizado para SEO para el artículo del blog.'),
     summary: z.string().describe('Un resumen de uno o dos párrafos de lo que trataría el artículo.'),
 });
