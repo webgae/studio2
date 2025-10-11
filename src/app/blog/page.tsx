@@ -18,8 +18,10 @@ async function PostsList({ searchParams }: BlogPageProps) {
   const query = searchParams?.q as string;
   const label = searchParams?.label as string;
   const pageToken = searchParams?.pageToken as string;
-  const prevPageToken = searchParams?.prevPageToken as string;
 
+  // Blogger API no proporciona un token "anterior", por lo que debemos gestionarlo manualmente.
+  // El token de la página actual se convierte en el "prevPageToken" para el enlace "Siguiente".
+  const prevPageToken = searchParams?.prevPageToken as string;
 
   let postsData;
   let allLabels = new Set<string>();
@@ -27,7 +29,6 @@ async function PostsList({ searchParams }: BlogPageProps) {
   try {
     if (query) {
       postsData = await searchPosts(query, pageToken);
-      // We don't need to fetch all posts for labels anymore since the sidebar is gone.
     } else if (label) {
       postsData = await getPostsByLabel(label, pageToken);
     } else {
@@ -51,22 +52,19 @@ async function PostsList({ searchParams }: BlogPageProps) {
 
   const { items: posts, nextPageToken } = postsData;
 
-  const buildPageLink = (token: string | undefined, direction: 'next' | 'prev') => {
+  const buildPageLink = (token: string | undefined, newPrevToken?: string) => {
     const params = new URLSearchParams();
     if (query) params.set('q', query);
     if (label) params.set('label', label);
-    if (token) {
-      if(direction === 'next') {
-        params.set('pageToken', token);
-        if (pageToken) params.set('prevPageToken', pageToken);
-      } else {
-        params.set('pageToken', token);
-      }
-    }
+    if (token) params.set('pageToken', token);
+    if (newPrevToken) params.set('prevPageToken', newPrevToken);
     
     const queryString = params.toString();
     return `/blog?${queryString}`;
   };
+
+  const prevLink = buildPageLink(prevPageToken);
+  const nextLink = buildPageLink(nextPageToken, pageToken);
 
 
   return (
@@ -86,13 +84,13 @@ async function PostsList({ searchParams }: BlogPageProps) {
       </div>
       <div className="flex justify-between items-center mt-8">
           <Button asChild variant="outline" disabled={!prevPageToken}>
-            <Link href={buildPageLink(prevPageToken, 'prev')}>
+            <Link href={prevLink}>
               <ChevronLeft className="mr-2 h-4 w-4" />
               Anterior
             </Link>
           </Button>
           <Button asChild variant="outline" disabled={!nextPageToken}>
-            <Link href={buildPageLink(nextPageToken, 'next')}>
+            <Link href={nextLink}>
               Siguiente
               <ChevronRight className="ml-2 h-4 w-4" />
             </Link>
