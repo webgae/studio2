@@ -34,6 +34,9 @@ export default async function Footer() {
     }
   } catch (error) {
     console.error("Failed to fetch Blogger pages for footer:", error);
+    // Gracefully fail if the API call doesn't work,
+    // preventing the entire page from crashing.
+    // This is a common issue in Vercel environment variable availability.
   }
 
   return (
