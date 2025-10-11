@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import PostDetail from '@/components/PostDetail';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { getIdFromSlug, createPostSlug } from '@/lib/utils';
+import RelatedPosts from '@/components/RelatedPosts';
+import { Suspense } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 type Props = {
@@ -52,11 +55,37 @@ export async function generateStaticParams() {
   }
 }
 
+function RelatedPostsLoading() {
+  return (
+    <div className="mt-16">
+      <Skeleton className="h-8 w-48 mb-8" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[...Array(3)].map((_, i) => (
+           <div key={i} className="flex flex-col gap-4 bg-card p-4 rounded-lg border">
+            <Skeleton className="w-full h-32 rounded-lg" />
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-4 w-1/2" />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default async function PostPage({ params }: Props) {
   try {
     const postId = getIdFromSlug(params.id);
     const post = await getPostById(postId);
-    return <PostDetail post={post} />;
+    return (
+        <div>
+            <PostDetail post={post} />
+            <div className="max-w-4xl mx-auto p-4 sm:p-8">
+                 <Suspense fallback={<RelatedPostsLoading />}>
+                    <RelatedPosts currentPostId={post.id} labels={post.labels} />
+                </Suspense>
+            </div>
+        </div>
+    );
   } catch (error) {
     console.error(`Error fetching post ${params.id}:`, error);
     notFound();
