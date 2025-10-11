@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Target, Lightbulb, TrendingUp, CheckCircle } from 'lucide-react';
+import { Target, Lightbulb, TrendingUp, CheckCircle, ShieldOff, Palette } from 'lucide-react';
 import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -53,6 +53,52 @@ const projects = [
                 'Reducción de 10 horas semanales en trabajo administrativo.',
                 'Eliminación de conflictos de programación y errores manuales.',
                 'Experiencia de reserva fluida y profesional para sus clientes.',
+            ],
+        },
+    },
+    {
+        title: 'Limpieza y Seguridad de Sitio Hackeado',
+        client: 'Blog de Viajes Popular',
+        problem: {
+            icon: <ShieldOff className="w-8 h-8 text-destructive" />,
+            title: 'El Problema',
+            description: 'El sitio fue infectado con malware, redirigía a los usuarios a páginas de spam y fue marcado como "no seguro" por los navegadores, perdiendo el 90% de su tráfico orgánico de la noche a la mañana.',
+        },
+        solution: {
+            icon: <Lightbulb className="w-8 h-8 text-blue-500" />,
+            title: 'La Solución',
+            description: 'Se realizó un análisis forense para identificar la vulnerabilidad. Se eliminaron todos los archivos maliciosos, se limpió la base de datos y se implementaron medidas de seguridad robustas, incluyendo un firewall (WAF) y autenticación de dos factores.',
+        },
+        results: {
+            icon: <TrendingUp className="w-8 h-8 text-green-500" />,
+            title: 'El Resultado',
+            items: [
+                'Sitio completamente limpio y operativo en menos de 24 horas.',
+                'Eliminación de la lista negra de Google en 48 horas.',
+                'Implementación de un protocolo de seguridad que ha prevenido futuros ataques.',
+            ],
+        },
+    },
+    {
+        title: 'Creación de Tema a Medida para Portfolio Creativo',
+        client: 'Fotógrafo Profesional',
+        problem: {
+            icon: <Palette className="w-8 h-8 text-destructive" />,
+            title: 'El Problema',
+            description: 'El cliente usaba una plantilla genérica que no lograba transmitir la calidad y el estilo único de su trabajo fotográfico. El diseño era lento, poco original y no destacaba sus imágenes correctamente.',
+        },
+        solution: {
+            icon: <Lightbulb className="w-8 h-8 text-blue-500" />,
+            title: 'La Solución',
+            description: 'Se diseñó y desarrolló un tema de WordPress desde cero (FSE - Full Site Editing), enfocado en el minimalismo y la velocidad. Se crearon galerías de carga diferida (lazy loading) y un diseño de portfolio personalizable para que el cliente pudiera gestionarlo fácilmente.',
+        },
+        results: {
+            icon: <TrendingUp className="w-8 h-8 text-green-500" />,
+            title: 'El Resultado',
+            items: [
+                'Un diseño único que refleja la marca personal del fotógrafo.',
+                'La velocidad de carga de las galerías mejoró en un 300%.',
+                'Aumento del 50% en las solicitudes de contacto a través del nuevo formulario.',
             ],
         },
     },
