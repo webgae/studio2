@@ -6,6 +6,7 @@ const mainNavLinks = [
   { href: "/blog", label: "Blog" },
   { href: "/services", label: "Servicios" },
   { href: "/proyectos", label: "Proyectos" },
+  { href: "/precios", label: "Precios" },
   { href: "/sobre-mi", label: "Sobre Mí" },
 ];
 
@@ -41,10 +42,6 @@ const formatPageTitle = (title: string): string => {
 };
 
 export default async function Footer() {
-  // Hack to ensure Next.js treats this as a dynamic component
-  // and makes environment variables available at runtime on Vercel.
-  process.env.BLOG_ID;
-
   let bloggerPages: Page[] = [];
   try {
     const pagesData = await getAllPages();
@@ -55,7 +52,6 @@ export default async function Footer() {
     console.error("Failed to fetch Blogger pages for footer:", error);
     // Gracefully fail if the API call doesn't work,
     // preventing the entire page from crashing.
-    // This is a common issue in Vercel environment variable availability.
   }
 
   return (
