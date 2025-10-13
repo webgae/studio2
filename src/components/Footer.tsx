@@ -1,13 +1,15 @@
 import Link from "next/link";
-import { getAllPages } from "@/lib/blogger";
-import { type Page } from "@/lib/types";
 
 const mainNavLinks = [
   { href: "/blog", label: "Blog" },
   { href: "/services", label: "Servicios" },
   { href: "/proyectos", label: "Proyectos" },
   { href: "/precios", label: "Precios" },
-  { href: "/sobre-mi", label: "Sobre Mí" },
+];
+
+const legalNavLinks = [
+    { href: "/politica-de-privacidad", label: "Política de Privacidad" },
+    { href: "/aviso-legal", label: "Aviso Legal" },
 ];
 
 const Logo = () => (
@@ -29,30 +31,7 @@ const Logo = () => (
     </svg>
 );
 
-
-// Función para acortar y normalizar los títulos de las páginas
-const formatPageTitle = (title: string): string => {
-    const lowerCaseTitle = title.toLowerCase();
-    if (lowerCaseTitle.includes('cookie')) return 'Cookies';
-    if (lowerCaseTitle.includes('privacidad')) return 'Privacidad';
-    if (lowerCaseTitle.includes('aviso legal')) return 'Aviso Legal';
-    
-    // Si no es un título conocido, lo devuelve acortado si es muy largo
-    return title.length > 15 ? title.split(' ')[0] : title;
-};
-
 export default async function Footer() {
-  let bloggerPages: Page[] = [];
-  try {
-    const pagesData = await getAllPages();
-    if (pagesData && pagesData.items) {
-      bloggerPages = pagesData.items;
-    }
-  } catch (error) {
-    console.error("Failed to fetch Blogger pages for footer:", error);
-    // Gracefully fail if the API call doesn't work,
-    // preventing the entire page from crashing.
-  }
 
   return (
     <footer className="border-t border-border/50">
@@ -83,6 +62,11 @@ export default async function Footer() {
                         </Link>
                         </li>
                     ))}
+                    <li>
+                        <Link href="/sobre-mi" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                            Sobre Mí
+                        </Link>
+                    </li>
                     </ul>
                 </div>
                  <div>
@@ -91,20 +75,18 @@ export default async function Footer() {
                         <li><Link href="/blog-ideas" className="text-sm text-muted-foreground hover:text-primary transition-colors">Asistente de Contenidos</Link></li>
                     </ul>
                 </div>
-                {bloggerPages.length > 0 && (
                  <div>
                     <h3 className="font-semibold text-foreground mb-4">Legal</h3>
                     <ul className="space-y-3">
-                    {bloggerPages.map((page) => (
-                        <li key={page.id}>
-                            <a href={page.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                {formatPageTitle(page.title)}
-                            </a>
+                    {legalNavLinks.map((link) => (
+                        <li key={link.href}>
+                            <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                {link.label}
+                            </Link>
                         </li>
                     ))}
                     </ul>
                 </div>
-                )}
             </div>
         </div>
       </div>
