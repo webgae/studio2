@@ -31,15 +31,11 @@ const Logo = () => (
 
 const shortenTitle = (title: string): string => {
     const lowerTitle = title.toLowerCase();
-    if (lowerTitle.startsWith('api blogger')) {
-        return 'Api Blogger';
-    }
-    if (lowerTitle.includes('pedazos de código')) {
-        return 'Códigos';
-    }
-    if (lowerTitle.includes('optimización de imágenes')) {
-        return 'Optimización de imágenes';
-    }
+    if (lowerTitle.includes('api blogger')) return 'Api Blogger';
+    if (lowerTitle.includes('pedazos de código')) return 'Códigos';
+    if (lowerTitle.includes('optimización de imágenes')) return 'Optimización de imágenes';
+    if (lowerTitle.includes('editor online')) return 'Editor de Código';
+    
     const words = title.split(' ');
     if (words.length > 3) {
         return words.slice(0, 3).join(' ') + '...';
@@ -53,11 +49,18 @@ export default async function Footer() {
     try {
         const pagesList = await getAllPages();
         if (pagesList && pagesList.items) {
-        bloggerPages = pagesList.items;
+          bloggerPages = pagesList.items;
         }
     } catch (error) {
         console.error("Footer: Failed to fetch blogger pages. They will not be displayed.", error);
     }
+    
+    const editorOnlinePage = bloggerPages.find(p => p.title.toLowerCase().includes('editor online'));
+    const toolPages = bloggerPages.filter(p => 
+        !p.title.toLowerCase().includes('ofrezco soporte profesional') &&
+        !p.title.toLowerCase().includes('editor online')
+    );
+
 
   return (
     <footer className="border-t border-border/50">
@@ -96,7 +99,7 @@ export default async function Footer() {
                  <div>
                     <h3 className="font-semibold text-foreground mb-4">Herramientas</h3>
                      <ul className="space-y-3">
-                        {bloggerPages.map((page) => (
+                        {toolPages.map((page) => (
                             <li key={page.id}>
                                 <a href={page.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                                     {shortenTitle(page.title)}
@@ -109,6 +112,13 @@ export default async function Footer() {
                     <h3 className="font-semibold text-foreground mb-4">Otros</h3>
                     <ul className="space-y-3">
                         <li><Link href="/blog-ideas" className="text-sm text-muted-foreground hover:text-primary transition-colors">Asistente de Contenidos</Link></li>
+                        {editorOnlinePage && (
+                             <li>
+                                <a href={editorOnlinePage.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                    {shortenTitle(editorOnlinePage.title)}
+                                </a>
+                            </li>
+                        )}
                         <li><Link href="/politica-de-privacidad" className="text-sm text-muted-foreground hover:text-primary transition-colors">Política de Privacidad</Link></li>
                         <li><Link href="/aviso-legal" className="text-sm text-muted-foreground hover:text-primary transition-colors">Aviso Legal</Link></li>
                     </ul>
