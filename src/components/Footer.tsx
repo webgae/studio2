@@ -34,6 +34,25 @@ const Logo = () => (
     </svg>
 );
 
+const shortenTitle = (title: string): string => {
+    const lowerTitle = title.toLowerCase();
+    if (lowerTitle.startsWith('api blogger')) {
+        return 'Api Blogger';
+    }
+    if (lowerTitle.includes('pedazos de código')) {
+        return 'Códigos';
+    }
+    if (lowerTitle.includes('optimización de imágenes')) {
+        return 'Optimización de imágenes';
+    }
+    // Return a shortened version if no specific rule matches
+    const words = title.split(' ');
+    if (words.length > 3) {
+        return words.slice(0, 3).join(' ') + '...';
+    }
+    return title;
+};
+
 export default async function Footer() {
 
     let bloggerPages: Page[] = [];
@@ -91,7 +110,7 @@ export default async function Footer() {
                         {bloggerPages.map((page) => (
                             <li key={page.id}>
                                 <a href={page.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                    {page.title}
+                                    {shortenTitle(page.title)}
                                 </a>
                             </li>
                         ))}
