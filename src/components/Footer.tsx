@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { getAllPages } from "@/lib/blogger";
+import { type Page } from "@/lib/types";
+
 
 const mainNavLinks = [
   { href: "/blog", label: "Blog" },
@@ -32,6 +35,18 @@ const Logo = () => (
 );
 
 export default async function Footer() {
+
+    let bloggerPages: Page[] = [];
+    try {
+        const pagesList = await getAllPages();
+        if (pagesList && pagesList.items) {
+        bloggerPages = pagesList.items;
+        }
+    } catch (error) {
+        console.error("Footer: Failed to fetch blogger pages. They will not be displayed.", error);
+        // Silently fail, pages will just not be displayed.
+    }
+
 
   return (
     <footer className="border-t border-border/50">
@@ -73,6 +88,13 @@ export default async function Footer() {
                     <h3 className="font-semibold text-foreground mb-4">Herramientas</h3>
                      <ul className="space-y-3">
                         <li><Link href="/blog-ideas" className="text-sm text-muted-foreground hover:text-primary transition-colors">Asistente de Contenidos</Link></li>
+                        {bloggerPages.map((page) => (
+                            <li key={page.id}>
+                                <a href={page.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                    {page.title}
+                                </a>
+                            </li>
+                        ))}
                     </ul>
                 </div>
                  <div>
