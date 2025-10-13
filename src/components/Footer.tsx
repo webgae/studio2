@@ -10,11 +10,6 @@ const mainNavLinks = [
   { href: "/precios", label: "Precios" },
 ];
 
-const legalNavLinks = [
-    { href: "/politica-de-privacidad", label: "Política de Privacidad" },
-    { href: "/aviso-legal", label: "Aviso Legal" },
-];
-
 const Logo = () => (
     <svg
       width="32"
@@ -45,7 +40,6 @@ const shortenTitle = (title: string): string => {
     if (lowerTitle.includes('optimización de imágenes')) {
         return 'Optimización de imágenes';
     }
-    // Return a shortened version if no specific rule matches
     const words = title.split(' ');
     if (words.length > 3) {
         return words.slice(0, 3).join(' ') + '...';
@@ -63,15 +57,12 @@ export default async function Footer() {
         }
     } catch (error) {
         console.error("Footer: Failed to fetch blogger pages. They will not be displayed.", error);
-        // Silently fail, pages will just not be displayed.
     }
-
 
   return (
     <footer className="border-t border-border/50">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-            {/* Columna de la marca */}
             <div className="md:col-span-2">
                 <Link href="/" className="flex items-center gap-2 mb-4">
                     <Logo />
@@ -84,7 +75,6 @@ export default async function Footer() {
                     Soluciones web a medida.
                 </p>
             </div>
-            {/* Menús de navegación */}
             <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-8">
                 <div>
                     <h3 className="font-semibold text-foreground mb-4">Navegación</h3>
@@ -106,7 +96,6 @@ export default async function Footer() {
                  <div>
                     <h3 className="font-semibold text-foreground mb-4">Herramientas</h3>
                      <ul className="space-y-3">
-                        <li><Link href="/blog-ideas" className="text-sm text-muted-foreground hover:text-primary transition-colors">Asistente de Contenidos</Link></li>
                         {bloggerPages.map((page) => (
                             <li key={page.id}>
                                 <a href={page.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -117,15 +106,11 @@ export default async function Footer() {
                     </ul>
                 </div>
                  <div>
-                    <h3 className="font-semibold text-foreground mb-4">Legal</h3>
+                    <h3 className="font-semibold text-foreground mb-4">Otros</h3>
                     <ul className="space-y-3">
-                    {legalNavLinks.map((link) => (
-                        <li key={link.href}>
-                            <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                {link.label}
-                            </Link>
-                        </li>
-                    ))}
+                        <li><Link href="/blog-ideas" className="text-sm text-muted-foreground hover:text-primary transition-colors">Asistente de Contenidos</Link></li>
+                        <li><Link href="/politica-de-privacidad" className="text-sm text-muted-foreground hover:text-primary transition-colors">Política de Privacidad</Link></li>
+                        <li><Link href="/aviso-legal" className="text-sm text-muted-foreground hover:text-primary transition-colors">Aviso Legal</Link></li>
                     </ul>
                 </div>
             </div>
