@@ -34,6 +34,7 @@ const shortenTitle = (title: string): string => {
     if (lowerTitle.includes('api blogger')) return 'Api Blogger';
     if (lowerTitle.includes('pedazos de código')) return 'Códigos';
     if (lowerTitle.includes('optimización de imágenes')) return 'Optimización de imágenes';
+    if (lowerTitle.includes('redimensiona y optimiza')) return 'Optimizar Imágenes';
     if (lowerTitle.includes('editor online')) return 'Editor de Código';
     
     const words = title.split(' ');
@@ -56,9 +57,12 @@ export default async function Footer() {
     }
     
     const editorOnlinePage = bloggerPages.find(p => p.title.toLowerCase().includes('editor online'));
+    const imageOptimizerPage = bloggerPages.find(p => p.title.toLowerCase().includes('redimensiona y optimiza'));
+    
     const toolPages = bloggerPages.filter(p => 
         !p.title.toLowerCase().includes('ofrezco soporte profesional') &&
-        !p.title.toLowerCase().includes('editor online')
+        !p.title.toLowerCase().includes('editor online') &&
+        !p.title.toLowerCase().includes('redimensiona y optimiza')
     );
 
 
@@ -116,6 +120,13 @@ export default async function Footer() {
                              <li>
                                 <a href={editorOnlinePage.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                                     {shortenTitle(editorOnlinePage.title)}
+                                </a>
+                            </li>
+                        )}
+                        {imageOptimizerPage && (
+                             <li>
+                                <a href={imageOptimizerPage.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                    {shortenTitle(imageOptimizerPage.title)}
                                 </a>
                             </li>
                         )}
