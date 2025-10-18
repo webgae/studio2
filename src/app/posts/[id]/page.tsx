@@ -119,33 +119,28 @@ export default async function PostPage({ params }: Props) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             
-            <div className="grid lg:grid-cols-[280px,1fr] lg:gap-12 relative">
+            <div className="grid lg:grid-cols-[280px,1fr] lg:gap-12">
                 <Sidebar>
                     <TableOfContents postContent={post.content} />
                 </Sidebar>
                 
                 <main className="flex-1 min-w-0 py-8">
-                     <div className="flex justify-between items-center gap-4 mb-8 lg:hidden">
-                        <Sidebar>
-                            <TableOfContents postContent={post.content} />
-                        </Sidebar>
-                        <div className="flex-grow">
-                             <Breadcrumbs
-                                items={[
-                                { label: 'Blog', href: '/blog' },
-                                { label: truncateText(post.title, 20), href: `/posts/${params.id}` },
-                                ]}
-                            />
-                        </div>
-                    </div>
                     <Breadcrumbs
                         items={[
                         { label: 'Inicio', href: '/' },
                         { label: 'Blog', href: '/blog' },
                         { label: truncateText(post.title, 50), href: `/posts/${params.id}` },
                         ]}
-                        className="mb-8 hidden lg:block"
+                        className="mb-8 hidden lg:flex"
                     />
+                    <div className="flex items-center gap-4 mb-8 lg:hidden">
+                       <Breadcrumbs
+                            items={[
+                            { label: 'Blog', href: '/blog' },
+                            { label: truncateText(post.title, 20), href: `/posts/${params.id}` },
+                            ]}
+                        />
+                    </div>
                     <PostDetail post={post} />
                     <div className="max-w-4xl mx-auto">
                         <Suspense fallback={<RelatedPostsLoading />}>
