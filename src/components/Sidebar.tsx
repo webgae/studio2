@@ -35,20 +35,15 @@ export const Sidebar = ({
   
   React.useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 1024px)');
-    setIsDesktop(mediaQuery.matches);
-    const handler = () => setIsDesktop(mediaQuery.matches);
+    const handler = () => {
+        setIsDesktop(mediaQuery.matches);
+        // Open by default on desktop, close on mobile
+        setOpen(mediaQuery.matches);
+    };
     mediaQuery.addEventListener('change', handler);
+    handler(); // Initial check
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
-  
-  React.useEffect(() => {
-      // Open sidebar by default on desktop
-      if(isDesktop) {
-          setOpen(true)
-      } else {
-          setOpen(false)
-      }
-  }, [isDesktop])
 
   const contextValue = { isMobile: !isDesktop, isDesktop, open, setOpen };
 
@@ -57,18 +52,16 @@ export const Sidebar = ({
     return (
       <SidebarContext.Provider value={contextValue}>
         <Sheet open={open} onOpenChange={setOpen}>
-          <div className="lg:hidden absolute top-20 left-4 z-20">
-            <SheetTrigger asChild>
+           <SheetTrigger asChild>
                 <Button
                     variant="ghost"
                     size="icon"
                     aria-label="Abrir barra lateral"
                     className="bg-card border rounded-full"
                 >
-                    <PanelRightClose className="h-5 w-5" />
+                    <List className="h-5 w-5" />
                 </Button>
             </SheetTrigger>
-          </div>
           <SheetContent side="left" className="w-72 bg-card p-0 text-card-foreground border-r">
             {children}
           </SheetContent>
@@ -87,19 +80,13 @@ export const Sidebar = ({
               className
           )}
       >
-          <div className={cn("h-full relative transition-transform duration-300 ease-in-out", open ? 'translate-x-0' : '-translate-x-full')}>
+          <div className={cn(
+              "h-full relative transition-opacity duration-300 ease-in-out overflow-hidden",
+               open ? 'opacity-100' : 'opacity-0'
+              )}>
               <div className='bg-card border rounded-lg h-full overflow-y-auto w-[280px]'>
                   {children}
               </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setOpen(false)}
-                  className="absolute top-2 -right-12 z-10 bg-card border rounded-full"
-                  aria-label="Cerrar barra lateral"
-              >
-                  <PanelLeftClose className="h-5 w-5" />
-              </Button>
           </div>
       </aside>
        {!open && isDesktop && (

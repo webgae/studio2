@@ -3,7 +3,7 @@
 import { type Post } from '@/lib/types';
 import { format } from 'date-fns';
 import { Badge } from './ui/badge';
-import { Calendar, User, Tag, ArrowLeft, ArrowUp, Menu, List } from 'lucide-react';
+import { Calendar, User, Tag, ArrowLeft, ArrowUp, Menu, List, PanelLeftClose } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import parse, { domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
@@ -55,7 +55,7 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
 export function TableOfContents({ postContent }: { postContent: string }) {
   const tocItems = useMemo(() => generateTocItems(postContent), [postContent]);
   const [activeToc, setActiveToc] = useState<string | null>(null);
-  const { setOpen } = useSidebar();
+  const { setOpen, isDesktop } = useSidebar();
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -87,8 +87,7 @@ export function TableOfContents({ postContent }: { postContent: string }) {
   const handleLinkClick = () => {
     // In mobile, sidebar is inside a Sheet, so we close it
      try {
-      const { isMobile } = useSidebar();
-      if (isMobile) {
+      if (!isDesktop) {
         setOpen(false);
       }
     } catch(e) {
@@ -103,9 +102,22 @@ export function TableOfContents({ postContent }: { postContent: string }) {
 
   return (
     <div className="flex h-full flex-col">
-        <div className="flex items-center gap-2 p-4 border-b">
-            <List className="h-5 w-5" />
-            <h2 className="text-xl font-bold font-headline">Tabla de Contenidos</h2>
+        <div className="flex items-center justify-between gap-2 p-4 border-b">
+            <div className="flex items-center gap-2">
+                <List className="h-5 w-5" />
+                <h2 className="text-xl font-bold font-headline">Contenidos</h2>
+            </div>
+            {isDesktop && (
+                 <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setOpen(false)}
+                  className="h-8 w-8"
+                  aria-label="Cerrar barra lateral"
+              >
+                  <PanelLeftClose className="h-5 w-5" />
+              </Button>
+            )}
         </div>
         <div className="flex-1 overflow-y-auto">
           <ul className="space-y-1 p-4">
