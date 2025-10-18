@@ -25,38 +25,34 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
   const slugCounts: { [key: string]: number } = {};
 
   const getDeepText = (node: Node | Node[]): string => {
-      if (node instanceof Text) return node.data;
-      if (Array.isArray(node)) return node.map(getDeepText).join('');
-      if (node instanceof Element && node.children) {
-        // Recursively get text from children
-        return (node.children as Node[]).map(getDeepText).join('');
-      }
-      return '';
+    if (!node) return '';
+    if (node instanceof Text) return node.data;
+    if (Array.isArray(node)) return node.map(getDeepText).join('');
+    if (node instanceof Element && node.children) {
+      return (node.children as Node[]).map(getDeepText).join('');
+    }
+    return '';
   };
-  
+
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element) {
         if (/h[2-3]/.test(domNode.name)) {
-          const children = domNode.children;
-          if (children && children.length > 0) {
-            
-            const textContent = getDeepText(children).trim();
-            
-            if (textContent) {
-              let slug = slugify(textContent);
-              const level = parseInt(domNode.name.substring(1), 10);
+          const textContent = getDeepText(domNode.children as Node[]).trim();
 
-              // Ensure slug is unique
-              if (slugCounts[slug] !== undefined) {
-                slugCounts[slug]++;
-                slug = `${slug}-${slugCounts[slug]}`;
-              } else {
-                slugCounts[slug] = 0; // Start with 0 for the first one, it won't get a suffix
-              }
+          if (textContent) {
+            let baseSlug = slugify(textContent);
+            let slug = baseSlug;
+            let counter = 1;
 
-              tocItems.push({ text: textContent, slug, level });
+            while (slugCounts[slug] !== undefined) {
+              counter++;
+              slug = `${baseSlug}-${counter}`;
             }
+            slugCounts[slug] = 1;
+            
+            const level = parseInt(domNode.name.substring(1), 10);
+            tocItems.push({ text: textContent, slug, level });
           }
         }
       }
@@ -64,20 +60,7 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
   };
 
   parse(htmlContent, options);
-  
-  // This second pass ensures uniqueness even if slugify produces identical base slugs
-  // before the first pass adds suffixes.
-  const finalSlugCounts: { [key:string]: number } = {};
-  return tocItems.map(item => {
-    let newSlug = item.slug;
-    if (finalSlugCounts[newSlug] !== undefined) {
-      finalSlugCounts[newSlug]++;
-      newSlug = `${newSlug}-${finalSlugCounts[newSlug]}`;
-    } else {
-      finalSlugCounts[newSlug] = 1;
-    }
-    return { ...item, slug: newSlug };
-  });
+  return tocItems;
 };
 
 
@@ -95,18 +78,22 @@ export function TableOfContents({ postContent }: { postContent: string }) {
         setOpen(false);
     }
     
-    // Use requestAnimationFrame to ensure the scroll happens after the sidebar has started closing.
-    requestAnimationFrame(() => {
+    // The sheet closing animation is 300ms. We wait a bit longer.
+    const scrollDelay = isDesktop ? 0 : 350;
+
+    setTimeout(() => {
         const element = document.getElementById(slug);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Optionally, update the URL hash
+            // Update URL without causing a re-render/navigation
             window.history.pushState(null, '', `#${slug}`);
         }
-    });
+    }, scrollDelay);
   };
 
   useEffect(() => {
+    // This logic ensures that slugs are added to the headings for the IntersectionObserver
+    // It's part of the main PostDetail component now. This effect is just for observation.
     const callback: IntersectionObserverCallback = (entries) => {
         let visibleSlug: string | null = null;
         for (const entry of entries) {
@@ -115,9 +102,8 @@ export function TableOfContents({ postContent }: { postContent: string }) {
                 break;
             }
         }
-        if (visibleSlug) {
-            setActiveToc(visibleSlug);
-        }
+        // Only set active if it's a new one, to avoid re-renders
+        setActiveToc(currentActive => visibleSlug ? visibleSlug : currentActive);
     };
 
     observer.current = new IntersectionObserver(callback, {
@@ -180,26 +166,34 @@ export function TableOfContents({ postContent }: { postContent: string }) {
 const parseContent = (htmlContent: string) => {
     const slugCounts: { [key: string]: number } = {};
 
+    const getDeepText = (node: Node | Node[]): string => {
+        if (!node) return '';
+        if (node instanceof Text) return node.data;
+        if (Array.isArray(node)) return node.map(getDeepText).join('');
+        if (node instanceof Element && node.children) {
+        return (node.children as Node[]).map(getDeepText).join('');
+        }
+        return '';
+    };
+
     const options: HTMLReactParserOptions = {
         replace: (domNode) => {
           if (domNode instanceof Element) {
-            if (/h[2-4]/.test(domNode.name)) {
-                const children = domNode.children;
-                if (children && children.length > 0) {
-                    const text = domToReact(children) as string | any[];
-                    const textContent = (Array.isArray(text) ? text.flat(Infinity).join('') : text)
-                      .toString()
-                      .replace(/<[^>]+>/g, '');
+            if (/h[2-3]/.test(domNode.name)) {
+                const textContent = getDeepText(domNode.children as Node[]).trim();
+                
+                if (textContent) {
+                    let baseSlug = slugify(textContent);
+                    let slug = baseSlug;
+                    let counter = 1;
                     
-                    let slug = slugify(textContent);
-                    if (slugCounts[slug] !== undefined) {
-                        slugCounts[slug]++;
-                        slug = `${slug}-${slugCounts[slug]}`;
-                    } else {
-                        slugCounts[slug] = 1;
+                    while (slugCounts[slug] !== undefined) {
+                      counter++;
+                      slug = `${baseSlug}-${counter}`;
                     }
+                    slugCounts[slug] = 1;
 
-                    const HeadingTag = domNode.name;
+                    const HeadingTag = domNode.name as 'h2' | 'h3';
                     return <HeadingTag id={slug}>{domToReact(domNode.children, options)}</HeadingTag>;
                 }
             }
