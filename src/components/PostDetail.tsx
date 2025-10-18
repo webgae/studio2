@@ -28,9 +28,6 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
     if (node instanceof Text) return node.data;
     if (Array.isArray(node)) return node.map(getDeepText).join('');
     if (node instanceof Element && node.children) {
-      if(node.type === 'tag' && (node.name === 'code' || node.name === 'strong' || node.name === 'em')) {
-        return getDeepText(node.children);
-      }
       return node.children.map(getDeepText).join('');
     }
     return '';
@@ -54,7 +51,7 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
                 slugCounts[slug]++;
                 slug = `${slug}-${slugCounts[slug]}`;
               } else {
-                slugCounts[slug] = 1;
+                slugCounts[slug] = 0; // Start with 0 for the first one, it won't get a suffix
               }
 
               tocItems.push({ text: textContent, slug, level });
@@ -66,7 +63,18 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
   };
 
   parse(htmlContent, options);
-  return tocItems;
+  
+  const finalSlugCounts: { [key: string]: number } = {};
+  return tocItems.map(item => {
+    let newSlug = item.slug;
+    if (finalSlugCounts[newSlug] !== undefined) {
+      finalSlugCounts[newSlug]++;
+      newSlug = `${newSlug}-${finalSlugCounts[newSlug]}`;
+    } else {
+      finalSlugCounts[newSlug] = 1;
+    }
+    return { ...item, slug: newSlug };
+  });
 };
 
 
@@ -103,16 +111,6 @@ export function TableOfContents({ postContent }: { postContent: string }) {
   }, [tocItems]);
   
 
-  const handleLinkClick = () => {
-     try {
-      if (!isDesktop) {
-        setOpen(false);
-      }
-    } catch(e) {
-      // safely ignore
-    }
-  }
-
   if (tocItems.length < 2) {
     return null;
   }
@@ -140,7 +138,11 @@ export function TableOfContents({ postContent }: { postContent: string }) {
               <li key={item.slug} style={{ paddingLeft: `${(item.level - 2) * 1}rem` }}>
                 <a
                   href={`#${item.slug}`}
-                  onClick={handleLinkClick}
+                  onClick={() => {
+                    if (!isDesktop) {
+                        setOpen(false);
+                    }
+                  }}
                   className={cn(
                     "block p-2 rounded-md text-sm transition-colors",
                     activeToc === item.slug
