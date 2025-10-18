@@ -238,7 +238,7 @@ export default function PostDetail({ post }: { post: Post }) {
       <Button
         onClick={scrollToTop}
         className={cn(
-          'fixed bottom-8 right-8 z-50 rounded-full h-12 w-12 shadow-lg transition-opacity duration-300',
+          'fixed bottom-8 right-8 z-50 rounded-full h-12 w-12 shadow-lg transition-opacity duration-300 lg:hidden',
           showScrollButton ? 'opacity-100' : 'opacity-0 pointer-events-none'
         )}
         size="icon"
