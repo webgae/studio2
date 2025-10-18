@@ -36,9 +36,10 @@ export const Sidebar = ({
   React.useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 1024px)');
     const handler = () => {
-        setIsDesktop(mediaQuery.matches);
+        const isDesktopQuery = mediaQuery.matches;
+        setIsDesktop(isDesktopQuery);
         // Open by default on desktop, close on mobile
-        setOpen(mediaQuery.matches);
+        setOpen(isDesktopQuery);
     };
     mediaQuery.addEventListener('change', handler);
     handler(); // Initial check
