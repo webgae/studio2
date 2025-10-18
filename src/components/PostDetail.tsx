@@ -22,23 +22,31 @@ type TocItem = {
 // Function to extract headings and generate TOC
 const generateTocItems = (htmlContent: string): TocItem[] => {
   const tocItems: TocItem[] = [];
-  
+  const slugCounts: { [key: string]: number } = {};
+
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element) {
         if (/h[2-4]/.test(domNode.name)) {
           const children = domNode.children;
           if (children && children.length > 0) {
-            // This is a simplified way to get text content.
-            // For complex content (like nested tags), a more robust solution might be needed.
             const text = domToReact(children, options) as string | any[];
             const textContent = (Array.isArray(text) ? text.flat(Infinity).join('') : text)
                 .toString()
-                .replace(/<[^>]+>/g, ''); // Strip any remaining HTML from complex children
+                .replace(/<[^>]+>/g, '');
             
             if (textContent) {
-              const slug = slugify(textContent);
-              const level = parseInt(domNode.name.substring(1), 10); // H2 -> 2, H3 -> 3, H4 -> 4
+              let slug = slugify(textContent);
+              const level = parseInt(domNode.name.substring(1), 10);
+
+              // Ensure slug is unique
+              if (slugCounts[slug]) {
+                slugCounts[slug]++;
+                slug = `${slug}-${slugCounts[slug]}`;
+              } else {
+                slugCounts[slug] = 1;
+              }
+
               tocItems.push({ text: textContent, slug, level });
             }
           }
@@ -47,7 +55,7 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
     },
   };
 
-  parse(htmlContent, options); // We only run this to populate tocItems
+  parse(htmlContent, options);
   return tocItems;
 };
 
@@ -64,7 +72,7 @@ export function TableOfContents({ postContent }: { postContent: string }) {
         for (const entry of entries) {
             if (entry.isIntersecting) {
                 visibleSlug = entry.target.id;
-                break; // Prioritize the first visible item from the top
+                break;
             }
         }
         if (visibleSlug) {
@@ -85,14 +93,12 @@ export function TableOfContents({ postContent }: { postContent: string }) {
   
 
   const handleLinkClick = () => {
-    // In mobile, sidebar is inside a Sheet, so we close it
      try {
       if (!isDesktop) {
         setOpen(false);
       }
     } catch(e) {
-      // useSidebar will throw if not in context, which happens on first render on server.
-      // We can safely ignore this.
+      // safely ignore
     }
   }
 
@@ -107,17 +113,15 @@ export function TableOfContents({ postContent }: { postContent: string }) {
                 <List className="h-5 w-5" />
                 <h2 className="text-xl font-bold font-headline">Contenidos</h2>
             </div>
-            {isDesktop && (
-                 <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setOpen(false)}
-                  className="h-8 w-8"
-                  aria-label="Cerrar barra lateral"
-              >
-                  <PanelLeftClose className="h-5 w-5" />
-              </Button>
-            )}
+             <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setOpen(false)}
+              className="h-8 w-8"
+              aria-label="Cerrar barra lateral"
+          >
+              <PanelLeftClose className="h-5 w-5" />
+          </Button>
         </div>
         <div className="flex-1 overflow-y-auto">
           <ul className="space-y-1 p-4">
@@ -144,6 +148,8 @@ export function TableOfContents({ postContent }: { postContent: string }) {
 }
 
 const parseContent = (htmlContent: string) => {
+    const slugCounts: { [key: string]: number } = {};
+
     const options: HTMLReactParserOptions = {
         replace: (domNode) => {
           if (domNode instanceof Element) {
@@ -154,7 +160,15 @@ const parseContent = (htmlContent: string) => {
                     const textContent = (Array.isArray(text) ? text.flat(Infinity).join('') : text)
                       .toString()
                       .replace(/<[^>]+>/g, '');
-                    const slug = slugify(textContent);
+                    
+                    let slug = slugify(textContent);
+                    if (slugCounts[slug]) {
+                        slugCounts[slug]++;
+                        slug = `${slug}-${slugCounts[slug]}`;
+                    } else {
+                        slugCounts[slug] = 1;
+                    }
+
                     const HeadingTag = domNode.name;
                     return <HeadingTag id={slug}>{domToReact(domNode.children, options)}</HeadingTag>;
                 }
