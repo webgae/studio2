@@ -6,7 +6,7 @@ import { Badge } from './ui/badge';
 import { Calendar, User, Tag, ArrowLeft, ArrowUp, Menu, List, PanelLeftClose } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
-import parse, { domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
+import parse, { domToReact, Element, HTMLReactParserOptions, Text } from 'html-react-parser';
 import Image from 'next/image';
 import { slugify } from '@/lib/utils';
 import { useState, useEffect, useRef, useMemo } from 'react';
@@ -24,23 +24,31 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
   const tocItems: TocItem[] = [];
   const slugCounts: { [key: string]: number } = {};
 
+  const getDeepText = (node: any): string => {
+    if (typeof node === 'string') return node;
+    if (node instanceof Text) return node.data;
+    if (Array.isArray(node)) return node.map(getDeepText).join('');
+    if (node.props && node.props.children) {
+      return getDeepText(node.props.children);
+    }
+    return '';
+  };
+  
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element) {
         if (/h[2-4]/.test(domNode.name)) {
           const children = domNode.children;
           if (children && children.length > 0) {
-            const text = domToReact(children, options) as string | any[];
-            const textContent = (Array.isArray(text) ? text.flat(Infinity).join('') : text)
-                .toString()
-                .replace(/<[^>]+>/g, '');
+            const textNodes = domToReact(children, options);
+            const textContent = getDeepText(textNodes).trim();
             
             if (textContent) {
               let slug = slugify(textContent);
               const level = parseInt(domNode.name.substring(1), 10);
 
               // Ensure slug is unique
-              if (slugCounts[slug]) {
+              if (slugCounts[slug] !== undefined) {
                 slugCounts[slug]++;
                 slug = `${slug}-${slugCounts[slug]}`;
               } else {
@@ -58,6 +66,7 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
   parse(htmlContent, options);
   return tocItems;
 };
+
 
 // Separated Table of Contents component
 export function TableOfContents({ postContent }: { postContent: string }) {
@@ -162,7 +171,7 @@ const parseContent = (htmlContent: string) => {
                       .replace(/<[^>]+>/g, '');
                     
                     let slug = slugify(textContent);
-                    if (slugCounts[slug]) {
+                    if (slugCounts[slug] !== undefined) {
                         slugCounts[slug]++;
                         slug = `${slug}-${slugCounts[slug]}`;
                     } else {
