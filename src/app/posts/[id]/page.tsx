@@ -117,7 +117,7 @@ export default async function PostPage({ params }: Props) {
               type="application/ld+json"
               dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-             <div className="max-w-4xl mx-auto p-4 sm:p-8">
+            <div className="max-w-7xl mx-auto p-4 sm:p-8">
                 <Breadcrumbs
                     items={[
                     { label: 'Inicio', href: '/' },
@@ -127,7 +127,9 @@ export default async function PostPage({ params }: Props) {
                     className="mb-8"
                 />
             </div>
+            
             <PostDetail post={post} />
+
             <div className="max-w-4xl mx-auto p-4 sm:p-8">
                  <Suspense fallback={<RelatedPostsLoading />}>
                     <RelatedPosts currentPostId={post.id} labels={post.labels} />
