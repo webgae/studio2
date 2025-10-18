@@ -125,21 +125,21 @@ export default async function PostPage({ params }: Props) {
                 </Sidebar>
                 
                 <main className="flex-1 min-w-0 py-8">
-                    <div className="flex items-center justify-end gap-4 mb-8 lg:hidden">
-                         <Breadcrumbs
-                            items={[
-                            { label: 'Blog', href: '/blog' },
-                            { label: truncateText(post.title, 20), href: `/posts/${params.id}` },
-                            ]}
-                        />
-                    </div>
                      <Breadcrumbs
                         items={[
-                        { label: 'Inicio', href: '/' },
-                        { label: 'Blog', href: '/blog' },
-                        { label: truncateText(post.title, 50), href: `/posts/${params.id}` },
+                          { label: 'Inicio', href: '/' },
+                          { label: 'Blog', href: '/blog' },
+                          { 
+                            label: (
+                              <>
+                                <span className="lg:hidden">{truncateText(post.title, 20)}</span>
+                                <span className="hidden lg:inline">{truncateText(post.title, 50)}</span>
+                              </>
+                            ),
+                            href: `/posts/${params.id}` 
+                          },
                         ]}
-                        className="mb-8 hidden lg:flex"
+                        className="mb-8"
                     />
                     <PostDetail post={post} />
                     <div className="max-w-4xl mx-auto">

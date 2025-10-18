@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { Fragment } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 interface BreadcrumbItem {
   href: string;
-  label: string;
+  label: ReactNode;
 }
 
 interface BreadcrumbsProps {
