@@ -1,6 +1,6 @@
 import { getPostById, getAllPosts, extractImageUrl, createExcerpt } from '@/lib/blogger';
 import { notFound } from 'next/navigation';
-import PostDetail from '@/components/PostDetail';
+import PostDetail, { TableOfContents } from '@/components/PostDetail';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { getIdFromSlug, createPostSlug, truncateText } from '@/lib/utils';
 import RelatedPosts from '@/components/RelatedPosts';
@@ -136,7 +136,7 @@ export default async function PostPage({ params }: Props) {
               {/* TOC for desktop, sticky */}
               <aside className="hidden lg:block relative">
                 <div className="sticky top-24">
-                  <PostDetail.TableOfContents postContent={post.content} />
+                  <TableOfContents postContent={post.content} />
                 </div>
               </aside>
             </div>

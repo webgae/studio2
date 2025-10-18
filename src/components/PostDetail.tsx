@@ -46,7 +46,7 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
 };
 
 // Componente separado para la Tabla de Contenidos
-function TableOfContents({ postContent }: { postContent: string }) {
+export function TableOfContents({ postContent }: { postContent: string }) {
   const tocItems = useMemo(() => generateTocItems(postContent), [postContent]);
   const [activeToc, setActiveToc] = useState<string | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
@@ -132,7 +132,7 @@ const parseContent = (htmlContent: string) => {
             if (domNode.name === 'img') {
               const { src, alt, width, height } = domNode.attribs;
               
-              const widthNum = width ? parseInt(width) : 700;
+              const widthNum = width ? parseInt(width) : 550;
               const heightNum = height ? parseInt(height) : 400;
     
               return (
@@ -153,7 +153,7 @@ const parseContent = (htmlContent: string) => {
     return parse(htmlContent, options);
 }
 
-function PostDetail({ post }: { post: Post }) {
+export default function PostDetail({ post }: { post: Post }) {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const modifiedContent = useMemo(() => parseContent(post.content), [post.content]);
 
@@ -249,7 +249,3 @@ function PostDetail({ post }: { post: Post }) {
     </>
   );
 }
-
-PostDetail.TableOfContents = TableOfContents;
-
-export default PostDetail;
