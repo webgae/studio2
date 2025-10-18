@@ -55,7 +55,7 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
 export function TableOfContents({ postContent }: { postContent: string }) {
   const tocItems = useMemo(() => generateTocItems(postContent), [postContent]);
   const [activeToc, setActiveToc] = useState<string | null>(null);
-  const { isMobile, setOpenMobile } = useSidebar();
+  const { setOpen } = useSidebar();
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -85,8 +85,15 @@ export function TableOfContents({ postContent }: { postContent: string }) {
   
 
   const handleLinkClick = () => {
-    if (isMobile) {
-      setOpenMobile(false);
+    // In mobile, sidebar is inside a Sheet, so we close it
+     try {
+      const { isMobile } = useSidebar();
+      if (isMobile) {
+        setOpen(false);
+      }
+    } catch(e) {
+      // useSidebar will throw if not in context, which happens on first render on server.
+      // We can safely ignore this.
     }
   }
 
@@ -231,7 +238,7 @@ export default function PostDetail({ post }: { post: Post }) {
         </div>
       </article>
       
-      {/* Scroll to top button for mobile */}
+      {/* Scroll to top button */}
       <Button
         onClick={scrollToTop}
         className={cn(

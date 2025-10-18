@@ -8,8 +8,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 type SidebarContextType = {
   isMobile: boolean
-  openMobile: boolean
-  setOpenMobile: (open: boolean) => void
+  isDesktop: boolean
+  open: boolean
+  setOpen: (open: boolean) => void
 }
 
 const SidebarContext = React.createContext<SidebarContextType | null>(null)
@@ -17,7 +18,7 @@ const SidebarContext = React.createContext<SidebarContextType | null>(null)
 export function useSidebar() {
   const context = React.useContext(SidebarContext)
   if (!context) {
-    throw new Error("useSidebar must be used within a SidebarProvider.")
+    throw new Error("useSidebar must be used within a Sidebar component.")
   }
   return context
 }
@@ -29,107 +30,92 @@ export const Sidebar = ({
   children: React.ReactNode,
   className?: string
 }) => {
-  const [openMobile, setOpenMobile] = React.useState(false);
-  const [desktopOpen, setDesktopOpen] = React.useState(true);
-  const isMediumScreen = useIsMediumScreen();
-
+  const [open, setOpen] = React.useState(false);
+  const [isDesktop, setIsDesktop] = React.useState(false);
+  
   React.useEffect(() => {
-    // Collapse sidebar by default on medium screens
-    if(isMediumScreen) {
-        setDesktopOpen(false);
-    }
-  }, [isMediumScreen]);
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    setIsDesktop(mediaQuery.matches);
+    const handler = () => setIsDesktop(mediaQuery.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+  
+  React.useEffect(() => {
+      // Open sidebar by default on desktop
+      if(isDesktop) {
+          setOpen(true)
+      } else {
+          setOpen(false)
+      }
+  }, [isDesktop])
 
-  // For mobile screens
-  const MobileSidebar = () => (
-    <div className="lg:hidden">
-      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-          <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                  <List className="h-6 w-6" />
-                  <span className="sr-only">Abrir Tabla de Contenidos</span>
-              </Button>
-          </SheetTrigger>
+  const contextValue = { isMobile: !isDesktop, isDesktop, open, setOpen };
+
+  // Mobile/Tablet sidebar
+  if (!isDesktop) {
+    return (
+      <SidebarContext.Provider value={contextValue}>
+        <Sheet open={open} onOpenChange={setOpen}>
+          <div className="lg:hidden absolute top-20 left-4 z-20">
+            <SheetTrigger asChild>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Abrir barra lateral"
+                    className="bg-card border rounded-full"
+                >
+                    <PanelRightClose className="h-5 w-5" />
+                </Button>
+            </SheetTrigger>
+          </div>
           <SheetContent side="left" className="w-72 bg-card p-0 text-card-foreground border-r">
-            <SidebarContext.Provider value={{ isMobile: true, openMobile, setOpenMobile }}>
-                {children}
-            </SidebarContext.Provider>
+            {children}
           </SheetContent>
-      </Sheet>
-    </div>
-  );
+        </Sheet>
+      </SidebarContext.Provider>
+    );
+  }
 
-  // For large screens
-  const DesktopSidebar = () => (
-     <aside
+  // Desktop sidebar
+  return (
+    <SidebarContext.Provider value={contextValue}>
+      <aside
           className={cn(
               "hidden lg:block sticky top-24 h-[calc(100vh-6rem)] transition-[width] duration-300 ease-in-out",
-              desktopOpen ? 'w-[280px]' : 'w-0',
+              open ? 'w-[280px]' : 'w-0',
               className
           )}
       >
-        <SidebarContext.Provider value={{ isMobile: false, openMobile: false, setOpenMobile: () => {} }}>
-            <div className={cn("h-full relative transition-transform duration-300 ease-in-out", desktopOpen ? 'translate-x-0' : '-translate-x-full')}>
-                <div className='bg-card border rounded-lg h-full overflow-y-auto w-[280px]'>
-                    {children}
-                </div>
-                 <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setDesktopOpen(false)}
-                    className="absolute top-2 -right-12 z-10 bg-card border rounded-full"
-                    aria-label="Cerrar barra lateral"
-                >
-                    <PanelLeftClose className="h-5 w-5" />
-                </Button>
-            </div>
-        </SidebarContext.Provider>
+          <div className={cn("h-full relative transition-transform duration-300 ease-in-out", open ? 'translate-x-0' : '-translate-x-full')}>
+              <div className='bg-card border rounded-lg h-full overflow-y-auto w-[280px]'>
+                  {children}
+              </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setOpen(false)}
+                  className="absolute top-2 -right-12 z-10 bg-card border rounded-full"
+                  aria-label="Cerrar barra lateral"
+              >
+                  <PanelLeftClose className="h-5 w-5" />
+              </Button>
+          </div>
       </aside>
-  );
-
-  if (!desktopOpen) {
-     return (
+       {!open && isDesktop && (
         <div className="hidden lg:block fixed top-24 left-4 z-20">
             <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setDesktopOpen(true)}
+                onClick={() => setOpen(true)}
                 aria-label="Abrir barra lateral"
                 className="bg-card border rounded-full"
             >
                 <PanelRightClose className="h-5 w-5" />
             </Button>
         </div>
-    )
-  }
-
-  return (
-    <>
-      <MobileSidebar />
-      <DesktopSidebar />
-    </>
+      )}
+    </SidebarContext.Provider>
   );
 }
 Sidebar.displayName = "Sidebar"
-
-// Hook to detect if it's a medium screen (like a tablet in portrait)
-function useIsMediumScreen() {
-    const [isMedium, setIsMedium] = React.useState(false);
-
-    React.useEffect(() => {
-        const mediaQuery = window.matchMedia('(min-width: 1024px) and (max-width: 1279px)');
-        
-        const handleResize = (e: MediaQueryListEvent) => {
-            setIsMedium(e.matches);
-        };
-
-        // Set initial state
-        setIsMedium(mediaQuery.matches);
-
-        mediaQuery.addEventListener('change', handleResize);
-        
-        return () => mediaQuery.removeEventListener('change', handleResize);
-    }, []);
-
-    return isMedium;
-}

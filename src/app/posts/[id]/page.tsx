@@ -9,8 +9,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { type BlogPosting, type WithContext } from 'schema-dts';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { Sidebar } from '@/components/Sidebar';
-import { Button } from '@/components/ui/button';
-import { List } from 'lucide-react';
 
 
 type Props = {
@@ -127,10 +125,7 @@ export default async function PostPage({ params }: Props) {
                 </Sidebar>
                 
                 <main className="flex-1 min-w-0 py-8">
-                    <div className="flex items-center justify-between gap-4 mb-8 lg:hidden">
-                       <Sidebar>
-                            <TableOfContents postContent={post.content} />
-                        </Sidebar>
+                    <div className="flex items-center justify-end gap-4 mb-8 lg:hidden">
                          <Breadcrumbs
                             items={[
                             { label: 'Blog', href: '/blog' },
