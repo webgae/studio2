@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { type BlogPosting, type WithContext } from 'schema-dts';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { SidebarProvider } from '@/components/Sidebar';
 
 
 type Props = {
@@ -112,42 +113,37 @@ export default async function PostPage({ params }: Props) {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
-            <script
-              type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-             <div className="max-w-7xl mx-auto p-4 sm:p-8">
-                <Breadcrumbs
-                    items={[
-                    { label: 'Inicio', href: '/' },
-                    { label: 'Blog', href: '/blog' },
-                    { label: truncateText(post.title, 50), href: `/posts/${params.id}` },
-                    ]}
-                    className="mb-8"
+        <SidebarProvider>
+            <div className="max-w-7xl mx-auto px-4 sm:px-8">
+                <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
                 />
-            </div>
-            
-            <div className="lg:grid lg:grid-cols-[280px,1fr] lg:gap-12">
-               {/* TOC for desktop, sticky */}
-              <aside className="hidden lg:block relative">
-                <div className="sticky top-24">
-                  <TableOfContents postContent={post.content} />
+                
+                <div className="flex relative">
+                    <TableOfContents postContent={post.content} />
+
+                    <main className="flex-1 min-w-0">
+                        <div className="max-w-4xl mx-auto p-4 sm:p-8">
+                            <Breadcrumbs
+                                items={[
+                                { label: 'Inicio', href: '/' },
+                                { label: 'Blog', href: '/blog' },
+                                { label: truncateText(post.title, 50), href: `/posts/${params.id}` },
+                                ]}
+                                className="mb-8"
+                            />
+                            <PostDetail post={post} />
+                        </div>
+                        <div className="max-w-4xl mx-auto p-4 sm:p-8">
+                            <Suspense fallback={<RelatedPostsLoading />}>
+                                <RelatedPosts currentPostId={post.id} labels={post.labels} />
+                            </Suspense>
+                        </div>
+                    </main>
                 </div>
-              </aside>
-
-              <main>
-                <PostDetail post={post} />
-              </main>
             </div>
-            
-
-            <div className="max-w-4xl mx-auto p-4 sm:p-8">
-                 <Suspense fallback={<RelatedPostsLoading />}>
-                    <RelatedPosts currentPostId={post.id} labels={post.labels} />
-                </Suspense>
-            </div>
-        </div>
+        </SidebarProvider>
     );
   } catch (error) {
     console.error(`Error fetching post ${params.id}:`, error);

@@ -3,7 +3,7 @@
 import { type Post } from '@/lib/types';
 import { format } from 'date-fns';
 import { Badge } from './ui/badge';
-import { Calendar, User, Tag, ArrowLeft, List, ArrowUp } from 'lucide-react';
+import { Calendar, User, Tag, ArrowLeft, ArrowUp, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import parse, { domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { slugify } from '@/lib/utils';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { cn } from '@/lib/utils';
+import { useSidebar, Sidebar, SidebarTrigger } from './Sidebar';
 
 type TocItem = {
   text: string;
@@ -18,21 +19,21 @@ type TocItem = {
   level: number;
 };
 
-// Función para extraer encabezados y generar la TOC
+// Function to extract headings and generate TOC
 const generateTocItems = (htmlContent: string): TocItem[] => {
   const tocItems: TocItem[] = [];
   
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element) {
-        if (domNode.name === 'h2' || domNode.name === 'h3') {
+        if (/h[2-4]/.test(domNode.name)) {
           const children = domNode.children;
           if (children && children.length > 0) {
             const text = domToReact(children) as string | string[];
             const textContent = Array.isArray(text) ? text.join('') : text;
             if (textContent) {
               const slug = slugify(textContent);
-              const level = domNode.name === 'h2' ? 1 : 2;
+              const level = parseInt(domNode.name.substring(1), 10); // H2 -> 2, H3 -> 3, H4 -> 4
               tocItems.push({ text: textContent, slug, level });
             }
           }
@@ -45,30 +46,19 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
   return tocItems;
 };
 
-// Componente separado para la Tabla de Contenidos
+// Separated Table of Contents component
 export function TableOfContents({ postContent }: { postContent: string }) {
   const tocItems = useMemo(() => generateTocItems(postContent), [postContent]);
   const [activeToc, setActiveToc] = useState<string | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
-  const headingsRef = useRef<Map<string, IntersectionObserverEntry>>(new Map());
-  
+
   useEffect(() => {
     const callback: IntersectionObserverCallback = (entries) => {
         entries.forEach(entry => {
-            headingsRef.current.set(entry.target.id, entry);
-        });
-
-        const visibleHeadings: IntersectionObserverEntry[] = [];
-        headingsRef.current.forEach(entry => {
             if (entry.isIntersecting) {
-                visibleHeadings.push(entry);
+                setActiveToc(entry.target.id);
             }
         });
-
-        if (visibleHeadings.length > 0) {
-            visibleHeadings.sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
-            setActiveToc(visibleHeadings[0].target.id);
-        }
     };
 
     observer.current = new IntersectionObserver(callback, {
@@ -82,36 +72,52 @@ export function TableOfContents({ postContent }: { postContent: string }) {
     return () => observer.current?.disconnect();
   }, [tocItems]);
   
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  }
+
   if (tocItems.length < 2) {
     return null;
   }
 
   return (
-    <div id="toc">
-      <div className="bg-card/50 border rounded-lg p-6">
-        <h2 className="text-xl font-bold font-headline flex items-center gap-2 mb-4">
-          <List className="w-5 h-5" />
-          Tabla de Contenidos
-        </h2>
-        <ul className="space-y-2">
-          {tocItems.map((item) => (
-            <li key={item.slug} style={{ marginLeft: `${(item.level - 1) * 1}rem` }}>
-              <a
-                href={`#${item.slug}`}
-                className={cn(
-                  "block p-2 rounded-md text-sm transition-colors",
-                  activeToc === item.slug
-                    ? "bg-primary/20 text-primary font-semibold"
-                    : "text-muted-foreground hover:text-primary hover:bg-primary/10"
-                )}
-              >
-                {item.text}
-              </a>
-            </li>
-          ))}
-        </ul>
+    <>
+      <div className='absolute top-4 left-4 z-20 lg:hidden'>
+        <SidebarTrigger />
       </div>
-    </div>
+      <Sidebar>
+          <div className="flex h-full flex-col">
+              <div className="flex items-center justify-between p-4 border-b">
+                  <h2 className="text-xl font-bold font-headline">Índice</h2>
+                  <SidebarTrigger className='lg:hidden' />
+              </div>
+              <div className="flex-1 overflow-y-auto">
+                <ul className="space-y-1 p-4">
+                  {tocItems.map((item) => (
+                    <li key={item.slug} style={{ paddingLeft: `${(item.level - 2) * 1}rem` }}>
+                      <a
+                        href={`#${item.slug}`}
+                        onClick={handleLinkClick}
+                        className={cn(
+                          "block p-2 rounded-md text-sm transition-colors",
+                          activeToc === item.slug
+                            ? "bg-primary/20 text-primary font-semibold"
+                            : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                        )}
+                      >
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+          </div>
+      </Sidebar>
+    </>
   );
 }
 
@@ -119,7 +125,7 @@ const parseContent = (htmlContent: string) => {
     const options: HTMLReactParserOptions = {
         replace: (domNode) => {
           if (domNode instanceof Element) {
-            if (domNode.name === 'h2' || domNode.name === 'h3') {
+            if (/h[2-4]/.test(domNode.name)) {
                 const children = domNode.children;
                 if (children && children.length > 0) {
                     const text = domToReact(children) as string | string[];
@@ -193,14 +199,9 @@ export default function PostDetail({ post }: { post: Post }) {
             <time dateTime={post.published}>{format(new Date(post.published), 'MMMM d, yyyy')}</time>
           </div>
         </div>
-
-        {/* TOC para móvil, estática */}
-        <div className="lg:hidden mb-10">
-            <TableOfContents postContent={post.content}/>
-        </div>
         
         <div
-          className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:underline prose-img:rounded-lg prose-h2:scroll-mt-24 prose-h3:scroll-mt-24"
+          className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:underline prose-img:rounded-lg prose-h2:scroll-mt-24 prose-h3:scroll-mt-24 prose-h4:scroll-mt-24"
         >
           {modifiedContent}
         </div>
@@ -234,7 +235,7 @@ export default function PostDetail({ post }: { post: Post }) {
         </div>
       </article>
       
-      {/* Botón de volver arriba */}
+      {/* Scroll to top button for mobile */}
       <Button
         onClick={scrollToTop}
         className={cn(
