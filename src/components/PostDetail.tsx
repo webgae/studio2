@@ -3,7 +3,7 @@
 import { type Post } from '@/lib/types';
 import { format } from 'date-fns';
 import { Badge } from './ui/badge';
-import { Calendar, User, Tag, ArrowLeft, ArrowUp, Menu } from 'lucide-react';
+import { Calendar, User, Tag, ArrowLeft, ArrowUp, Menu, List } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import parse, { domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { slugify } from '@/lib/utils';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { cn } from '@/lib/utils';
-import { useSidebar, Sidebar, SidebarTrigger } from './Sidebar';
+import { useSidebar } from './Sidebar';
 
 type TocItem = {
   text: string;
@@ -50,6 +50,7 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
 export function TableOfContents({ postContent }: { postContent: string }) {
   const tocItems = useMemo(() => generateTocItems(postContent), [postContent]);
   const [activeToc, setActiveToc] = useState<string | null>(null);
+  const { isMobile, setOpenMobile } = useSidebar();
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -72,7 +73,6 @@ export function TableOfContents({ postContent }: { postContent: string }) {
     return () => observer.current?.disconnect();
   }, [tocItems]);
   
-  const { isMobile, setOpenMobile } = useSidebar();
 
   const handleLinkClick = () => {
     if (isMobile) {
@@ -85,39 +85,32 @@ export function TableOfContents({ postContent }: { postContent: string }) {
   }
 
   return (
-    <>
-      <div className='absolute top-4 left-4 z-20 lg:hidden'>
-        <SidebarTrigger />
-      </div>
-      <Sidebar>
-          <div className="flex h-full flex-col">
-              <div className="flex items-center justify-between p-4 border-b">
-                  <h2 className="text-xl font-bold font-headline">Índice</h2>
-                  <SidebarTrigger className='lg:hidden' />
-              </div>
-              <div className="flex-1 overflow-y-auto">
-                <ul className="space-y-1 p-4">
-                  {tocItems.map((item) => (
-                    <li key={item.slug} style={{ paddingLeft: `${(item.level - 2) * 1}rem` }}>
-                      <a
-                        href={`#${item.slug}`}
-                        onClick={handleLinkClick}
-                        className={cn(
-                          "block p-2 rounded-md text-sm transition-colors",
-                          activeToc === item.slug
-                            ? "bg-primary/20 text-primary font-semibold"
-                            : "text-muted-foreground hover:text-primary hover:bg-primary/10"
-                        )}
-                      >
-                        {item.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-          </div>
-      </Sidebar>
-    </>
+    <div className="flex h-full flex-col">
+        <div className="flex items-center gap-2 p-4 border-b">
+            <List className="h-5 w-5" />
+            <h2 className="text-xl font-bold font-headline">Tabla de Contenidos</h2>
+        </div>
+        <div className="flex-1 overflow-y-auto">
+          <ul className="space-y-1 p-4">
+            {tocItems.map((item) => (
+              <li key={item.slug} style={{ paddingLeft: `${(item.level - 2) * 1}rem` }}>
+                <a
+                  href={`#${item.slug}`}
+                  onClick={handleLinkClick}
+                  className={cn(
+                    "block p-2 rounded-md text-sm transition-colors",
+                    activeToc === item.slug
+                      ? "bg-primary/20 text-primary font-semibold"
+                      : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                  )}
+                >
+                  {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+    </div>
   );
 }
 
@@ -178,15 +171,6 @@ export default function PostDetail({ post }: { post: Post }) {
   return (
     <>
       <article className="max-w-4xl mx-auto bg-card p-4 sm:p-8 rounded-lg shadow-lg border relative">
-        <div className="mb-6">
-          <Button asChild variant="ghost" className="text-muted-foreground hover:text-primary hover:bg-transparent px-0">
-            <Link href="/blog" className="inline-flex items-center gap-2">
-              <ArrowLeft className="w-4 h-4" />
-              Volver al blog
-            </Link>
-          </Button>
-        </div>
-
         <h1 className="text-3xl md:text-5xl font-bold font-headline mb-4 text-center">{post.title}</h1>
         
         <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-muted-foreground mb-8 text-sm">

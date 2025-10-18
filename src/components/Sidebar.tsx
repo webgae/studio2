@@ -5,16 +5,16 @@ import { Menu } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger as RadixSheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger as RadixSheetTrigger, SheetClose } from "@/components/ui/sheet"
 
-type SidebarContext = {
+type SidebarContextType = {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
   isMobile: boolean
   setOpenMobile: (open: boolean) => void
 }
 
-const SidebarContext = React.createContext<SidebarContext | null>(null)
+const SidebarContext = React.createContext<SidebarContextType | null>(null)
 
 export function useSidebar() {
   const context = React.useContext(SidebarContext)
@@ -79,39 +79,45 @@ export const SidebarProvider = ({
   )
 }
 
-export const Sidebar = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => {
-  const { isOpen, isMobile } = useSidebar()
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  trigger?: React.ReactNode;
+  children: React.ReactNode;
+}
 
-  if (isMobile) {
+export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
+  ({ className, children, trigger, ...props }, ref) => {
+    const { isOpen, setIsOpen, isMobile, openMobile, setOpenMobile } = useSidebar()
+
+    if (isMobile) {
+      return (
+        <Sheet open={openMobile} onOpenChange={setOpenMobile}>
+          {trigger}
+          <SheetContent side="left" className={cn("w-72 bg-card p-0 text-card-foreground border-r", className)}>
+            {children}
+          </SheetContent>
+        </Sheet>
+      );
+    }
+
     return (
-        <SheetContent
-          side="left"
-          className={cn("w-72 bg-card p-0 text-card-foreground border-r", className)}
+        <aside
+            ref={ref}
+            className={cn(
+                "hidden lg:block sticky top-24 h-[calc(100vh-6rem)] transition-all duration-300 ease-in-out",
+                isOpen ? "w-72" : "w-0",
+                className
+            )}
+            {...props}
         >
-          {children}
-        </SheetContent>
+            <div className={cn("h-full transition-opacity duration-300", isOpen ? "opacity-100" : "opacity-0 pointer-events-none")}>
+                <div className='bg-card border rounded-lg h-full'>
+                    {isOpen && children}
+                </div>
+            </div>
+        </aside>
     )
   }
-
-  return (
-    <aside
-      ref={ref}
-      className={cn(
-        "hidden lg:block sticky top-0 h-screen transition-all duration-300 ease-in-out",
-        isOpen ? "w-72" : "w-0",
-        className
-      )}
-      {...props}
-    >
-      <div className={cn("h-full transition-opacity duration-300", isOpen ? "opacity-100" : "opacity-0 pointer-events-none")}>
-         {isOpen && children}
-      </div>
-    </aside>
-  )
-})
+)
 Sidebar.displayName = "Sidebar"
 
 
@@ -119,22 +125,39 @@ export const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, ...props }, ref) => {
-  const { isOpen, setIsOpen } = useSidebar()
+    const { isMobile } = useSidebar();
 
-  return (
-    <RadixSheetTrigger asChild>
-      <Button
-        ref={ref}
-        variant="ghost"
-        size="icon"
-        onClick={() => setIsOpen(!isOpen)}
-        className={className}
-        {...props}
-      >
-        <Menu className="h-6 w-6" />
-        <span className="sr-only">Toggle Sidebar</span>
-      </Button>
-    </RadixSheetTrigger>
+    if(isMobile) {
+        return(
+            <RadixSheetTrigger asChild>
+                <Button
+                    ref={ref}
+                    variant="ghost"
+                    size="icon"
+                    className={className}
+                    {...props}
+                >
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Toggle Sidebar</span>
+                </Button>
+            </RadixSheetTrigger>
+        )
+    }
+
+    const { isOpen, setIsOpen } = useSidebar()
+
+    return (
+        <Button
+            ref={ref}
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsOpen(!isOpen)}
+            className={className}
+            {...props}
+        >
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Toggle Sidebar</span>
+        </Button>
   )
 })
 SidebarTrigger.displayName = "SidebarTrigger"
