@@ -6,7 +6,7 @@ import { Badge } from './ui/badge';
 import { Calendar, User, Tag, ArrowLeft, ArrowUp, Menu, List, PanelLeftClose } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
-import parse, { domToReact, Element, HTMLReactParserOptions, Text } from 'html-react-parser';
+import parse, { domToReact, Element, HTMLReactParserOptions, Text, Node } from 'html-react-parser';
 import Image from 'next/image';
 import { slugify } from '@/lib/utils';
 import { useState, useEffect, useRef, useMemo } from 'react';
@@ -24,12 +24,12 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
   const tocItems: TocItem[] = [];
   const slugCounts: { [key: string]: number } = {};
 
-  const getDeepText = (node: any): string => {
+  const getDeepText = (node: Node | Node[]): string => {
     if (typeof node === 'string') return node;
     if (node instanceof Text) return node.data;
     if (Array.isArray(node)) return node.map(getDeepText).join('');
-    if (node.props && node.props.children) {
-      return getDeepText(node.props.children);
+    if (node instanceof Element && node.children) {
+      return getDeepText(node.children);
     }
     return '';
   };
@@ -37,11 +37,10 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element) {
-        if (/h[2-4]/.test(domNode.name)) {
+        if (/h[2-3]/.test(domNode.name)) {
           const children = domNode.children;
           if (children && children.length > 0) {
-            const textNodes = domToReact(children, options);
-            const textContent = getDeepText(textNodes).trim();
+            const textContent = getDeepText(children).trim();
             
             if (textContent) {
               let slug = slugify(textContent);
@@ -72,7 +71,7 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
 export function TableOfContents({ postContent }: { postContent: string }) {
   const tocItems = useMemo(() => generateTocItems(postContent), [postContent]);
   const [activeToc, setActiveToc] = useState<string | null>(null);
-  const { setOpen, isDesktop } = useSidebar();
+  const { setOpen, isDesktop, setOpenDesktop } = useSidebar();
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -125,12 +124,12 @@ export function TableOfContents({ postContent }: { postContent: string }) {
              <Button
               variant="ghost"
               size="icon"
-              onClick={() => setOpen(false)}
-              className="h-8 w-8"
+              onClick={() => setOpenDesktop(false)}
+              className="h-8 w-8 hidden lg:flex"
               aria-label="Cerrar barra lateral"
-          >
+            >
               <PanelLeftClose className="h-5 w-5" />
-          </Button>
+            </Button>
         </div>
         <div className="flex-1 overflow-y-auto">
           <ul className="space-y-1 p-4">
