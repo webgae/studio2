@@ -25,12 +25,13 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
   const slugCounts: { [key: string]: number } = {};
 
   const getDeepText = (node: Node | Node[]): string => {
-    if (node instanceof Text) return node.data;
-    if (Array.isArray(node)) return node.map(getDeepText).join('');
-    if (node instanceof Element && node.children) {
-      return node.children.map(getDeepText).join('');
-    }
-    return '';
+      if (node instanceof Text) return node.data;
+      if (Array.isArray(node)) return node.map(getDeepText).join('');
+      if (node instanceof Element && node.children) {
+        // Recursively get text from children
+        return (node.children as Node[]).map(getDeepText).join('');
+      }
+      return '';
   };
   
   const options: HTMLReactParserOptions = {
@@ -64,7 +65,9 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
 
   parse(htmlContent, options);
   
-  const finalSlugCounts: { [key: string]: number } = {};
+  // This second pass ensures uniqueness even if slugify produces identical base slugs
+  // before the first pass adds suffixes.
+  const finalSlugCounts: { [key:string]: number } = {};
   return tocItems.map(item => {
     let newSlug = item.slug;
     if (finalSlugCounts[newSlug] !== undefined) {
@@ -84,6 +87,24 @@ export function TableOfContents({ postContent }: { postContent: string }) {
   const [activeToc, setActiveToc] = useState<string | null>(null);
   const { setOpen, isDesktop } = useSidebar();
   const observer = useRef<IntersectionObserver | null>(null);
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, slug: string) => {
+    e.preventDefault();
+    
+    if (!isDesktop) {
+        setOpen(false);
+    }
+    
+    // Use requestAnimationFrame to ensure the scroll happens after the sidebar has started closing.
+    requestAnimationFrame(() => {
+        const element = document.getElementById(slug);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Optionally, update the URL hash
+            window.history.pushState(null, '', `#${slug}`);
+        }
+    });
+  };
 
   useEffect(() => {
     const callback: IntersectionObserverCallback = (entries) => {
@@ -138,11 +159,7 @@ export function TableOfContents({ postContent }: { postContent: string }) {
               <li key={item.slug} style={{ paddingLeft: `${(item.level - 2) * 1}rem` }}>
                 <a
                   href={`#${item.slug}`}
-                  onClick={() => {
-                    if (!isDesktop) {
-                        setOpen(false);
-                    }
-                  }}
+                  onClick={(e) => handleLinkClick(e, item.slug)}
                   className={cn(
                     "block p-2 rounded-md text-sm transition-colors",
                     activeToc === item.slug
