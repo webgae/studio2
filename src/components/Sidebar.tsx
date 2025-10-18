@@ -5,12 +5,11 @@ import { Menu } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger as RadixSheetTrigger, SheetClose, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 
 type SidebarContextType = {
-  isOpen: boolean
-  setIsOpen: (open: boolean) => void
   isMobile: boolean
+  openMobile: boolean
   setOpenMobile: (open: boolean) => void
 }
 
@@ -47,29 +46,15 @@ export const SidebarProvider = ({
   children: React.ReactNode
 }) => {
   const isMobile = useIsMobile()
-  const [isOpen, setIsOpen] = React.useState(!isMobile)
   const [openMobile, setOpenMobile] = React.useState(false)
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsOpen(!isMobile);
-    }
-  }, [isMobile]);
-
-  React.useEffect(() => {
-    if (!isMobile) {
-      setOpenMobile(false);
-    }
-  }, [isMobile]);
-
+  
   const contextValue = React.useMemo(
     () => ({
-      isOpen: isMobile ? openMobile : isOpen,
-      setIsOpen: isMobile ? setOpenMobile : setIsOpen,
       isMobile,
-      setOpenMobile: setOpenMobile
+      openMobile,
+      setOpenMobile,
     }),
-    [isOpen, isMobile, openMobile, setIsOpen, setOpenMobile]
+    [isMobile, openMobile]
   )
 
   return (
@@ -80,18 +65,22 @@ export const SidebarProvider = ({
 }
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  trigger?: React.ReactNode;
   children: React.ReactNode;
 }
 
 export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
-  ({ className, children, trigger, ...props }, ref) => {
+  ({ className, children, ...props }, ref) => {
     const { isMobile, openMobile, setOpenMobile } = useSidebar()
 
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-            {trigger}
+            <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Abrir Tabla de Contenidos</span>
+                </Button>
+            </SheetTrigger>
             <SheetContent side="left" className={cn("w-72 bg-card p-0 text-card-foreground border-r", className)}>
               {children}
             </SheetContent>
@@ -109,7 +98,7 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
             {...props}
         >
             <div className={cn("h-full")}>
-                <div className='bg-card border rounded-lg h-full'>
+                <div className='bg-card border rounded-lg h-full overflow-y-auto'>
                     {children}
                 </div>
             </div>
@@ -119,31 +108,23 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 )
 Sidebar.displayName = "Sidebar"
 
-
+// This trigger is now part of the Sidebar component for mobile view.
+// You can remove the separate SidebarTrigger component if it's no longer used elsewhere.
 export const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, ...props }, ref) => {
-    const { isMobile } = useSidebar();
-
-    if(isMobile) {
-        return(
-            <RadixSheetTrigger asChild>
-                <Button
-                    ref={ref}
-                    variant="ghost"
-                    size="icon"
-                    className={className}
-                    {...props}
-                >
-                    <Menu className="h-6 w-6" />
-                    <span className="sr-only">Toggle Sidebar</span>
-                </Button>
-            </RadixSheetTrigger>
-        )
-    }
-
-    // No trigger for desktop in this design
-    return null;
+  return (
+      <Button
+          ref={ref}
+          variant="ghost"
+          size="icon"
+          className={cn(className, "lg:hidden")}
+          {...props}
+      >
+          <Menu className="h-6 w-6" />
+          <span className="sr-only">Toggle Sidebar</span>
+      </Button>
+  )
 })
 SidebarTrigger.displayName = "SidebarTrigger"

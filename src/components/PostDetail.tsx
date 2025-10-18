@@ -29,8 +29,13 @@ const generateTocItems = (htmlContent: string): TocItem[] => {
         if (/h[2-4]/.test(domNode.name)) {
           const children = domNode.children;
           if (children && children.length > 0) {
-            const text = domToReact(children) as string | string[];
-            const textContent = Array.isArray(text) ? text.join('') : text;
+            // This is a simplified way to get text content.
+            // For complex content (like nested tags), a more robust solution might be needed.
+            const text = domToReact(children, options) as string | any[];
+            const textContent = (Array.isArray(text) ? text.flat(Infinity).join('') : text)
+                .toString()
+                .replace(/<[^>]+>/g, ''); // Strip any remaining HTML from complex children
+            
             if (textContent) {
               const slug = slugify(textContent);
               const level = parseInt(domNode.name.substring(1), 10); // H2 -> 2, H3 -> 3, H4 -> 4
@@ -55,11 +60,16 @@ export function TableOfContents({ postContent }: { postContent: string }) {
 
   useEffect(() => {
     const callback: IntersectionObserverCallback = (entries) => {
-        entries.forEach(entry => {
+        let visibleSlug: string | null = null;
+        for (const entry of entries) {
             if (entry.isIntersecting) {
-                setActiveToc(entry.target.id);
+                visibleSlug = entry.target.id;
+                break; // Prioritize the first visible item from the top
             }
-        });
+        }
+        if (visibleSlug) {
+            setActiveToc(visibleSlug);
+        }
     };
 
     observer.current = new IntersectionObserver(callback, {
@@ -121,8 +131,10 @@ const parseContent = (htmlContent: string) => {
             if (/h[2-4]/.test(domNode.name)) {
                 const children = domNode.children;
                 if (children && children.length > 0) {
-                    const text = domToReact(children) as string | string[];
-                    const textContent = Array.isArray(text) ? text.join('') : text;
+                    const text = domToReact(children) as string | any[];
+                    const textContent = (Array.isArray(text) ? text.flat(Infinity).join('') : text)
+                      .toString()
+                      .replace(/<[^>]+>/g, '');
                     const slug = slugify(textContent);
                     const HeadingTag = domNode.name;
                     return <HeadingTag id={slug}>{domToReact(domNode.children, options)}</HeadingTag>;

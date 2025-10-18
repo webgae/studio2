@@ -1,6 +1,6 @@
 import { getPostById, getAllPosts, extractImageUrl, createExcerpt } from '@/lib/blogger';
 import { notFound } from 'next/navigation';
-import PostDetail from '@/components/PostDetail';
+import PostDetail, { TableOfContents } from '@/components/PostDetail';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { getIdFromSlug, createPostSlug, truncateText } from '@/lib/utils';
 import RelatedPosts from '@/components/RelatedPosts';
@@ -8,8 +8,7 @@ import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { type BlogPosting, type WithContext } from 'schema-dts';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { SidebarProvider, Sidebar, SidebarTrigger } from '@/components/Sidebar';
-import { TableOfContents } from '@/components/PostDetail';
+import { SidebarProvider, Sidebar } from '@/components/Sidebar';
 
 
 type Props = {
@@ -122,18 +121,13 @@ export default async function PostPage({ params }: Props) {
                 />
                 
                 <div className="grid lg:grid-cols-[280px,1fr] lg:gap-12 relative">
-                    <Sidebar
-                        trigger={
-                            <SidebarTrigger className='lg:hidden' />
-                        }
-                    >
+                    <Sidebar>
                         <TableOfContents postContent={post.content} />
                     </Sidebar>
                     
                     <main className="flex-1 min-w-0 py-8">
                          <div className="flex items-center gap-4 mb-8 lg:hidden">
-                            <SidebarTrigger />
-                             <Breadcrumbs
+                            <Breadcrumbs
                                 items={[
                                 { label: 'Blog', href: '/blog' },
                                 { label: truncateText(post.title, 20), href: `/posts/${params.id}` },
