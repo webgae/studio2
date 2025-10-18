@@ -5,7 +5,7 @@ import { Menu } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger as RadixSheetTrigger, SheetClose } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger as RadixSheetTrigger, SheetClose, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 
 type SidebarContextType = {
   isOpen: boolean
@@ -86,15 +86,15 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
   ({ className, children, trigger, ...props }, ref) => {
-    const { isOpen, setIsOpen, isMobile, openMobile, setOpenMobile } = useSidebar()
+    const { isMobile, openMobile, setOpenMobile } = useSidebar()
 
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-          {trigger}
-          <SheetContent side="left" className={cn("w-72 bg-card p-0 text-card-foreground border-r", className)}>
-            {children}
-          </SheetContent>
+            {trigger}
+            <SheetContent side="left" className={cn("w-72 bg-card p-0 text-card-foreground border-r", className)}>
+              {children}
+            </SheetContent>
         </Sheet>
       );
     }
@@ -103,15 +103,14 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         <aside
             ref={ref}
             className={cn(
-                "hidden lg:block sticky top-24 h-[calc(100vh-6rem)] transition-all duration-300 ease-in-out",
-                isOpen ? "w-72" : "w-0",
+                "hidden lg:block sticky top-24 h-[calc(100vh-6rem)]",
                 className
             )}
             {...props}
         >
-            <div className={cn("h-full transition-opacity duration-300", isOpen ? "opacity-100" : "opacity-0 pointer-events-none")}>
+            <div className={cn("h-full")}>
                 <div className='bg-card border rounded-lg h-full'>
-                    {isOpen && children}
+                    {children}
                 </div>
             </div>
         </aside>
@@ -144,20 +143,7 @@ export const SidebarTrigger = React.forwardRef<
         )
     }
 
-    const { isOpen, setIsOpen } = useSidebar()
-
-    return (
-        <Button
-            ref={ref}
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsOpen(!isOpen)}
-            className={className}
-            {...props}
-        >
-            <Menu className="h-6 w-6" />
-            <span className="sr-only">Toggle Sidebar</span>
-        </Button>
-  )
+    // No trigger for desktop in this design
+    return null;
 })
 SidebarTrigger.displayName = "SidebarTrigger"

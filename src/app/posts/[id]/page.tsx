@@ -1,6 +1,6 @@
 import { getPostById, getAllPosts, extractImageUrl, createExcerpt } from '@/lib/blogger';
 import { notFound } from 'next/navigation';
-import PostDetail, { TableOfContents } from '@/components/PostDetail';
+import PostDetail from '@/components/PostDetail';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { getIdFromSlug, createPostSlug, truncateText } from '@/lib/utils';
 import RelatedPosts from '@/components/RelatedPosts';
@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { type BlogPosting, type WithContext } from 'schema-dts';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { SidebarProvider, Sidebar, SidebarTrigger } from '@/components/Sidebar';
+import { TableOfContents } from '@/components/PostDetail';
 
 
 type Props = {
@@ -121,20 +122,31 @@ export default async function PostPage({ params }: Props) {
                 />
                 
                 <div className="grid lg:grid-cols-[280px,1fr] lg:gap-12 relative">
-                     <Sidebar
-                        trigger={<SidebarTrigger className='absolute top-4 left-4 z-20 lg:hidden' />}
-                     >
+                    <Sidebar
+                        trigger={
+                            <SidebarTrigger className='lg:hidden' />
+                        }
+                    >
                         <TableOfContents postContent={post.content} />
                     </Sidebar>
                     
                     <main className="flex-1 min-w-0 py-8">
+                         <div className="flex items-center gap-4 mb-8 lg:hidden">
+                            <SidebarTrigger />
+                             <Breadcrumbs
+                                items={[
+                                { label: 'Blog', href: '/blog' },
+                                { label: truncateText(post.title, 20), href: `/posts/${params.id}` },
+                                ]}
+                            />
+                        </div>
                         <Breadcrumbs
                             items={[
                             { label: 'Inicio', href: '/' },
                             { label: 'Blog', href: '/blog' },
                             { label: truncateText(post.title, 50), href: `/posts/${params.id}` },
                             ]}
-                            className="mb-8 lg:pt-0"
+                            className="mb-8 hidden lg:block"
                         />
                         <PostDetail post={post} />
                         <div className="max-w-4xl mx-auto">
