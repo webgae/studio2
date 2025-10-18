@@ -9,6 +9,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { type BlogPosting, type WithContext } from 'schema-dts';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { Sidebar } from '@/components/Sidebar';
+import { Button } from '@/components/ui/button';
+import { List } from 'lucide-react';
 
 
 type Props = {
@@ -119,13 +121,24 @@ export default async function PostPage({ params }: Props) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             
-            <div className="grid lg:grid-cols-[280px,1fr] lg:gap-12">
+            <div className="grid lg:grid-cols-[auto,1fr] lg:gap-12">
                 <Sidebar>
                     <TableOfContents postContent={post.content} />
                 </Sidebar>
                 
                 <main className="flex-1 min-w-0 py-8">
-                    <Breadcrumbs
+                    <div className="flex items-center justify-between gap-4 mb-8 lg:hidden">
+                       <Sidebar>
+                            <TableOfContents postContent={post.content} />
+                        </Sidebar>
+                         <Breadcrumbs
+                            items={[
+                            { label: 'Blog', href: '/blog' },
+                            { label: truncateText(post.title, 20), href: `/posts/${params.id}` },
+                            ]}
+                        />
+                    </div>
+                     <Breadcrumbs
                         items={[
                         { label: 'Inicio', href: '/' },
                         { label: 'Blog', href: '/blog' },
@@ -133,14 +146,6 @@ export default async function PostPage({ params }: Props) {
                         ]}
                         className="mb-8 hidden lg:flex"
                     />
-                    <div className="flex items-center gap-4 mb-8 lg:hidden">
-                       <Breadcrumbs
-                            items={[
-                            { label: 'Blog', href: '/blog' },
-                            { label: truncateText(post.title, 20), href: `/posts/${params.id}` },
-                            ]}
-                        />
-                    </div>
                     <PostDetail post={post} />
                     <div className="max-w-4xl mx-auto">
                         <Suspense fallback={<RelatedPostsLoading />}>
