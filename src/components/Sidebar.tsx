@@ -5,7 +5,7 @@ import { Menu } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger as RadixSheetTrigger } from "@/components/ui/sheet"
 
 type SidebarContext = {
   isOpen: boolean
@@ -48,6 +48,12 @@ export const SidebarProvider = ({
   const [isOpen, setIsOpen] = React.useState(!isMobile)
   const [openMobile, setOpenMobile] = React.useState(false)
 
+  React.useEffect(() => {
+    if (!isMobile) {
+      setOpenMobile(false);
+    }
+  }, [isMobile]);
+
   const contextValue = React.useMemo(
     () => ({
       isOpen: isMobile ? openMobile : isOpen,
@@ -69,14 +75,15 @@ export const Sidebar = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
-  const { isOpen, isMobile } = useSidebar()
+  const { isOpen, isMobile, setIsOpen } = useSidebar()
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={(open) => useSidebar().setIsOpen(open)}>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetContent
           side="left"
           className={cn("w-72 bg-card p-0 text-card-foreground border-r", className)}
+          aria-describedby={undefined}
         >
           {children}
         </SheetContent>
@@ -107,7 +114,24 @@ export const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, ...props }, ref) => {
-  const { isOpen, setIsOpen } = useSidebar()
+  const { isOpen, setIsOpen, isMobile } = useSidebar()
+
+  if (isMobile) {
+    return (
+       <RadixSheetTrigger asChild>
+         <Button
+            ref={ref}
+            variant="ghost"
+            size="icon"
+            className={className}
+            {...props}
+          >
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Toggle Sidebar</span>
+          </Button>
+       </RadixSheetTrigger>
+    )
+  }
 
   return (
     <Button
