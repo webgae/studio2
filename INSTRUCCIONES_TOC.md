@@ -1,0 +1,339 @@
+# Cómo Replicar la Tabla de Contenidos (TOC) Avanzada
+
+Aquí tienes una guía paso a paso para implementar la misma funcionalidad de TOC (Tabla de Contenidos) en otro proyecto similar basado en Next.js y Tailwind CSS.
+
+### Requisitos Previos
+
+Asegúrate de que tu nuevo proyecto tenga las siguientes librerías instaladas:
+
+```bash
+npm install lucide-react html-react-parser
+```
+
+### Paso 1: Modificar la Hoja de Estilos Global
+
+Añade la siguiente regla a tu archivo de CSS global (normalmente `src/app/globals.css`) para habilitar el desplazamiento suave en toda la aplicación.
+
+```css
+/* src/app/globals.css */
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  /* ... resto de tus estilos base ... */
+}
+```
+
+### Paso 2: Crear/Actualizar el Componente de Detalle del Post
+
+Este archivo es el corazón de la funcionalidad. Contiene tanto la lógica para mostrar el post como el componente de la TOC.
+
+Crea o reemplaza el contenido de tu archivo `src/components/PostDetail.tsx` con el siguiente código:
+
+```tsx
+// src/components/PostDetail.tsx
+
+'use client';
+
+import { type Post } from '@/lib/types'; // Asegúrate de que la ruta a tus tipos sea correcta
+import { format } from 'date-fns';
+import { Badge } from './ui/badge';
+import { Calendar, User, Tag, ArrowLeft, List, ArrowUp } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from './ui/button';
+import parse, { domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
+import Image from 'next/image';
+import { slugify } from '@/lib/utils'; // Asegúrate de tener una función `slugify` en tus utilidades
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { cn } from '@/lib/utils';
+
+type TocItem = {
+  text: string;
+  slug: string;
+  level: number;
+};
+
+// Función para extraer encabezados y generar la TOC
+const generateTocItems = (htmlContent: string): TocItem[] => {
+  const tocItems: TocItem[] = [];
+  
+  const options: HTMLReactParserOptions = {
+    replace: (domNode) => {
+      if (domNode instanceof Element) {
+        if (domNode.name === 'h2' || domNode.name === 'h3') {
+          const children = domNode.children;
+          if (children && children.length > 0) {
+            const text = domToReact(children) as string | string[];
+            const textContent = Array.isArray(text) ? text.join('') : text;
+            if (textContent) {
+              const slug = slugify(textContent);
+              const level = domNode.name === 'h2' ? 1 : 2;
+              tocItems.push({ text: textContent, slug, level });
+            }
+          }
+        }
+      }
+    },
+  };
+
+  parse(htmlContent, options); // Solo ejecutamos esto para popular tocItems
+  return tocItems;
+};
+
+// Componente separado para la Tabla de Contenidos
+export function TableOfContents({ postContent }: { postContent: string }) {
+  const tocItems = useMemo(() => generateTocItems(postContent), [postContent]);
+  const [activeToc, setActiveToc] = useState<string | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
+  const headingsRef = useRef<Map<string, IntersectionObserverEntry>>(new Map());
+  
+  useEffect(() => {
+    const callback: IntersectionObserverCallback = (entries) => {
+        entries.forEach(entry => {
+            headingsRef.current.set(entry.target.id, entry);
+        });
+
+        const visibleHeadings: IntersectionObserverEntry[] = [];
+        headingsRef.current.forEach(entry => {
+            if (entry.isIntersecting) {
+                visibleHeadings.push(entry);
+            }
+        });
+
+        if (visibleHeadings.length > 0) {
+            visibleHeadings.sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
+            setActiveToc(visibleHeadings[0].target.id);
+        }
+    };
+
+    observer.current = new IntersectionObserver(callback, {
+      rootMargin: '-20% 0px -70% 0px',
+      threshold: 0.1
+    });
+
+    const headingElements = tocItems.map(item => document.getElementById(item.slug)).filter(Boolean);
+    headingElements.forEach(el => observer.current?.observe(el!));
+
+    return () => observer.current?.disconnect();
+  }, [tocItems]);
+  
+  if (tocItems.length < 2) {
+    return null;
+  }
+
+  return (
+    <div id="toc">
+      <div className="bg-card/50 border rounded-lg p-6">
+        <h2 className="text-xl font-bold font-headline flex items-center gap-2 mb-4">
+          <List className="w-5 h-5" />
+          Tabla de Contenidos
+        </h2>
+        <ul className="space-y-2">
+          {tocItems.map((item) => (
+            <li key={item.slug} style={{ marginLeft: `${(item.level - 1) * 1}rem` }}>
+              <a
+                href={`#${item.slug}`}
+                className={cn(
+                  "block p-2 rounded-md text-sm transition-colors",
+                  activeToc === item.slug
+                    ? "bg-primary/20 text-primary font-semibold"
+                    : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                )}
+              >
+                {item.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+const parseContent = (htmlContent: string) => {
+    const options: HTMLReactParserOptions = {
+        replace: (domNode) => {
+          if (domNode instanceof Element) {
+            // Añade un ID a cada h2 y h3 para el anclaje de la TOC
+            if (domNode.name === 'h2' || domNode.name === 'h3') {
+                const children = domNode.children;
+                if (children && children.length > 0) {
+                    const text = domToReact(children) as string | string[];
+                    const textContent = Array.isArray(text) ? text.join('') : text;
+                    const slug = slugify(textContent);
+                    const HeadingTag = domNode.name;
+                    return <HeadingTag id={slug}>{domToReact(domNode.children, options)}</HeadingTag>;
+                }
+            }
+            // Opcional: optimiza las imágenes del contenido
+            if (domNode.name === 'img') {
+              const { src, alt, width, height } = domNode.attribs;
+              
+              const widthNum = width ? parseInt(width) : 550;
+              const heightNum = height ? parseInt(height) : 400;
+    
+              return (
+                <div className="relative my-6 mx-auto w-full max-w-[550px]" style={{ aspectRatio: `${widthNum}/${heightNum}` }}>
+                  <Image
+                    src={src}
+                    alt={alt || 'Imagen del post'}
+                    fill
+                    className="rounded-lg object-contain"
+                    sizes="(max-width: 600px) 100vw, 550px"
+                  />
+                </div>
+              );
+            }
+          }
+        },
+      };
+    return parse(htmlContent, options);
+}
+
+export default function PostDetail({ post }: { post: Post }) {
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  // `useMemo` evita que el contenido se parsee en cada render
+  const modifiedContent = useMemo(() => parseContent(post.content), [post.content]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollButton(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  return (
+    <>
+      <article className="max-w-4xl mx-auto bg-card p-4 sm:p-8 rounded-lg shadow-lg border relative">
+        <div className="mb-6">
+          <Button asChild variant="ghost" className="text-muted-foreground hover:text-primary hover:bg-transparent px-0">
+            <Link href="/blog" className="inline-flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Volver al blog
+            </Link>
+          </Button>
+        </div>
+
+        <h1 className="text-3xl md:text-5xl font-bold font-headline mb-4 text-center">{post.title}</h1>
+        
+        <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-muted-foreground mb-8 text-sm">
+          <div className="flex items-center gap-2">
+            <User className="w-4 h-4" />
+            <span>{post.author.displayName}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            <time dateTime={post.published}>{format(new Date(post.published), 'MMMM d, yyyy')}</time>
+          </div>
+        </div>
+
+        {/* TOC para móvil, estática */}
+        <div className="lg:hidden mb-10">
+            <TableOfContents postContent={post.content}/>
+        </div>
+        
+        <div
+          className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:underline prose-img:rounded-lg prose-h2:scroll-mt-24 prose-h3:scroll-mt-24"
+        >
+          {modifiedContent}
+        </div>
+        
+        {post.labels && post.labels.length > 0 && (
+          <div className="mt-12 border-t pt-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Tag className="w-5 h-5 text-muted-foreground" />
+              <h3 className="text-lg font-semibold">Etiquetas</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {post.labels.map(label => (
+                <Link href={`/blog?label=${encodeURIComponent(label)}`} key={label}>
+                  <Badge variant="secondary" className="hover:bg-accent">{label}</Badge>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+      </article>
+      
+      {/* Botón de volver arriba (solo visible en móvil) */}
+      <Button
+        onClick={scrollToTop}
+        className={cn(
+          'fixed bottom-8 right-8 z-50 rounded-full h-12 w-12 shadow-lg transition-opacity duration-300 lg:hidden',
+          showScrollButton ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        )}
+        size="icon"
+        aria-label="Volver arriba"
+      >
+        <ArrowUp className="h-6 w-6" />
+      </Button>
+    </>
+  );
+}
+```
+
+### Paso 3: Configurar la Página del Post
+
+Finalmente, actualiza la página que renderiza cada post individual (ej: `src/app/posts/[id]/page.tsx`) para usar el nuevo diseño de dos columnas.
+
+```tsx
+// src/app/posts/[id]/page.tsx
+
+import { getPostById, /* ...otras importaciones... */ } from '@/lib/blogger'; // Tus funciones de fetching
+import { notFound } from 'next/navigation';
+import PostDetail, { TableOfContents } from '@/components/PostDetail';
+import type { Metadata, ResolvingMetadata } from 'next';
+import { Suspense } from 'react';
+// ...otras importaciones que necesites como Breadcrumbs, RelatedPosts, etc.
+
+
+type Props = {
+  params: { id: string };
+};
+
+// Tu función generateMetadata...
+// Tu función generateStaticParams...
+
+export default async function PostPage({ params }: Props) {
+  try {
+    // La lógica para obtener el post por ID...
+    const postId = /* tu lógica para obtener el ID del slug */;
+    const post = await getPostById(postId);
+    
+    // Tu lógica de JSON-LD...
+
+    return (
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+            {/* Aquí puedes poner tus scripts, Breadcrumbs, etc. */}
+            
+            <div className="lg:grid lg:grid-cols-[280px,1fr] lg:gap-12">
+               {/* TOC para escritorio, "pegajosa" a la izquierda */}
+              <aside className="hidden lg:block relative">
+                <div className="sticky top-24">
+                  <TableOfContents postContent={post.content} />
+                </div>
+              </aside>
+
+              <main>
+                <PostDetail post={post} />
+              </main>
+            </div>
+            
+            {/* Aquí puedes poner la sección de posts relacionados */}
+        </div>
+    );
+  } catch (error) {
+    console.error(`Error fetching post ${params.id}:`, error);
+    notFound();
+  }
+}
+```
+
+¡Y eso es todo! Con estos tres pasos, tendrás una Tabla de Contenidos responsive, interactiva y muy profesional en tu nuevo proyecto.
