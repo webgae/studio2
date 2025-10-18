@@ -8,7 +8,7 @@ import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { type BlogPosting, type WithContext } from 'schema-dts';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { SidebarProvider, Sidebar } from '@/components/Sidebar';
+import { Sidebar } from '@/components/Sidebar';
 
 
 type Props = {
@@ -113,45 +113,48 @@ export default async function PostPage({ params }: Props) {
     };
 
     return (
-        <SidebarProvider>
-            <div className="max-w-7xl mx-auto px-4 sm:px-8">
-                <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-                />
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+            <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            
+            <div className="grid lg:grid-cols-[280px,1fr] lg:gap-12 relative">
+                <Sidebar>
+                    <TableOfContents postContent={post.content} />
+                </Sidebar>
                 
-                <div className="grid lg:grid-cols-[280px,1fr] lg:gap-12 relative">
-                    <Sidebar>
-                        <TableOfContents postContent={post.content} />
-                    </Sidebar>
-                    
-                    <main className="flex-1 min-w-0 py-8">
-                         <div className="flex items-center gap-4 mb-8 lg:hidden">
-                            <Breadcrumbs
+                <main className="flex-1 min-w-0 py-8">
+                     <div className="flex justify-between items-center gap-4 mb-8 lg:hidden">
+                        <Sidebar>
+                            <TableOfContents postContent={post.content} />
+                        </Sidebar>
+                        <div className="flex-grow">
+                             <Breadcrumbs
                                 items={[
                                 { label: 'Blog', href: '/blog' },
                                 { label: truncateText(post.title, 20), href: `/posts/${params.id}` },
                                 ]}
                             />
                         </div>
-                        <Breadcrumbs
-                            items={[
-                            { label: 'Inicio', href: '/' },
-                            { label: 'Blog', href: '/blog' },
-                            { label: truncateText(post.title, 50), href: `/posts/${params.id}` },
-                            ]}
-                            className="mb-8 hidden lg:block"
-                        />
-                        <PostDetail post={post} />
-                        <div className="max-w-4xl mx-auto">
-                            <Suspense fallback={<RelatedPostsLoading />}>
-                                <RelatedPosts currentPostId={post.id} labels={post.labels} />
-                            </Suspense>
-                        </div>
-                    </main>
-                </div>
+                    </div>
+                    <Breadcrumbs
+                        items={[
+                        { label: 'Inicio', href: '/' },
+                        { label: 'Blog', href: '/blog' },
+                        { label: truncateText(post.title, 50), href: `/posts/${params.id}` },
+                        ]}
+                        className="mb-8 hidden lg:block"
+                    />
+                    <PostDetail post={post} />
+                    <div className="max-w-4xl mx-auto">
+                        <Suspense fallback={<RelatedPostsLoading />}>
+                            <RelatedPosts currentPostId={post.id} labels={post.labels} />
+                        </Suspense>
+                    </div>
+                </main>
             </div>
-        </SidebarProvider>
+        </div>
     );
   } catch (error) {
     console.error(`Error fetching post ${params.id}:`, error);

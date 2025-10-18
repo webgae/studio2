@@ -1,11 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { Menu } from "lucide-react"
-
+import { List } from "lucide-react"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 type SidebarContextType = {
   isMobile: boolean
@@ -23,108 +23,53 @@ export function useSidebar() {
   return context
 }
 
-const useIsMobile = () => {
-    const [isMobile, setIsMobile] = React.useState(false);
-
-    React.useEffect(() => {
-        const checkDevice = () => {
-            setIsMobile(window.innerWidth < 1024);
-        };
-        if (typeof window !== 'undefined') {
-            checkDevice();
-            window.addEventListener('resize', checkDevice);
-            return () => window.removeEventListener('resize', checkDevice);
-        }
-    }, []);
-
-    return isMobile;
-};
-
-export const SidebarProvider = ({
+export const Sidebar = ({
   children,
+  className
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  className?: string
 }) => {
   const isMobile = useIsMobile()
   const [openMobile, setOpenMobile] = React.useState(false)
-  
-  const contextValue = React.useMemo(
-    () => ({
-      isMobile,
-      openMobile,
-      setOpenMobile,
-    }),
-    [isMobile, openMobile]
-  )
+
+  if (isMobile === undefined) {
+    return null; // Don't render until we know the screen size
+  }
+
+  if (isMobile) {
+    return (
+      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
+          <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                  <List className="h-6 w-6" />
+                  <span className="sr-only">Abrir Tabla de Contenidos</span>
+              </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-72 bg-card p-0 text-card-foreground border-r">
+            <SidebarContext.Provider value={{ isMobile, openMobile, setOpenMobile }}>
+                {children}
+            </SidebarContext.Provider>
+          </SheetContent>
+      </Sheet>
+    );
+  }
 
   return (
-    <SidebarContext.Provider value={contextValue}>
-      {children}
-    </SidebarContext.Provider>
-  )
-}
-
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
-}
-
-export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
-  ({ className, children, ...props }, ref) => {
-    const { isMobile, openMobile, setOpenMobile } = useSidebar()
-
-    if (isMobile) {
-      return (
-        <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-            <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden">
-                    <Menu className="h-6 w-6" />
-                    <span className="sr-only">Abrir Tabla de Contenidos</span>
-                </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className={cn("w-72 bg-card p-0 text-card-foreground border-r", className)}>
-              {children}
-            </SheetContent>
-        </Sheet>
-      );
-    }
-
-    return (
-        <aside
-            ref={ref}
-            className={cn(
-                "hidden lg:block sticky top-24 h-[calc(100vh-6rem)]",
-                className
-            )}
-            {...props}
-        >
+      <aside
+          className={cn(
+              "hidden lg:block sticky top-24 h-[calc(100vh-6rem)]",
+              className
+          )}
+      >
+        <SidebarContext.Provider value={{ isMobile, openMobile, setOpenMobile }}>
             <div className={cn("h-full")}>
                 <div className='bg-card border rounded-lg h-full overflow-y-auto'>
                     {children}
                 </div>
             </div>
-        </aside>
-    )
-  }
-)
-Sidebar.displayName = "Sidebar"
-
-// This trigger is now part of the Sidebar component for mobile view.
-// You can remove the separate SidebarTrigger component if it's no longer used elsewhere.
-export const SidebarTrigger = React.forwardRef<
-  React.ElementRef<typeof Button>,
-  React.ComponentProps<typeof Button>
->(({ className, ...props }, ref) => {
-  return (
-      <Button
-          ref={ref}
-          variant="ghost"
-          size="icon"
-          className={cn(className, "lg:hidden")}
-          {...props}
-      >
-          <Menu className="h-6 w-6" />
-          <span className="sr-only">Toggle Sidebar</span>
-      </Button>
+        </SidebarContext.Provider>
+      </aside>
   )
-})
-SidebarTrigger.displayName = "SidebarTrigger"
+}
+Sidebar.displayName = "Sidebar"
