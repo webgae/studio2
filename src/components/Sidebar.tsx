@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { List } from "lucide-react"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -30,15 +29,11 @@ export const Sidebar = ({
   children: React.ReactNode,
   className?: string
 }) => {
-  const isMobile = useIsMobile()
-  const [openMobile, setOpenMobile] = React.useState(false)
+  const [openMobile, setOpenMobile] = React.useState(false);
 
-  if (isMobile === undefined) {
-    return null; // Don't render until we know the screen size
-  }
-
-  if (isMobile) {
-    return (
+  // For mobile and medium screens
+  const MobileSidebar = () => (
+    <div className="lg:hidden">
       <Sheet open={openMobile} onOpenChange={setOpenMobile}>
           <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -47,22 +42,23 @@ export const Sidebar = ({
               </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-72 bg-card p-0 text-card-foreground border-r">
-            <SidebarContext.Provider value={{ isMobile, openMobile, setOpenMobile }}>
+            <SidebarContext.Provider value={{ isMobile: true, openMobile, setOpenMobile }}>
                 {children}
             </SidebarContext.Provider>
           </SheetContent>
       </Sheet>
-    );
-  }
+    </div>
+  );
 
-  return (
-      <aside
+  // For large screens
+  const DesktopSidebar = () => (
+     <aside
           className={cn(
               "hidden lg:block sticky top-24 h-[calc(100vh-6rem)]",
               className
           )}
       >
-        <SidebarContext.Provider value={{ isMobile, openMobile, setOpenMobile }}>
+        <SidebarContext.Provider value={{ isMobile: false, openMobile: false, setOpenMobile: () => {} }}>
             <div className={cn("h-full")}>
                 <div className='bg-card border rounded-lg h-full overflow-y-auto'>
                     {children}
@@ -70,6 +66,13 @@ export const Sidebar = ({
             </div>
         </SidebarContext.Provider>
       </aside>
-  )
+  );
+
+  return (
+    <>
+      <MobileSidebar />
+      <DesktopSidebar />
+    </>
+  );
 }
 Sidebar.displayName = "Sidebar"
