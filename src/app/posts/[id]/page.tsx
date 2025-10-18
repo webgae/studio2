@@ -128,17 +128,17 @@ export default async function PostPage({ params }: Props) {
                 />
             </div>
             
-            <div className="lg:grid lg:grid-cols-[1fr,280px] lg:gap-12">
-              <main>
-                <PostDetail post={post} />
-              </main>
-
-              {/* TOC for desktop, sticky */}
+            <div className="lg:grid lg:grid-cols-[280px,1fr] lg:gap-12">
+               {/* TOC for desktop, sticky */}
               <aside className="hidden lg:block relative">
                 <div className="sticky top-24">
                   <TableOfContents postContent={post.content} />
                 </div>
               </aside>
+
+              <main>
+                <PostDetail post={post} />
+              </main>
             </div>
             
 
